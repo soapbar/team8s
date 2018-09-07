@@ -60,11 +60,11 @@ Now that we’ve learned some basics about Arduino, it’s time to gather the pa
 
 Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately. 
 
-[Robot, view 1](https://drive.google.com/open?id=1QYTu3YVorSE9IT_CvGTgKE4-mLTPx93d)
+![Robot, view 1](https://drive.google.com/open?id=1QYTu3YVorSE9IT_CvGTgKE4-mLTPx93d)
 
 View 1.
 
-[Robot, view 2](https://drive.google.com/open?id=1DIVKrxWVWAA0OAi2nI7Wxi4qLr7qqs2S)
+![Robot, view 2](https://drive.google.com/open?id=1DIVKrxWVWAA0OAi2nI7Wxi4qLr7qqs2S)
 
 View 2.
 
@@ -82,3 +82,4 @@ Its successful movement is documented here:
 
 [Video: Autonomous Movement](https://drive.google.com/file/d/1vCgTEwFWG1ebwwJmhHbd2Isz_ur8YIoT/view?usp=sharing)
 
+The movement depicted in this video starts halfway through the loop and ends at the halfway point again -- that is, it's first going backward, then forward, then stopping. Because the movement functions are in the loop, the robot will perform the movement over and over.
