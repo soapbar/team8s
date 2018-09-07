@@ -61,7 +61,7 @@ Now that we’ve learned some basics about Arduino, it’s time to gather the pa
 Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately. 
 
 ![Robot, view 1](https://github.com/soapbar/team8s/blob/master/images/lab1/robot1.png)
-![Robot, view 2](/images/lab1/robot2.png)
+![Robot, view 2](/images/lab1/robot2.png=150x150)
 
 In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added. 
 
