@@ -4,10 +4,10 @@ layout: default
 
 Testing ??
 
-[Team Contract](.../teamcontract.md)
+[Team Contract](/teamcontract)
 
 ##Labs:
-- [Lab 1](.../lab1.md)
+- [Lab 1](/lab1)
 - Lab 2
 - Lab 3
 - Lab 4
