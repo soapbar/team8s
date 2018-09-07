@@ -38,7 +38,7 @@ Then in the loop() function, we just read from the analog pin, print to the seri
 
 You can see (sort of) this functioning in the video below.
 
-// Video AnalogInput.MOV
+[Video AnalogInput.MOV](https://drive.google.com/file/d/1Nxs-6aK5xxj-rk2At2JhxCoQnkn7BJWM/view?usp=sharing)
 
 The next step to visualize the analog input was to map it to the output. The circuit for this is essentially the circuit for analog input, and the circuit for blink, combined together. Because the Arduino can only output digital signals, we simulate analog input by using pulse-width modulation (PWM). This means we alternate very quickly between high and low signals periodically. For a given duty cycle (a percentage), the signal is high for some portion of the period and low for the remainder. This is conveniently encapsulated into the built-in function analogWrite(), meaning that the code was again very simple. In setup(), we designate our PWM pin as output:
 
@@ -50,18 +50,18 @@ Then in loop(), we just have to write the value that we read in:
 
 The video below shows our code in action, as we turn the potentiometer, the brightness of the LED changes:
 
-// Video AnalogLED.MOV
+[Video AnalogLED.MOV](https://drive.google.com/file/d/16R3cip_lacCY1tCaiksirz1RPnsFobnP/view?usp=sharing)
 
 The final part of the lab involved mapping the analog input to a servo motor. Again, this is easy because Arduino has a built-in servo library. The most important thing to note is that the servos we were using were continuous rotation servos, meaning that the value written to the servo determines its speed and direction, not its position. Because we were getting strange results when we tried writing to the servo, we also added in code to print the values we were reading to help debug. We found that we could read values up to 1023 from the analog input, while the Servo.write() function expects values between 0 and 180. So, we normalized the value read to be in the 0-180 range. We then found that in most of that range, the servo moves at essentially its maximum speed. To get results that we could actually see, we again normalized the values to be in the range 80-100. This gave us much finer control, which you can see below:
 
-AnalogServo.MOV
+[Video: AnalogServo.MOV](https://drive.google.com/file/d/1qCB4T6PR_YG_yMy1CQpeH8j-IEgriBIn/view?usp=sharing)
 
 Now that we’ve learned some basics about Arduino, it’s time to gather the parts and build a robot! 
 
 Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately. 
 
-![Robot, view 1](/images/lab1/robot1.png)
-![Robot, view 2](/images/lab1/robot2.png)
+![Robot, view 1](https://drive.google.com/open?id=1QYTu3YVorSE9IT_CvGTgKE4-mLTPx93d)
+![Robot, view 2](https://drive.google.com/open?id=1DIVKrxWVWAA0OAi2nI7Wxi4qLr7qqs2S)
 
 In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added. 
 
@@ -74,4 +74,6 @@ Our next objective was to make our robot complete a task autonomously. We stuck 
 This allowed us to ensure that our robot's servos were correctly moving, as we initially discovered our servos were moving out of sync and the robot was deviating from its straight path. We were able to sync the servos and correct its path.
 
 Its successful movement is documented here:
+
+[Video: Autonomous Movement](https://drive.google.com/file/d/1vCgTEwFWG1ebwwJmhHbd2Isz_ur8YIoT/view?usp=sharing)
 
