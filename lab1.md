@@ -62,7 +62,11 @@ Through following pictures from previous years’ robots we screwed the mounts, 
 
 [Robot, view 1](https://drive.google.com/open?id=1QYTu3YVorSE9IT_CvGTgKE4-mLTPx93d)
 
+View 1.
+
 [Robot, view 2](https://drive.google.com/open?id=1DIVKrxWVWAA0OAi2nI7Wxi4qLr7qqs2S)
+
+View 2.
 
 In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added. 
 
