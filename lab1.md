@@ -3,9 +3,23 @@ layout: default
 ---
 
 # Lab 1: Microcontroller
+Subteams: Eric and Sophie, Brandon and Henri
 
-## Blinking LEDs
-### Internal LED
+## Objective
+- gain familiarity with Arduino
+- begin creating an autonomous robot!
+
+## Materials
+- Arduino Uno 
+- USB A/B cable 
+- Continuous rotation servos
+- LED
+- Potentiometer (100kΩ)
+- Several resistors (330Ω)
+- Solderless breadboard
+
+
+## Blinking an Internal LED
 
 We first downloaded the Arduino IDE and opened the “Blink” example code. File > Examples > 1.Basics > Blink. Click the checkmark and then the right-pointing arrow to upload the program to the Arduino. 
 
@@ -14,7 +28,7 @@ We first downloaded the Arduino IDE and opened the “Blink” example code. Fil
 alt="Internal LED video" width="240" height="180" border="10" /></a>
 
 
-### External LED
+## Blinking an External LED
 
 We modified the given code to blink an external LED with a resistor. 
  
@@ -25,7 +39,7 @@ We modified the given code to blink an external LED with a resistor.
 alt="External LED video" width="240" height="180" border="10" /></a>
 
 
-## Potentiometer
+## Analog Input/Output
 
 The next part of the lab had us using the analog input pins of the Arduino to read values from a potentiometer. Because the Arduino reads voltage, and not resistance, we set up a voltage divider with the potentiometer another resistor. The code for this task was very simple, in the setup() function, we set the data transmission rate (in bits per second) for serial communication, using the line:
 
@@ -60,10 +74,10 @@ Now that we’ve learned some basics about Arduino, it’s time to gather the pa
 
 Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately. 
 
-[Robot, view 1](https://drive.google.com/open?id=1QYTu3YVorSE9IT_CvGTgKE4-mLTPx93d)
+![Robot, view 1](/images/lab1/robot1.png)
 View 1.
 
-[Robot, view 2](https://drive.google.com/open?id=1DIVKrxWVWAA0OAi2nI7Wxi4qLr7qqs2S)
+![Robot, view 2](/images/lab1/robot2.png)
 View 2.
 
 In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added. 

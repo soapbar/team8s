@@ -2,9 +2,7 @@
 layout: default
 ---
 
-Testing ??
-
-[Team Contract](https://soapbar.github.io/team8s/teamcontract)
+- [Team Contract](https://soapbar.github.io/team8s/teamcontract)
 
 ## Labs:
 - [Lab 1](https://soapbar.github.io/team8s/lab1)
