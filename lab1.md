@@ -18,7 +18,7 @@ alt="Internal LED video" width="240" height="180" border="10" /></a>
 
 We modified the given code to blink an external LED with a resistor. 
  
-![External LED code](https://github.com/soapbar/team8s/blob/master/images/lab1/externalLED.png "External LED code")
+![External LED code](/images/lab1/externalLED.png)
 
 <a href="https://www.youtube.com/watch?v=9APqyE2SMBM&index=4&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28
 " target="_blank"><img src="https://www.youtube.com/watch?v=9APqyE2SMBM&index=4&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28/0.jpg" 
@@ -60,8 +60,8 @@ Now that we’ve learned some basics about Arduino, it’s time to gather the pa
 
 Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately. 
 
-![Robot, view 1](https://github.com/soapbar/team8s/blob/master/images/lab1/robot1.png "Robot, view 1")
-![Robot, view 2](https://github.com/soapbar/team8s/blob/master/images/lab1/robot2.png "Robot, view 1")
+![Robot, view 1](https://github.com/soapbar/team8s/blob/master/images/lab1/robot1.png)
+![Robot, view 2](/images/lab1/robot2.png)
 
 In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added. 
 
@@ -69,7 +69,7 @@ In order to have enough ports to power the two servos, a breadboard with an addi
 
 Our next objective was to make our robot complete a task autonomously. We stuck with simple movement: moving forward, pausing, then moving backwards. This was achieved by setting the analog output of the servo pins to either 0, 90, or 180 to move forward, stop, or move backwards. 
 
-![Autonomous Code](https://github.com/soapbar/team8s/blob/master/images/lab1/autonomous.png "Autonomous code")
+![Autonomous Code](/images/lab1/autonomous.png)
 
 This allowed us to ensure that our robot's servos were correctly moving, as we initially discovered our servos were moving out of sync and the robot was deviating from its straight path. We were able to sync the servos and correct its path.
 
