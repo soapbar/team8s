@@ -4,15 +4,15 @@ layout: default
 
 Testing ??
 
-[Team Contract](/teamcontract)
+[Team Contract](https://soapbar.github.io/team8s/teamcontract)
 
-##Labs:
-- [Lab 1](/lab1)
+## Labs:
+- [Lab 1](https://soapbar.github.io/team8s/lab1)
 - Lab 2
 - Lab 3
 - Lab 4
 
-##Milestones:
+## Milestones:
 - Milestone 1
 - Milestone 2
 - Milestone 3
