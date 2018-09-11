@@ -1,3 +1,5 @@
+// program to print values of line following sensors
+
 int RightSensor = A0;
 int LeftSensor = A1;
 

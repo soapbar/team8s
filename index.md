@@ -11,7 +11,7 @@ layout: default
 - Lab 4
 
 ## Milestones:
-- Milestone 1
+- [Milestone 1](http://soapbar.github.io/team8s/milestone1)
 - Milestone 2
 - Milestone 3
 - Milestone 4
