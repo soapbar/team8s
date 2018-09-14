@@ -3,8 +3,8 @@ layout: default
 ---
 
 # Team Contract
-ECE 3400, Fall 2018 Team # 8 
-Team Members: Eric, Brandon, Sophie, Henri 
+ECE 3400, Fall 2018 Team # 8
+Team Members: Eric, Brandon, Sophie, Henri
 
 ## Team Procedures
 - **Day, time, and place for regular team meetings:** UH142, Friday 11.15-12.05pm, weekly. If necessary, we will have additional meetings on Sundays before 12:30pm at Duffield.
@@ -35,7 +35,7 @@ Preferred method of communication in order to inform each other of team meetings
 - **Describe what your team will do if the infractions continue:** We will first talk to the individual, and depending on the response, we will reach out to the course staff.
 
 ### Team Leadership
-Every person on the team will have to take the role as a leader. The role of the leader will be to organize meetings and make sure that everything is submitted in a timely manner. Please note here who will be responsible when: 
+Every person on the team will have to take the role as a leader. The role of the leader will be to organize meetings and make sure that everything is submitted in a timely manner. Please note here who will be responsible when:
 
 **Week 1-4 (Start-up, Lab 1, Milestone 1):** Brandon Quinlan
 **Week 5-8 (Lab 2, Lab 3, Milestone 2):** Sophie He
@@ -51,4 +51,4 @@ c)	I understand that if I do not abide by these terms and conditions, I will suf
 3) Sophie He			8/31/18
 4) Brandon Quinlan		8/31/18
 
-[back](./)
+[back](index.md)
