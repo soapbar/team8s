@@ -16,6 +16,8 @@ When adding the line sensors, we realized that we were going to have to take pie
 
 [![Two Level Robot](images/milestone1/TwoLevels.jpg)]
 
+<img src="/images/milestone1/TwoLevels.jpg">
+
 ## Line Following
 <div style="text-align: center">
  <iframe width="534" height="300" src="https://www.youtube.com/embed/PfuCMDiDtUc" frameborder="0" allowfullscreen=""></iframe>
@@ -43,6 +45,8 @@ We also discovered that our robot could first find a line and then follow it, as
 
 ![Line Following Code](/images/milestone1/line_following.PNG)
 
+<img src="/images/milestone1/line_following.PNG">
+
 ## Intersections
 
 Although our robot was able to follow a line, it didn’t know what to do when encountering an intersection -- the sensors would detect that they were both on a line and the robot had no protocols to deal with it. In order to manage this, we first attempted to ensure the robot would realize when it reached an intersection: when both sensors saw the line, the robot would stop using our fullStop() function. This took some trial and error, since the values we were using to detect the line and the surrounding material were a little off, and the robot would stop in the middle of the line because of a slight change in the color of the tiles under it, but fine-tuning the value fixed the issue.
@@ -66,3 +70,5 @@ After this, we had the building blocks to create a figure eight!
 To implement the figure 8, we hard coded in a sequence of four right turns, then four left turns. The sharp turns are executed in sequence whenever the robot encounters an intersection. To track the turns so far, we use a global counter, and we use the modulo operator to allow the robot to do continuous figure 8’s.
 
 ![Figure 8 code](images/milestone1/figure8_code.png)
+
+<img src="/images/milestone1/figure8_code.png">
