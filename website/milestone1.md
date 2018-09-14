@@ -21,10 +21,6 @@ When adding the line sensors, we realized that we were going to have to take pie
  <iframe width="534" height="300" src="https://www.youtube.com/embed/PfuCMDiDtUc" frameborder="0" allowfullscreen=""></iframe>
 </div>
 
-
-[![Line Following Video](https://img.youtube.com/vi/PfuCMDiDtUc/0.jpg)](https://www.youtube.com/watch?v=PfuCMDiDtUc)
-
-
 Note: Parameters adjusted so that robot follows a black line
 
 We added 2 IR sensors to the robot that can sense a line. Using the serial monitor, we measured that the value used by the line sensors to detect white was 850, and the value for black was around 950. Depending on whether we were trying to follow a white or black line (with a dark or light background, respectively), we could switch the numbers in our code to accommodate the change.
@@ -38,15 +34,11 @@ We fine-tuned our line-following function in order to be more precise and tested
  <iframe width="534" height="300" src="https://www.youtube.com/embed/cw6InHg8bzU" frameborder="0" allowfullscreen=""></iframe>
 </div>
 
-[![Square Video](https://img.youtube.com/vi/cw6InHg8bzU/0.jpg)](https://www.youtube.com/watch?v=cw6InHg8bzU)
-
 We also discovered that our robot could first find a line and then follow it, as shown in this video.
 
 <div style="text-align: center">
  <iframe width="534" height="300" src="https://www.youtube.com/embed/bj5Sn83Rr-c" frameborder="0" allowfullscreen=""></iframe>
 </div>
-
-[![Line Finding Video](https://img.youtube.com/vi/bj5Sn83Rr-c/0.jpg)](https://www.youtube.com/watch?v=bj5Sn83Rr-c)
 
 
 ![Line Following Code](/images/milestone1/line_following.PNG)
@@ -59,8 +51,6 @@ Although our robot was able to follow a line, it didn’t know what to do when e
  <iframe width="534" height="300" src="https://www.youtube.com/embed/-NK9jmyhfYU" frameborder="0" allowfullscreen=""></iframe>
 </div>
 
-[![Line Find Video](https://img.youtube.com/vi/-NK9jmyhfYU/0.jpg)](https://www.youtube.com/watch?v=-NK9jmyhfYU)
-
 After we confirmed that the robot could reliably detect an intersection, we created sharpLeft() and sharpRight() functions that we could deploy once the sensor reached an intersection. We first focused on just sharpLeft(), changing the output values to the servos and delay time in order to adjust the severity of the robot’s turn. After we figured out the appropriate values, we switched the servo values to create sharpRight() and tested it.
 
 // sharpLeft/right video
@@ -72,8 +62,6 @@ After this, we had the building blocks to create a figure eight!
 <div style="text-align: center">
  <iframe width="534" height="300" src="https://www.youtube.com/embed/rrrjhcnz5wY" frameborder="0" allowfullscreen=""></iframe>
 </div>
-
-[![Line Find Video](https://img.youtube.com/vi/rrrjhcnz5wY/0.jpg)](https://www.youtube.com/watch?v=rrrjhcnz5wY)
 
 To implement the figure 8, we hard coded in a sequence of four right turns, then four left turns. The sharp turns are executed in sequence whenever the robot encounters an intersection. To track the turns so far, we use a global counter, and we use the modulo operator to allow the robot to do continuous figure 8’s.
 
