@@ -42,10 +42,19 @@ We also discovered that our robot could first find a line and then follow it, as
  <iframe width="534" height="300" src="https://www.youtube.com/embed/bj5Sn83Rr-c" frameborder="0" allowfullscreen=""></iframe>
 </div>
 
+```
+void loop() {
+  //if L/R sensors sense white, correct until see black
+  if (analogRead(SENSERIGHT) < 860) driftRight();
+  else if (analogRead(SENSELEFT) <860) driftLeft();
+  else goStraight();
+}
+```
 
-![Line Following Code](/images/milestone1/line_following.PNG)
 
-<img src="/images/milestone1/line_following.PNG" alt="Line Following Code">
+![Line Following Code](/images/milestone1/line_following.png)
+
+<img src="/images/milestone1/line_following.png" alt="Line Following Code">
 
 ## Intersections
 
@@ -68,7 +77,9 @@ After this, we had the building blocks to create a figure eight!
 </div>
 
 To implement the figure 8, we hard coded in a sequence of four right turns, then four left turns. The sharp turns are executed in sequence whenever the robot encounters an intersection. To track the turns so far, we use a global counter, and we use the modulo operator to allow the robot to do continuous figure 8’s.
+```
 
+```
 ![Figure 8 code](images/milestone1/figure8_code.png)
 
 <img src="/images/milestone1/figure8_code.png" alt="Figure 8 Code">
