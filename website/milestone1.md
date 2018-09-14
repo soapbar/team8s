@@ -17,6 +17,10 @@ When adding the line sensors, we realized that we were going to have to take pie
 [![Two Level Robot](/images/milestone1/TwoLevels.jpg)]
 
 ## Line Following
+<div style="text-align: center">
+ <iframe width="534" height="300" src="https://www.youtube.com/embed/kUykOyhvOOE" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
 [![Line Following Video](https://img.youtube.com/vi/PfuCMDiDtUc/0.jpg)](https://www.youtube.com/watch?v=PfuCMDiDtUc)
 
 
