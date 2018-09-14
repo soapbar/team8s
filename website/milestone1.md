@@ -16,7 +16,7 @@ When adding the line sensors, we realized that we were going to have to take pie
 
 [![Two Level Robot](images/milestone1/TwoLevels.jpg)]
 
-<img src="/images/milestone1/TwoLevels.jpg">
+<img src="/images/milestone1/TwoLevels.jpg" alt="Two Level Robot">
 
 ## Line Following
 <div style="text-align: center">
@@ -45,7 +45,7 @@ We also discovered that our robot could first find a line and then follow it, as
 
 ![Line Following Code](/images/milestone1/line_following.PNG)
 
-<img src="/images/milestone1/line_following.PNG">
+<img src="/images/milestone1/line_following.PNG" alt="Line Following Code">
 
 ## Intersections
 
@@ -71,4 +71,4 @@ To implement the figure 8, we hard coded in a sequence of four right turns, then
 
 ![Figure 8 code](images/milestone1/figure8_code.png)
 
-<img src="/images/milestone1/figure8_code.png">
+<img src="/images/milestone1/figure8_code.png" alt="Figure 8 Code">
