@@ -18,7 +18,7 @@ When adding the line sensors, we realized that we were going to have to take pie
 
 ## Line Following
 
-https://www.youtube.com/watch?v=PfuCMDiDtUc
+[Line Following Video](https://www.youtube.com/watch?v=PfuCMDiDtUc)
 
 Note: Parameters adjusted so that robot follows a black line
 
@@ -28,11 +28,11 @@ When following a line, these two sensors hover just above the right and left edg
 
 
 We fine-tuned our line-following function in order to be more precise and tested it to follow a square.
-https://youtu.be/cw6InHg8bzU
+[Square Video](https://youtu.be/cw6InHg8bzU)
 
 We also discovered that our robot could first find a line and then follow it, as shown in this video.
-//FindingLine
-https://www.youtube.com/watch?v=bj5Sn83Rr-c
+
+[Finding the Line Video](https://www.youtube.com/watch?v=bj5Sn83Rr-c)
 
 
 ![Line Following Code](/images/milestone1/line_following.PNG)
@@ -41,8 +41,7 @@ https://www.youtube.com/watch?v=bj5Sn83Rr-c
 
 Although our robot was able to follow a line, it didn’t know what to do when encountering an intersection -- the sensors would detect that they were both on a line and the robot had no protocols to deal with it. In order to manage this, we first attempted to ensure the robot would realize when it reached an intersection: when both sensors saw the line, the robot would stop using our fullStop() function. This took some trial and error, since the values we were using to detect the line and the surrounding material were a little off, and the robot would stop in the middle of the line because of a slight change in the color of the tiles under it, but fine-tuning the value fixed the issue.
 
-// do we have a fullstop video - yeah
-https://www.youtube.com/watch?v=-NK9jmyhfYU&feature=youtu.be
+[Full Stop Video](https://www.youtube.com/watch?v=-NK9jmyhfYU&feature=youtu.be)
 
 After we confirmed that the robot could reliably detect an intersection, we created sharpLeft() and sharpRight() functions that we could deploy once the sensor reached an intersection. We first focused on just sharpLeft(), changing the output values to the servos and delay time in order to adjust the severity of the robot’s turn. After we figured out the appropriate values, we switched the servo values to create sharpRight() and tested it.
 
@@ -53,7 +52,7 @@ After this, we had the building blocks to create a figure eight!
 
 ## Figure Eight
 
-https://www.youtube.com/watch?v=rrrjhcnz5wY
+[Figure 8 Video](https://www.youtube.com/watch?v=rrrjhcnz5wY)
 
 To implement the figure 8, we hard coded in a sequence of four right turns, then four left turns. The sharp turns are executed in sequence whenever the robot encounters an intersection. To track the turns so far, we use a global counter, and we use the modulo operator to allow the robot to do continuous figure 8’s.
 
