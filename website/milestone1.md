@@ -50,9 +50,6 @@ void loop() {
 ```
 
 
-![Line Following Code](/images/milestone1/line_following.png)
-
-
 ## Intersections
 
 Although our robot was able to follow a line, it didn’t know what to do when encountering an intersection -- the sensors would detect that they were both on a line and the robot had no protocols to deal with it. In order to manage this, we first attempted to ensure the robot would realize when it reached an intersection: when both sensors saw the line, the robot would stop using our fullStop() function. This took some trial and error, since the values we were using to detect the line and the surrounding material were a little off, and the robot would stop in the middle of the line because of a slight change in the color of the tiles under it, but fine-tuning the value fixed the issue.
@@ -77,4 +74,4 @@ To implement the figure 8, we hard coded in a sequence of four right turns, then
 ```
 
 ```
-![Figure 8 code](images/milestone1/figure8_code.png)
+![Figure 8 code](https://soapbar.github.io/team8s/images/milestone1/figure8_code.png)
