@@ -1,8 +1,0 @@
-Installed two sensors to robot.
-
-Wrote code to write the two sensors for right sensor to turn left, left sensor to turn right, on a turn.
-
-white = 850
-black = 950
-
-Line following testing completed.
