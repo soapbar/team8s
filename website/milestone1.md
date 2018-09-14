@@ -71,7 +71,5 @@ After this, we had the building blocks to create a figure eight!
 </div>
 
 To implement the figure 8, we hard coded in a sequence of four right turns, then four left turns. The sharp turns are executed in sequence whenever the robot encounters an intersection. To track the turns so far, we use a global counter, and we use the modulo operator to allow the robot to do continuous figure 8’s.
-```
 
-```
-![Figure 8 code](https://soapbar.github.io/team8s/images/milestone1/figure8_code.png)
+![Figure 8 code](https://soapbar.github.io/team8s/images/milestone1/figureeight_code.png)
