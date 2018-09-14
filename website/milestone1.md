@@ -16,10 +16,10 @@ When adding the line sensors, we realized that we were going to have to take pie
 
 ![Two Level Robot](/images/milestone1/TwoLevels.jpg)
 
-## Line Following
-[![Alt text](https://img.youtube.com/vi/PfuCMDiDtUc/0.jpg)](https://www.youtube.com/watch?v=PfuCMDiDtUc)
-
 [Line Following Video](https://www.youtube.com/watch?v=PfuCMDiDtUc)
+## Line Following
+[![Line Following Video](https://img.youtube.com/vi/PfuCMDiDtUc/0.jpg)](https://www.youtube.com/watch?v=PfuCMDiDtUc)
+
 
 Note: Parameters adjusted so that robot follows a black line
 
