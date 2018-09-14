@@ -14,7 +14,7 @@ In order to implement line-following, it was necessary to add IR sensors -- we d
 
 When adding the line sensors, we realized that we were going to have to take pieces off and on to change the battery, which was tedious and inefficient. As a result, we decided to add a second level to our robot, allowing us to move the battery. This will also allow us to incorporate more sensors in the future of our project.
 
-[![Two Level Robot](/images/milestone1/TwoLevels.jpg)]
+[![Two Level Robot](images/milestone1/TwoLevels.jpg)]
 
 ## Line Following
 <div style="text-align: center">
