@@ -10,8 +10,8 @@ Subteams: Eric and Sophie, Brandon and Henri
 - begin creating an autonomous robot!
 
 ## Materials
-- Arduino Uno 
-- USB A/B cable 
+- Arduino Uno
+- USB A/B cable
 - Continuous rotation servos
 - LED
 - Potentiometer (100kΩ)
@@ -21,21 +21,25 @@ Subteams: Eric and Sophie, Brandon and Henri
 
 ## Blinking an Internal LED
 
-We first downloaded the Arduino IDE and opened the “Blink” example code. File > Examples > 1.Basics > Blink. Click the checkmark and then the right-pointing arrow to upload the program to the Arduino. 
+We first downloaded the Arduino IDE and opened the “Blink” example code. File > Examples > 1.Basics > Blink. Click the checkmark and then the right-pointing arrow to upload the program to the Arduino.
+
+
+[![video test](https://www.youtube.com/watch?v=0Cb58nZOFDo&index=5&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28)
+
 
 <a href="https://www.youtube.com/watch?v=0Cb58nZOFDo&index=5&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28
-" target="_blank"><img src="https://www.youtube.com/watch?v=0Cb58nZOFDo&index=5&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28/0.jpg" 
+" target="_blank"><img src="https://www.youtube.com/watch?v=0Cb58nZOFDo&index=5&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28/0.jpg"
 alt="Internal LED video" width="240" height="180" border="10" /></a>
 
 
 ## Blinking an External LED
 
-We modified the given code to blink an external LED with a resistor. 
- 
+We modified the given code to blink an external LED with a resistor.
+
 ![External LED code](/images/lab1/externalLED.png)
 
 <a href="https://www.youtube.com/watch?v=9APqyE2SMBM&index=4&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28
-" target="_blank"><img src="https://www.youtube.com/watch?v=9APqyE2SMBM&index=4&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28/0.jpg" 
+" target="_blank"><img src="https://www.youtube.com/watch?v=9APqyE2SMBM&index=4&list=PLlmy3ADIEehC1doeigs6VvbNk4SVJkI28/0.jpg"
 alt="External LED video" width="240" height="180" border="10" /></a>
 
 
@@ -70,9 +74,9 @@ The final part of the lab involved mapping the analog input to a servo motor. Ag
 
 [Video: AnalogServo.MOV](https://drive.google.com/file/d/1qCB4T6PR_YG_yMy1CQpeH8j-IEgriBIn/view?usp=sharing)
 
-Now that we’ve learned some basics about Arduino, it’s time to gather the parts and build a robot! 
+Now that we’ve learned some basics about Arduino, it’s time to gather the parts and build a robot!
 
-Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately. 
+Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately.
 
 ![Robot, view 1](/images/lab1/robot1.png)
 View 1.
@@ -80,11 +84,11 @@ View 1.
 ![Robot, view 2](/images/lab1/robot2.png)
 View 2.
 
-In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added. 
+In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added.
 
 ## Autonomous Movement
 
-Our next objective was to make our robot complete a task autonomously. We stuck with simple movement: moving forward, pausing, then moving backwards. This was achieved by setting the analog output of the servo pins to either 0, 90, or 180 to move forward, stop, or move backwards. 
+Our next objective was to make our robot complete a task autonomously. We stuck with simple movement: moving forward, pausing, then moving backwards. This was achieved by setting the analog output of the servo pins to either 0, 90, or 180 to move forward, stop, or move backwards.
 
 ![Autonomous Code](/images/lab1/autonomous.png)
 
