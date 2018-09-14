@@ -16,7 +16,6 @@ When adding the line sensors, we realized that we were going to have to take pie
 
 ![Two Level Robot](/images/milestone1/TwoLevels.jpg)
 
-[Line Following Video](https://www.youtube.com/watch?v=PfuCMDiDtUc)
 ## Line Following
 [![Line Following Video](https://img.youtube.com/vi/PfuCMDiDtUc/0.jpg)](https://www.youtube.com/watch?v=PfuCMDiDtUc)
 
@@ -29,7 +28,7 @@ When following a line, these two sensors hover just above the right and left edg
 
 
 We fine-tuned our line-following function in order to be more precise and tested it to follow a square.
-[Square Video](https://youtu.be/cw6InHg8bzU)
+[![Square Video](https://img.youtube.com/vi/cw6InHg8bzU/0.jpg)](https://www.youtube.com/watch?v=cw6InHg8bzU)
 
 We also discovered that our robot could first find a line and then follow it, as shown in this video.
 
