@@ -60,8 +60,6 @@ Although our robot was able to follow a line, it didn’t know what to do when e
 
 After we confirmed that the robot could reliably detect an intersection, we created sharpLeft() and sharpRight() functions that we could deploy once the sensor reached an intersection. We first focused on just sharpLeft(), changing the output values to the servos and delay time in order to adjust the severity of the robot’s turn. After we figured out the appropriate values, we switched the servo values to create sharpRight() and tested it.
 
-// sharpLeft/right video
-
 After this, we had the building blocks to create a figure eight!
 
 
