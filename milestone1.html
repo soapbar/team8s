@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>team8s</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/half-slider.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">team8s</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="labs.html">Labs</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="milestones.html">Milestones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contract.html">Team Contract</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/soapbar/team8s">GitHub</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner" role="listbox">
+          <!-- Slide One - Set the background image for this slide in the line below -->
+          <div class="carousel-item active" style="background-image: url('https://soapbar.github.io/team8s/images/milestone1/TwoLevels.jpg')">
+            <div class="carousel-caption d-none d-md-block">
+              <h1 class="title">team8s</h1>
+              <p class="names">brandon, eric, henri, sophie</p>
+            </div>
+          </div>
+
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <section class="py-5">
+      <div class="container">
+        <h1 style="text-align: center">Milestone 1</h1>
+        <h2 class="subtitle">Objectives:</h2>
+        <p>
+          - A robot that successfully follows a line <br>
+          - A robot that successfully traverses a grid in a figure eight
+        </p>
+        <h2 class="subtitle">Modifications to Robot</h2>
+        <p>
+          In order to implement line-following, it was necessary to add IR sensors -- we decided on adding 2, which would be arranged to be on either side of the line. (In some videos and pictures, we have three sensors -- we considered adding additional sensors to make the system more robust, but the middle one we temporarily added was/is not used.)
+        </p>
+        <p>
+          When adding the line sensors, we realized that we were going to have to take pieces off and on to change the battery, which was tedious and inefficient. As a result, we decided to add a second level to our robot, allowing us to move the battery. This will also allow us to incorporate more sensors in the future of our project.
+        </p>
+        <h1>two level robot pic here</h1>
+
+        <h2 class="subtitle">Line Following</h2>
+
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/PfuCMDiDtUc" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          Note: Parameters adjusted so that robot follows a black line
+        </p>
+        <p>
+          We added 2 IR sensors to the robot that can sense a line. Using the serial monitor, we measured that the value used by the line sensors to detect white was 850, and the value for black was around 950. Depending on whether we were trying to follow a white or black line (with a dark or light background, respectively), we could switch the numbers in our code to accommodate the change.
+        </p>
+        <p>
+          When following a line, these two sensors hover just above the right and left edges of the line. Then, if the robot drifts left, the right sensor will be sensing the white line and vice versa if the robot drifts right. So if we find the right line sensor is seeing the white line, we speed up the left servo and slow down the right servo to compensate for the left drift until right sensor is no longer over the white line. If the left sensor is seeing the white line the same procedure is done except in the opposite direction.
+        </p>
+        <p>
+          We fine-tuned our line-following function in order to be more precise and tested it to follow a square.
+        </p>
+
+        <div style="text-align: center">
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/cw6InHg8bzU" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+        We also discovered that our robot could first find a line and then follow it, as shown in this video.
+        </p>
+        <div style="text-align: center">
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/bj5Sn83Rr-c" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+
+        <code>
+          void loop() { <br>
+            //if L/R sensors sense white, correct until see black <br>
+          if (analogRead(SENSERIGHT) < 860) driftRight(); <br>
+          else if (analogRead(SENSELEFT) < 860) driftLeft(); <br>
+          else goStraight(); <br>
+        }
+        </code>
+        <h2 class="subtitle">Intersections</h2>
+        <p>
+          Although our robot was able to follow a line, it didn’t know what to do when encountering an intersection – the sensors would detect that they were both on a line and the robot had no protocols to deal with it. In order to manage this, we first attempted to ensure the robot would realize when it reached an intersection: when both sensors saw the line, the robot would stop using our fullStop() function. This took some trial and error, since the values we were using to detect the line and the surrounding material were a little off, and the robot would stop in the middle of the line because of a slight change in the color of the tiles under it, but fine-tuning the value fixed the issue.
+        </p>
+
+        <div style="text-align: center">
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/-NK9jmyhfYU" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          After we confirmed that the robot could reliably detect an intersection, we created sharpLeft() and sharpRight() functions that we could deploy once the sensor reached an intersection. We first focused on just sharpLeft(), changing the output values to the servos and delay time in order to adjust the severity of the robot’s turn. After we figured out the appropriate values, we switched the servo values to create sharpRight() and tested it.
+        </p>
+        <p>
+          After this, we had the building blocks to create a figure eight!
+        </p>
+        <h2 class="subtitle">Figure Eight</h2>
+        <div style="text-align: center">
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/rrrjhcnz5wY" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          To implement the figure 8, we hard coded in a sequence of four right turns, then four left turns. The sharp turns are executed in sequence whenever the robot encounters an intersection. To track the turns so far, we use a global counter, and we use the modulo operator to allow the robot to do continuous figure 8’s.
+        </p>
+        <h1>picture of code here </h1>
+      </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; team8s Fall 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>
