@@ -112,14 +112,14 @@
          <iframe width="534" height="300" src="https://www.youtube.com/embed/bj5Sn83Rr-c" frameborder="0" allowfullscreen=""></iframe>
         </div>
 
-        <code>
+        <pre><code>
           void loop() { <br>
             //if L/R sensors sense white, correct until see black <br>
           if (analogRead(SENSERIGHT) < 860) driftRight(); <br>
           else if (analogRead(SENSELEFT) < 860) driftLeft(); <br>
           else goStraight(); <br>
         }
-        </code>
+        </code></pre>
         <h2 class="subtitle">Intersections</h2>
         <p>
           Although our robot was able to follow a line, it didn’t know what to do when encountering an intersection – the sensors would detect that they were both on a line and the robot had no protocols to deal with it. In order to manage this, we first attempted to ensure the robot would realize when it reached an intersection: when both sensors saw the line, the robot would stop using our fullStop() function. This took some trial and error, since the values we were using to detect the line and the surrounding material were a little off, and the robot would stop in the middle of the line because of a slight change in the color of the tiles under it, but fine-tuning the value fixed the issue.
