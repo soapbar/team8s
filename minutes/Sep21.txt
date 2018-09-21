@@ -1,0 +1,14 @@
+9/21/2018 Minutes
+
+Revise Website (only Eric and Sophie present)
+	Embed links 
+	Get new website picture (landscape mode)
+
+From Lab Yeserday
+	(Eric and Henri)
+	Got amplifier working
+	Microphone not working in basic circuit
+	
+	(Brandon and Sophie)
+	Finished wiring band pass filter + non-inverting op amp
+	Tested IR sensor, works!
