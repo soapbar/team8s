@@ -7,6 +7,6 @@ Fall 2018
 We are a group of four students working together on a semester-long physical intelligent systems project. 
 
 
-Used Bootstrap templates to make this site
-### [Start Bootstrap - Half Slider](https://startbootstrap.com/template-overviews/half-slider/)
+ 
+### Used Bootstrap template [Start Bootstrap - Half Slider](https://startbootstrap.com/template-overviews/half-slider/)
 
