@@ -8,5 +8,5 @@ We are a group of four students working together on a semester-long physical int
 
 
  
-### Used Bootstrap template [Start Bootstrap - Half Slider](https://startbootstrap.com/template-overviews/half-slider/)
+### Used Bootstrap template [Half Slider](https://startbootstrap.com/template-overviews/half-slider/)
 
