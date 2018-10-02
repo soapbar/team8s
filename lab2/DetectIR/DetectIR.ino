@@ -42,16 +42,12 @@ void loop() {
     fft_mag_log(); // take the output of the fft
     sei();
     //Serial.println("start");
-    if (fft_log_out[42] > 180) {
+    if (fft_log_out[42] > 160) {
       Serial.println("IR Detected");
     }
     else {
       Serial.println("IR Not Detected");
     }
-//      for (byte i = 0 ; i < FFT_N/2 ; i++) { 
-//        Serial.println(fft_log_out[i]); // send out the data
-//      }
-
     }
   
  }
