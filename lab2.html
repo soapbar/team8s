@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>team8s</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/half-slider.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">team8s</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="labs.html">Labs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="milestones.html">Milestones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contract.html">Team Contract</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/soapbar/team8s">GitHub</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner" role="listbox">
+          <!-- Slide One - Set the background image for this slide in the line below -->
+          <div class="carousel-item active" style="background-image: url('https://soapbar.github.io/team8s/images/box.JPG')">
+            <div class="carousel-caption d-none d-md-block">
+              <h1 class="title">team8s</h1>
+              <p class="names">brandon, eric, henri, sophie</p>
+            </div>
+          </div>
+
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <section class="py-5">
+      <div class="container">
+        <h1 style="text-align: center">Lab 2: Analog Circuitry and FFTs</h1>
+        <p>Subteams: Eric and Henri, Brandon and Sophie</p>
+
+        <h2 class="subtitle">Objective</h2>
+        <p>
+          In this lab, our goal was to add sensors to our robot and make analog circuits and a digital filter to interface with the Arduino. We split into two teams: the acoustic team (Eric and Henri) and the optical team (Brandon and Sophie). The acoustic team aimed to build a microphone circuit detecting a 660 MHz whistle signifying the beginning of the maze mapping, and the optical team interfaced with an IR sensor to detect nearby robots emitting IR at 6.08kHz, and to distinguish them from decoys emitting IR at 18kHz.
+        </p>
+
+        <h2 class="subtitle">FFT Library</h2>
+        <p>
+          For both parts of this lab, we had to use the FFT library from <a href="http://wiki.openmusiclabs.com/wiki/ArduinoFFT"> Music Lab’s FFT</a> page. This library provides functions for doing FFT in Arduino. This was important for both groups because it allowed us to identify specific frequencies that we were looking for in the signals that we were reading.
+        </p>
+        <p>
+          Both subgroups used the example sketch fft_adc_serial, as the basis for our code. This sketch manually reads data (as opposed to using analogRead()) from pin A0, and records it in alternating entries of the array fft_input. The remaining entries are filled with 0’s, as these correspond to the imaginary parts of the signal. After the array is filled, the sketch calls the necessary library functions to process the input and places magnitudes for different frequencies into bins, in the array fft_log_out. The sketch then prints the magnitude of each bin on a separate line to the serial monitor.
+        </p>
+        <h2 class="subtitle">Acoustic</h2>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_diagram.png" alt="Acoustic Diagram">
+        <p>
+          After assembling and testing the basic microphone circuit, we were able to measure a 660 Hz tone. However, this tone had a DC offset of 250 mV and an amplitude of 40 mV. Due to this, we needed to build an amplifier and a filter in order to create a signal large enough to be easily read by the ADC converter. This way, we are able to run the signal through an FFT and clearly view the frequency of the signal.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/0Cb58nZOFDo" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <h2 class="subtitle">Blinking an External LED</h2>
+        <p>
+          We modified the given code to blink an external LED with a resistor.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab1/external_led.png" alt="External LED">
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/9APqyE2SMBM" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <h2 class="subtitle">Analog Input/Output</h2>
+        <p>
+          The next part of the lab had us using the analog input pins of the Arduino to read values from a potentiometer. Because the Arduino reads voltage, and not resistance, we set up a voltage divider with the potentiometer another resistor. The code for this task was very simple, in the setup() function, we set the data transmission rate (in bits per second) for serial communication, using the line:
+        </p>
+        <p>
+          > Serial.begin(9600);
+        </p>
+        <p>
+          Then in the loop() function, we just read from the analog pin, print to the serial monitor, and wait, so we can actually read the values that get printed.
+        </p>
+        <p>
+          > Serial.println(analogRead(PINNAME));
+          > delay(500);
+        </p>
+        <p>
+          You can see (sort of) this functioning in the video below.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/OK5fL8TQXqo" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          The next step to visualize the analog input was to map it to the output. The circuit for this is essentially the circuit for analog input, and the circuit for blink, combined together. Because the Arduino can only output digital signals, we simulate analog input by using pulse-width modulation (PWM). This means we alternate very quickly between high and low signals periodically. For a given duty cycle (a percentage), the signal is high for some portion of the period and low for the remainder. This is conveniently encapsulated into the built-in function analogWrite(), meaning that the code was again very simple. In setup(), we designate our PWM pin as output:
+        </p>
+        <p>
+          > pinMode(OUTPIN, OUTPUT);
+        </p>
+        <p>
+          Then in loop(), we just have to write the value that we read in:
+        </p>
+        <p>
+          > analogWrite(OUTPIN, analogRead(PINNAME));
+        </p>
+        <p>
+          The video below shows our code in action, as we turn the potentiometer, the brightness of the LED changes:
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/PV9Qp6pIJEI" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          The final part of the lab involved mapping the analog input to a servo motor. Again, this is easy because Arduino has a built-in servo library. The most important thing to note is that the servos we were using were continuous rotation servos, meaning that the value written to the servo determines its speed and direction, not its position. Because we were getting strange results when we tried writing to the servo, we also added in code to print the values we were reading to help debug. We found that we could read values up to 1023 from the analog input, while the Servo.write() function expects values between 0 and 180. So, we normalized the value read to be in the 0-180 range. We then found that in most of that range, the servo moves at essentially its maximum speed. To get results that we could actually see, we again normalized the values to be in the range 80-100. This gave us much finer control, which you can see below:
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/g4ELg0imyBQ" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          Now that we’ve learned some basics about Arduino, it’s time to gather the parts and build a robot!
+        </p>
+        <p>
+          Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately.
+        </p>
+        <img style="height:200px;" src="https://soapbar.github.io/team8s/images/lab1/robot1.png" alt="Robot Picture 1">
+        <img style="height:200px;" src="https://soapbar.github.io/team8s/images/lab1/robot2.png" alt="Robot Picture 2">
+        <p>
+          In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added.
+        </p>
+        <h2 class="subtitle">Autonomous Movement</h2>
+        <p>
+          Our next objective was to make our robot complete a task autonomously. We stuck with simple movement: moving forward, pausing, then moving backwards. This was achieved by setting the analog output of the servo pins to either 0, 90, or 180 to move forward, stop, or move backwards.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab1/autonomous.png" alt="Autonomous Movement Code">
+        <p>
+          This allowed us to ensure that our robot's servos were correctly moving, as we initially discovered our servos were moving out of sync and the robot was deviating from its straight path. We were able to sync the servos and correct its path.
+        </p>
+        <p>
+          Its successful movement is documented here:
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/KUIfFk2kXbU" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          The movement depicted in this video starts halfway through the loop and ends at the halfway point again -- that is, it's first going backward, then forward, then stopping. Because the movement functions are in the loop, the robot will perform the movement over and over.
+        </p>
+      </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; team8s Fall 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>
