@@ -101,6 +101,10 @@
         <p>
           Once we confirmed that our circuit worked, we attached the output pin to A0 on the Arduino. We then ran fft_adc_serial(), played a 660Hz tone, and got a spike in bin 5 -- as expected. Just to check, we tried a few other frequencies and watched the spikes appear in their corresponding bins.
         </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_graph.png" alt="Acoustic Graph">
+        <p>
+          In this example, we ran the FFT with 660Hz and 1320Hz once each; it is clear that for the 660Hz signal, the peak appeared in bin 5, while for 1320Hz the spike appeared in bin 10 -- which is expected, as it is twice the frequency of 660Hz. 
+        </p>
 
         <h2 class="subtitle">Blinking an External LED</h2>
         <p>
