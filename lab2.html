@@ -167,62 +167,21 @@
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/_qAMFe8ByrA" frameborder="0" allowfullscreen=""></iframe>
         </div>
+        <p>
+          We found that our solution is robust enough that it can differentiate between the IR hat and the IR decoys. As you can see in the video below, when we place the IR decoy between our circuit and the IR hat, the serial monitor reads “IR Not Detected”, and when we remove it again, the printed message changes to “IR Detected”.
+        </p>
+        <p>
+          Video of IR hat and does not detect decoy
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/FYZ3wUXAPtw" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <h2 class="subtitle">Robot Repositioning</h2>
+        <p>
+          To accommodate placing the IR hat at 5.5 inches above the ground, we had to rethink the layout of our robot. We put the hat where the Arduino used to be, and decided to move the Arduino down to the lower level, where the battery was before. We moved the battery to the bottom of the robot and attached it with velcro.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/reposition.png" alt="Repositioning things on robot">
 
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/OK5fL8TQXqo" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <p>
-          The next step to visualize the analog input was to map it to the output. The circuit for this is essentially the circuit for analog input, and the circuit for blink, combined together. Because the Arduino can only output digital signals, we simulate analog input by using pulse-width modulation (PWM). This means we alternate very quickly between high and low signals periodically. For a given duty cycle (a percentage), the signal is high for some portion of the period and low for the remainder. This is conveniently encapsulated into the built-in function analogWrite(), meaning that the code was again very simple. In setup(), we designate our PWM pin as output:
-        </p>
-        <p>
-          > pinMode(OUTPIN, OUTPUT);
-        </p>
-        <p>
-          Then in loop(), we just have to write the value that we read in:
-        </p>
-        <p>
-          > analogWrite(OUTPIN, analogRead(PINNAME));
-        </p>
-        <p>
-          The video below shows our code in action, as we turn the potentiometer, the brightness of the LED changes:
-        </p>
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/PV9Qp6pIJEI" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <p>
-          The final part of the lab involved mapping the analog input to a servo motor. Again, this is easy because Arduino has a built-in servo library. The most important thing to note is that the servos we were using were continuous rotation servos, meaning that the value written to the servo determines its speed and direction, not its position. Because we were getting strange results when we tried writing to the servo, we also added in code to print the values we were reading to help debug. We found that we could read values up to 1023 from the analog input, while the Servo.write() function expects values between 0 and 180. So, we normalized the value read to be in the 0-180 range. We then found that in most of that range, the servo moves at essentially its maximum speed. To get results that we could actually see, we again normalized the values to be in the range 80-100. This gave us much finer control, which you can see below:
-        </p>
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/g4ELg0imyBQ" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <p>
-          Now that we’ve learned some basics about Arduino, it’s time to gather the parts and build a robot!
-        </p>
-        <p>
-          Through following pictures from previous years’ robots we screwed the mounts, servos and wheels to the body of the robot appropriately.
-        </p>
-        <img style="height:200px;" src="https://soapbar.github.io/team8s/images/lab1/robot1.png" alt="Robot Picture 1">
-        <img style="height:200px;" src="https://soapbar.github.io/team8s/images/lab1/robot2.png" alt="Robot Picture 2">
-        <p>
-          In order to have enough ports to power the two servos, a breadboard with an additional ground and power rail were added.
-        </p>
-        <h2 class="subtitle">Autonomous Movement</h2>
-        <p>
-          Our next objective was to make our robot complete a task autonomously. We stuck with simple movement: moving forward, pausing, then moving backwards. This was achieved by setting the analog output of the servo pins to either 0, 90, or 180 to move forward, stop, or move backwards.
-        </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab1/autonomous.png" alt="Autonomous Movement Code">
-        <p>
-          This allowed us to ensure that our robot's servos were correctly moving, as we initially discovered our servos were moving out of sync and the robot was deviating from its straight path. We were able to sync the servos and correct its path.
-        </p>
-        <p>
-          Its successful movement is documented here:
-        </p>
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/KUIfFk2kXbU" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <p>
-          The movement depicted in this video starts halfway through the loop and ends at the halfway point again -- that is, it's first going backward, then forward, then stopping. Because the movement functions are in the loop, the robot will perform the movement over and over.
-        </p>
       </div>
     </section>
 
