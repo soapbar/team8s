@@ -91,7 +91,7 @@
         </p>
           Once we confirmed that our microphone was working, we connected it with both an amplifier and an analog filter. We used Team Alpha’s design, as our attempts with other designs failed and we were constrained by time -- while we were able to make a microphone and amplifier/filter work separately, when put together they would not work reliably due to biasing issues. In Team Alpha’s design, the output of the mic is passed through a capacitor to remove the DC bias and then through an inverting amplifier with 10x gain with the other terminal biased at 2.5V.
         </p>
-        <img style="height:170px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_circuit.png" alt="Team Alpha Acoustic Circuit Diagram">
+        <img style="height:220px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_circuit.png" alt="Team Alpha Acoustic Circuit Diagram">
         <p>
           (From <a href="https://cei-lab.github.io/ECE3400-2017-teamAlpha/lab2.html">Team Alpha’s website</a>.)
         </p>
@@ -103,27 +103,50 @@
         </p>
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_graph.png" alt="Acoustic Graph">
         <p>
-          In this example, we ran the FFT with 660Hz and 1320Hz once each; it is clear that for the 660Hz signal, the peak appeared in bin 5, while for 1320Hz the spike appeared in bin 10 -- which is expected, as it is twice the frequency of 660Hz. 
+          In this example, we ran the FFT with 660Hz and 1320Hz once each; it is clear that for the 660Hz signal, the peak appeared in bin 5, while for 1320Hz the spike appeared in bin 10 -- which is expected, as it is twice the frequency of 660Hz.
         </p>
 
-        <h2 class="subtitle">Blinking an External LED</h2>
+        <h2 class="subtitle">IR Detection Circuitry</h2>
         <p>
-          Upon testing the circuit with the function generator and the oscilloscope, we could see that it clearly amplified the inputted function. When attached to a microphone and playing sounds of various frequencies (using the Tone Generator app), it clearly took in a signal and then amplified it.
+          We built a bandpass filter to be able to detect other robots emitting a frequency of 6.08kHz. The purpose of the filter is to cut out other frequencies, like the IR decoys. To get the resistor and capacitor values for our circuit we used an online calculator.
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab1/external_led.png" alt="External LED">
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/9APqyE2SMBM" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <h2 class="subtitle">Analog Input/Output</h2>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/bandpass_filter.png" alt="Passive Bandpass Filter Diagram">
         <p>
-          The next part of the lab had us using the analog input pins of the Arduino to read values from a potentiometer. Because the Arduino reads voltage, and not resistance, we set up a voltage divider with the potentiometer another resistor. The code for this task was very simple, in the setup() function, we set the data transmission rate (in bits per second) for serial communication, using the line:
-        </p>
-        <p>
-          > Serial.begin(9600);
+          Component values <br>
+          C1 = 100nF <br>
+          R1 = 330 Ohms (to ground) <br>
+          C2 = 1nF <br>
+          R2 = 24 kOhms (to output)
         </p>
         <p>
-          Then in the loop() function, we just read from the analog pin, print to the serial monitor, and wait, so we can actually read the values that get printed.
+          We also built an amplifier because the reading we got from the output of the transistor was very small in magnitude, especially from far away. We chose to use an non-inverting op amp circuit because it is simple and easy to build. We based our design on the image below. The gain of the non-inverting amp is equal to 1 + Rf/R2, so with the resistor values we chose, we have a theoretical gain of about 1000. The pinout for the op amp that we used is also below.
         </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/noninverting_opamp.png" alt="Non-inverting Op-amp Diagram">
+        <p>
+          Resistor values <br>
+          Rf = 100 kOhms <br>
+          R2 = 100 Ohms
+        </p>
+        <p>
+          Texas Instruments LM358P
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/pinout.png" alt="Op-amp Pinout">
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/initial_circuit.png" alt="Initial photo of circuit">
+        <p>
+          We cleaned up our circuit.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/final_circuit.png" alt="Final photo of circuit">
+
+        <h2 class="subtitle">Testing the Circuit</h2>
+        <p>
+          We initially used unit tests to determine if the amplifier was working. We first just put a DC signal, through the amplifier and measured the output using the oscilloscope. We actually measured gain equal to double what we expected, however after talking to other groups we realized that several others were experiencing the same thing. It turned out that the reading at the input was also double the amplitude of what we expected, so the gain was actually correct. We then tested the amplifier with a sinusoidal signal from the signal generator, and again saw correct results.
+        </p>
+        <p>
+          When we combined the filter with the amplifier, we read very good results on the oscilloscope. We were able to get notable readings of about 400 mV, peak-to-peak, from one foot away (the distance between intersections, and when the IR and transistor get very close, the peaks of the signal end up hitting the rails of the op amp.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/scope.png" alt="Oscilloscope">
+
+
         <p>
           > Serial.println(analogRead(PINNAME));
           > delay(500);
