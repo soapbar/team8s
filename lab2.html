@@ -130,14 +130,11 @@
         <p>
           Texas Instruments LM358P
         </p>
-        <img style="height:180px;" src="https://soapbar.github.io/team8s/images/lab2/pinout.png" alt="Op-amp Pinout">
+        <img style="height:160px;" src="https://soapbar.github.io/team8s/images/lab2/pinout.png" alt="Op-amp Pinout">
         <p>
-          Our initial circuit.
+          Our initial circuit is on the left, and a mor epolished version is on the right.
         </p>
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/initial_circuit.png" alt="Initial photo of circuit">
-        <p>
-          We cleaned up our circuit.
-        </p>
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/final_circuit.png" alt="Final photo of circuit">
 
         <h2 class="subtitle">Testing the Circuit</h2>
@@ -147,7 +144,7 @@
         <p>
           When we combined the filter with the amplifier, we read very good results on the oscilloscope. We were able to get notable readings of about 400 mV, peak-to-peak, from one foot away (the distance between intersections, and when the IR and transistor get very close, the peaks of the signal end up hitting the rails of the op amp.
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/scope.png" alt="Oscilloscope">
+        <img style="height:260px;" src="https://soapbar.github.io/team8s/images/lab2/scope.png" alt="Oscilloscope">
 
         <h2 class="subtitle">IR Detection Code</h2>
         <p>
@@ -157,7 +154,7 @@
         <p>
           As you can see, there are several peaks, which are harmonics of the actual signal. The highest peak occurs in bin number 43, where the magnitude is about 200 when the transistor and hat are very close to each other. Now to check if we are near an IR hat, we just run the code from the example sketch, and instead of printing all of the values recorded at the end we just check the value in bin 43 (index 42). If the magnitude is above a certain threshold, which we may change the value of later, then for the purposes of this lab, we print “IR Detected” to the serial monitor. If it is below that threshold, we print “IR Not Detected”. When we actually implement the code in our robot, we would change this to be some reaction to encountering another robot, perhaps stopping or turning around.
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/fft_code_detection.png" alt="FFT Detection Code">
+        <img style="height:150px;" src="https://soapbar.github.io/team8s/images/lab2/fft_code_detection.png" alt="FFT Detection Code">
         <p>
           IR hat detects 4.25 inches away
         </p>
