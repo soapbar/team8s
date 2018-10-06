@@ -110,7 +110,7 @@
         <p>
           We built a bandpass filter to be able to detect other robots emitting a frequency of 6.08kHz. The purpose of the filter is to cut out other frequencies, like the IR decoys. To get the resistor and capacitor values for our circuit we used an online calculator.
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/bandpass_filter.png" alt="Passive Bandpass Filter Diagram">
+        <img style="height:230px;" src="https://soapbar.github.io/team8s/images/lab2/bandpass_filter.png" alt="Passive Bandpass Filter Diagram">
         <p>
           Component values <br>
           C1 = 100nF <br>
@@ -121,7 +121,7 @@
         <p>
           We also built an amplifier because the reading we got from the output of the transistor was very small in magnitude, especially from far away. We chose to use an non-inverting op amp circuit because it is simple and easy to build. We based our design on the image below. The gain of the non-inverting amp is equal to 1 + Rf/R2, so with the resistor values we chose, we have a theoretical gain of about 1000. The pinout for the op amp that we used is also below.
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/noninverting_opamp.png" alt="Non-inverting Op-amp Diagram">
+        <img style="height:230px;" src="https://soapbar.github.io/team8s/images/lab2/noninverting_opamp.png" alt="Non-inverting Op-amp Diagram">
         <p>
           Resistor values <br>
           Rf = 100 kOhms <br>
@@ -130,7 +130,10 @@
         <p>
           Texas Instruments LM358P
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/pinout.png" alt="Op-amp Pinout">
+        <img style="height:180px;" src="https://soapbar.github.io/team8s/images/lab2/pinout.png" alt="Op-amp Pinout">
+        <p>
+          Our initial circuit.
+        </p>
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/initial_circuit.png" alt="Initial photo of circuit">
         <p>
           We cleaned up our circuit.
@@ -146,14 +149,25 @@
         </p>
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/scope.png" alt="Oscilloscope">
 
+        <h2 class="subtitle">IR Detection Code</h2>
+        <p>
+          Once we were confident that the circuitry for the IR transistor was working correctly, the next step was to use the FFT library to try to detect the IR hat using the Arduino. We started off by using the fft_adc_serial example sketch. We added a while(1) at the end of the loop() function to cause the function to stop after collecting and printing one set of data. The data we collected can be seen below.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/frequency_components.png" alt="Frequency Components">
+        <p>
+          As you can see, there are several peaks, which are harmonics of the actual signal. The highest peak occurs in bin number 43, where the magnitude is about 200 when the transistor and hat are very close to each other. Now to check if we are near an IR hat, we just run the code from the example sketch, and instead of printing all of the values recorded at the end we just check the value in bin 43 (index 42). If the magnitude is above a certain threshold, which we may change the value of later, then for the purposes of this lab, we print “IR Detected” to the serial monitor. If it is below that threshold, we print “IR Not Detected”. When we actually implement the code in our robot, we would change this to be some reaction to encountering another robot, perhaps stopping or turning around.
+        </p>
+        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/fft_code_detection.png" alt="FFT Detection Code">
+        <p>
+          IR hat detects 4.25 inches away
+        </p>
+        <p>
+          Video of IR hat testing
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/_qAMFe8ByrA" frameborder="0" allowfullscreen=""></iframe>
+        </div>
 
-        <p>
-          > Serial.println(analogRead(PINNAME));
-          > delay(500);
-        </p>
-        <p>
-          You can see (sort of) this functioning in the video below.
-        </p>
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/OK5fL8TQXqo" frameborder="0" allowfullscreen=""></iframe>
         </div>
