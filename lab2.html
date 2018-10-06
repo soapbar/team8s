@@ -85,16 +85,26 @@
           Both subgroups used the example sketch fft_adc_serial, as the basis for our code. This sketch manually reads data (as opposed to using analogRead()) from pin A0, and records it in alternating entries of the array fft_input. The remaining entries are filled with 0’s, as these correspond to the imaginary parts of the signal. After the array is filled, the sketch calls the necessary library functions to process the input and places magnitudes for different frequencies into bins, in the array fft_log_out. The sketch then prints the magnitude of each bin on a separate line to the serial monitor.
         </p>
         <h2 class="subtitle">Acoustic</h2>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_diagram.png" alt="Acoustic Diagram">
+        <img style="height:170px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_diagram.png" alt="Acoustic Diagram">
         <p>
           After assembling and testing the basic microphone circuit, we were able to measure a 660 Hz tone. However, this tone had a DC offset of 250 mV and an amplitude of 40 mV. Due to this, we needed to build an amplifier and a filter in order to create a signal large enough to be easily read by the ADC converter. This way, we are able to run the signal through an FFT and clearly view the frequency of the signal.
         </p>
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/0Cb58nZOFDo" frameborder="0" allowfullscreen=""></iframe>
-        </div>
+          Once we confirmed that our microphone was working, we connected it with both an amplifier and an analog filter. We used Team Alpha’s design, as our attempts with other designs failed and we were constrained by time -- while we were able to make a microphone and amplifier/filter work separately, when put together they would not work reliably due to biasing issues. In Team Alpha’s design, the output of the mic is passed through a capacitor to remove the DC bias and then through an inverting amplifier with 10x gain with the other terminal biased at 2.5V.
+        </p>
+        <img style="height:170px;" src="https://soapbar.github.io/team8s/images/lab2/acoustic_circuit.png" alt="Team Alpha Acoustic Circuit Diagram">
+        <p>
+          (From <a href="https://cei-lab.github.io/ECE3400-2017-teamAlpha/lab2.html">Team Alpha’s website</a>.)
+        </p>
+        <p>
+          Upon testing the circuit with the function generator and the oscilloscope, we could see that it clearly amplified the inputted function. When attached to a microphone and playing sounds of various frequencies (using the Tone Generator app), it clearly took in a signal and then amplified it.
+        </p>
+        <p>
+          Once we confirmed that our circuit worked, we attached the output pin to A0 on the Arduino. We then ran fft_adc_serial(), played a 660Hz tone, and got a spike in bin 5 -- as expected. Just to check, we tried a few other frequencies and watched the spikes appear in their corresponding bins.
+        </p>
+
         <h2 class="subtitle">Blinking an External LED</h2>
         <p>
-          We modified the given code to blink an external LED with a resistor.
+          Upon testing the circuit with the function generator and the oscilloscope, we could see that it clearly amplified the inputted function. When attached to a microphone and playing sounds of various frequencies (using the Tone Generator app), it clearly took in a signal and then amplified it.
         </p>
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab1/external_led.png" alt="External LED">
         <div style="text-align: center">
