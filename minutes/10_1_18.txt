@@ -1,0 +1,24 @@
+10/1/18 minutes
+
+IR hat (sophie + brandon):
+-rebuilt the non inverting amplifier and bandpass filter on a smaller breadboard
+
+filter values
+C1 = 100nF
+R1 = 330 Ohms (to ground)
+C2 = 1nF
+R2 = 24 kOhms (to output)
+
+op amp values
+R1 = 100kOhms
+R2 = 100 Ohms
+
+resistor that connects in series
+R = 330 Ohms
+
+Texas Instruments LM358P
+
+-we repositioned the arduino and battery pack on the lower level of the robot
+-our IR hat is 6.5 inches above the ground—is that okay?
+
+-IR hat detects 4.25in away
