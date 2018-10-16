@@ -13,7 +13,7 @@ int OUTRIGHT = 6;
 
 // line following sensors - analog input pins
 // L/R on either side of line
-int SENSELEFT = A0;
+int SENSELEFT = A2;
 int SENSERIGHT = A1;
 
 void setup() {

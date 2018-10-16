@@ -1,0 +1,26 @@
+10.15
+-after integrating code, sensors not sensing right
+-checked sensor values only  -seems to be working
+
+lab 3 - begin radio component
+-masking? to compress info (could help arduino)
+
+00000000
+north 1
+east 1
+south 1
+west 1
+tshape 2
+tcolor 2
+
+shape:
+00 none
+01 circle
+10 triangle
+11 square
+
+color:
+00 none
+01 red
+10 green
+11 blue
