@@ -13,7 +13,7 @@ int OUTRIGHT = 6;
 
 // line following sensors - analog input pins
 // L/R on either side of line
-int SENSELEFT = A0;
+int SENSELEFT = A2;
 int SENSERIGHT = A1;
 
 // counter
@@ -21,26 +21,26 @@ int c = 0;
 
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   Serial.begin(9600);
+
 }
 
-void loop() {
+void loop() {  
   //if L/R sensors sense white, correct until see black
+
   if (analogRead(SENSERIGHT) < 860 && analogRead(SENSELEFT) < 860) { // intersection
     figure8();
   } 
   else if (analogRead(SENSERIGHT) < 860) {
-    turnRight();
-  }
+    driftRight();
+  }       
   else if (analogRead(SENSELEFT) < 860) {
-    turnLeft();
+    driftLeft();
   }
   else { // go straight
-    LeftServo.write(93);
-    RightServo.write(87);
+    goStraight();
   }
 }
 
@@ -53,12 +53,16 @@ void figure8(){
   c++;
 }
 
-void turnLeft() {
+void goStraight(){
+  LeftServo.write(93);
+  RightServo.write(87);
+}
+void driftLeft() {
   LeftServo.write(90);
   RightServo.write(50);
 }
 
-void turnRight() {
+void driftRight() {
   LeftServo.write(130);
   RightServo.write(90);
 }

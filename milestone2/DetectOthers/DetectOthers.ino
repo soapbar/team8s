@@ -14,8 +14,14 @@ int OUTRIGHT = 6;
 
 // line following sensors - analog input pins
 // L/R on either side of line
-int SENSELEFT = A1;
-int SENSERIGHT = A2;
+int SENSELEFT = A2;
+int SENSERIGHT = A1;
+int WALLRIGHT = A3;
+int WALLFRONT = A4;
+int WALLLEFT = A3;
+
+// counter
+int c = 0;
 
 void setup() {
   // IR Setup
@@ -26,28 +32,29 @@ void setup() {
   DIDR0 = 0x01; // turn off the digital input for adc0
 
   // Servo Setup
-  pinMode(LED_BUILTIN, OUTPUT);
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
+
+  LeftServo.write(90);
+  RightServo.write(90);
 }
 
 void loop() {
   while(1) { // reduces jitter
     // try to detect other robots
-//    checkIR();
-//    if (analogRead(SENSERIGHT) < 860 && analogRead(SENSELEFT) < 860) { // intersection
-//      fullStop();
-//    } 
-//    else if (analogRead(SENSERIGHT) < 860) {
-//      turnRight();
-//    }
-//    //else if (analogRead(SENSELEFT) < 860) {
-//      //turnLeft();
-//    //}
-    //else { // go straight
-      LeftServo.write(93);
-      RightServo.write(87);
-    //}
+    checkIR();
+    if (analogRead(SENSERIGHT) < 860 && analogRead(SENSELEFT) < 860) { // intersection
+      figure8();  
+    } 
+     if (analogRead(SENSERIGHT) < 860) {
+      driftRight();
+    }
+    else if (analogRead(SENSELEFT) < 860) {
+      driftLeft();
+    }
+    else { // go straight
+      goStraight();
+    }
   }
 }
 
@@ -74,14 +81,58 @@ void checkIR() {
   }
 }
 
-void turnLeft() {
+void checkWall(){
+  if(analogRead(WALLLEFT) < 100)
+    driftLeft();
+  else if(analogRead(WALLFRONT) > 100){
+    if(analogRead(WALLLEFT) > 100)
+      turnAround();
+    else
+      driftLeft();
+  }
+  else
+    goStraight();
+}
+
+void figure8(){
+  if (c%8<4) {
+    sharpRight();
+  } else {
+    sharpLeft();
+  }
+  c++;
+}
+
+void goStraight(){
+  LeftServo.write(93);
+  RightServo.write(87);
+}
+
+void driftLeft() {
   LeftServo.write(90);
   RightServo.write(50);
 }
 
-void turnRight() {
+void driftRight() {
   LeftServo.write(130);
   RightServo.write(90);
+}
+
+void sharpLeft(){
+  LeftServo.write(85);
+  RightServo.write(20);
+  delay(300);
+}
+
+void sharpRight(){
+  LeftServo.write(160);
+  RightServo.write(95);
+  delay(300);
+}
+
+void turnAround(){
+  sharpRight();
+  sharpRight();
 }
 
 void fullStop(){
@@ -89,3 +140,4 @@ void fullStop(){
   RightServo.write(90);
   while(1);
 }
+
