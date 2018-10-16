@@ -17,6 +17,8 @@ int OUTRIGHT = 6;
 int SENSELEFT = A2;
 int SENSERIGHT = A1;
 
+int c = 0;
+
 void setup() {
   // IR Setup
   Serial.begin(9600); // use the serial port
@@ -30,10 +32,8 @@ void setup() {
 
 void loop() {
   while (1) { // reduces jitter
-    Serial.println(analogRead(SENSERIGHT));
-    Serial.println("LEFT");
-    Serial.println(analogRead(SENSELEFT));
 
+    checkIR();
     followLine();
   }
 }
@@ -43,8 +43,8 @@ void followLine() {
   bool leftIsWhite = analogRead(SENSELEFT) < 860;
   bool reachedIntersection = rightIsWhite && leftIsWhite;
   if (reachedIntersection) { // intersection
-    checkIR();
-    fullStop();
+    //checkIR();
+    figure8();
   }
   else if (rightIsWhite) {
     turnRight();
@@ -95,6 +95,15 @@ void checkIR() {
   DIDR0 = prevDIDR0;
 }
 
+
+void figure8(){
+  if (c%8<4) {
+    sharpRight();
+  } else {
+    sharpLeft();
+  }
+  c++;
+}
 
 // directions
 void turnLeft() {
