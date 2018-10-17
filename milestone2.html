@@ -70,21 +70,55 @@
     <section class="py-5">
       <div class="container">
         <h1 style="text-align: center">Milestone 2</h1>
-        <h2 class="subtitle">in progress</h2>
+        <h2 class="subtitle">Tasks:</h2>
         <p>
-          - A robot that successfully follows a line <br>
-          - A robot that successfully traverses a grid in a figure eight
+          - Navigate an arbitrary set of walls (right-hand wall following) <br>
+          - Avoids other robots <br>
+          - Full demo (try to “show” what the robot is thinking”)
         </p>
-        <h2 class="subtitle">Modifications to Robot</h2>
+        <h2 class="subtitle">Avoiding Other Robots</h2>
         <p>
-          In order to implement line-following, it was necessary to add IR sensors -- we decided on adding 2, which would be arranged to be on either side of the line. (In some videos and pictures, we have three sensors -- we considered adding additional sensors to make the system more robust, but the middle one we temporarily added was/is not used.)
+          Our first step towards completing milestone 2 was to try to integrate both the hardware and software from milestone 1 with the hardware and software for IR detection. In theory, this would allow us to make a figure 8 on the grid, and stop if we encounter another robot. However, we encountered a couple of obstacles when we began testing
         </p>
         <p>
-          When adding the line sensors, we realized that we were going to have to take pieces off and on to change the battery, which was tedious and inefficient. As a result, we decided to add a second level to our robot, allowing us to move the battery. This will also allow us to incorporate more sensors in the future of our project.
+          To integrate the code, we created two methods, one runs our code for IR detection, and the other runs the code for making a figure 8. We also had to combine the two setup functions into one. When we tried running this, the robot just didn’t move. We found that there were a couple of different parts interfering.
         </p>
-        <img src="https://soapbar.github.io/team8s/images/milestone1/TwoLevels.jpg" alt="Two Level Robot">
+        <p>
+          The first was that the timer used by the FFT library was the same as the one used by the servo library. We weren’t able to find a way to change which timer is used by default, so instead we stop both servos at an intersection, and then detach them before checking for other robots. We then reattach the servos and resume.
+        </p>
+        <p>
+          After doing this we realized another source of interference. The FFT code sets the adc to operate in free-running mode by writing to some of the internal Arduino registers. This caused the readings from the line sensors to be unpredictable and the robot could no longer detect lines correctly. To fix this issue, we save the values of the registers before running the IR detection code and restore them to their previous values at the end of the function. Making these two fixes allowed us to make a figure 8, and stop if we detect another robot at an intersection.
+        </p>
         <div style="text-align: center">
-         <iframe width="534" height="300" src="https://www.youtube.com/embed/rrrjhcnz5wY" frameborder="0" allowfullscreen=""></iframe>
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/TBPv4zs8GCQ" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+
+        <h2 class="subtitle">Avoiding Walls</h2>
+        <p>
+          The next step towards completing milestone 2 was to implement wall avoidance. To do this we chose to use short-range IR sensors. We began by just connecting one of these sensors to our robot and collecting readings with a wall placed at different distances. We found that when there was a wall at the intersection in any direction, the reading was around 220-250, and when the wall was one or more intersections away the reading was around 50.
+        </p>
+        <p>
+          Once we had gotten a sense of how to detect whether or not a wall is present, we had to change the code that we run at an intersection. We created a series of if-else statements to replace the figure 8 code. First we check for a right wall, if there is none than we turn right. If there is a right wall but no wall in front, than we go straight. If there is a right and front wall, we turn around. Unfortunately we did not have time to solder wires to another sensor and there were no more pre-built connectors so we don’t currently have a left wall sensor, so we have no way to determine if there is a left wall, so we take the conservative action and turn around, rather than turning left.
+        </p>
+        <p>
+          While trying to get the wall sensors working, we again encountered a few difficulties. The robot would sometimes make unexpected turns based on the readings we expected to get. We at first thought that perhaps some loose wires were getting in front of the sensors and interfering with the readings. However after securing them we continued to have issues. Eventually we realized that the error was because our robot was moving too fast. The movement of the robot caused a time offset between the transmitter and receiver of the sensor, giving us unpredictable results. To fix this, we briefly stop the robot at intersections before taking the readings. Doing this gave us much more reliable results, as you can see in our demo.
+        </p>
+
+        <h2 class="subtitle">Demo</h2>
+        <p>
+          With wall detection working, the last step was to create a scheme to show what is happening internally as the robot navigates the maze. A green light indicates that there was no wall detected to the right, so the robot will turn right. The red light turns on if there is a wall to the right but no wall in front, so the robot should continue moving forward. The yellow light occurs when there are walls in front and to the right of the robot, so we turn around.
+        </p>
+        <div style="text-align: center">
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/sQEe2SVzaWY" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          As you can see from the demo, when there is a wall to the right the robot continues moving straight. When there is no wall to the right, the robot turns to the right. And when there is both a right and front wall, the robot turns around. As you can see once the robot starts going in the other direction, a sensor on the left would allow us to turn left and traverse the maze in reverse as well. We hope to be able to do this for lab 3.
+        </p>
+
+        <h2 class="subtitle">Other Video Links</h2>
+        <div style="text-align: middle">
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/y2djtI52_LY" frameborder="0" allowfullscreen=""></iframe>
+         <iframe width="534" height="300" src="https://www.youtube.com/embed/xLkq251d7w8" frameborder="0" allowfullscreen=""></iframe>
         </div>
 
 
