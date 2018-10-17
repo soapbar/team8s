@@ -18,9 +18,13 @@ int SENSELEFT = A2;
 int SENSERIGHT = A1;
 int WALLRIGHT = A3;
 int WALLFRONT = A4;
-int WALLLEFT = A3;
+int WALLLEFT = A5;
 
 int c = 0;
+
+int rightLED = 3;
+int frontLED = 4;
+int stopLED = 2;
 
 void setup() {
   // IR Setup
@@ -28,6 +32,9 @@ void setup() {
 
   // Servo Setup
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(rightLED, OUTPUT);
+  pinMode(frontLED, OUTPUT);
+  pinMode(stopLED, OUTPUT);
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   Serial.println("hi");
@@ -47,6 +54,7 @@ void followLine() {
     LeftServo.write(90);
     RightServo.write(90);
     checkIR();
+    delay(100);
     //figure8();
     checkWall();
   }
@@ -144,15 +152,30 @@ void fullStop() {
   while (1);
 }
 void checkWall(){
-  if(analogRead(WALLRIGHT) > 100) {
+  int right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)+analogRead(WALLRIGHT))/3;
+  int front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)+analogRead(WALLFRONT))/3;
+  if(right < 100) {
+    digitalWrite(rightLED, HIGH);
     sharpRight();
+    digitalWrite(rightLED, LOW);
   }
   else {
-    if (analogRead(WALLFRONT) > 100) {
+    if (front < 100) {
+      digitalWrite(frontLED, HIGH);
       goStraight();
+      delay(300);
+      digitalWrite(frontLED, LOW);
     }
     else {
-      sharpLeft();
+      digitalWrite(stopLED, HIGH);
+      oneEighty();
+      digitalWrite(stopLED, LOW);
     }
   }
+}
+
+void oneEighty() {
+  LeftServo.write(100);
+  RightServo.write(100);
+  delay(660);
 }
