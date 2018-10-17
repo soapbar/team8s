@@ -16,6 +16,11 @@ int OUTRIGHT = 6;
 // L/R on either side of line
 int SENSELEFT = A2;
 int SENSERIGHT = A1;
+int WALLRIGHT = A3;
+int WALLFRONT = A4;
+int WALLLEFT = A3;
+
+int c = 0;
 
 void setup() {
   // IR Setup
@@ -30,10 +35,6 @@ void setup() {
 
 void loop() {
   while (1) { // reduces jitter
-    Serial.println(analogRead(SENSERIGHT));
-    Serial.println("LEFT");
-    Serial.println(analogRead(SENSELEFT));
-
     followLine();
   }
 }
@@ -43,8 +44,11 @@ void followLine() {
   bool leftIsWhite = analogRead(SENSELEFT) < 860;
   bool reachedIntersection = rightIsWhite && leftIsWhite;
   if (reachedIntersection) { // intersection
+    LeftServo.write(90);
+    RightServo.write(90);
     checkIR();
-    fullStop();
+    //figure8();
+    checkWall();
   }
   else if (rightIsWhite) {
     turnRight();
@@ -58,6 +62,8 @@ void followLine() {
 }
 
 void checkIR() {
+  LeftServo.detach();
+  RightServo.detach();
   cli();  // UDRE interrupt slows this way down on arduino1.0
 
   byte prevTIMSK0 = TIMSK0;
@@ -93,8 +99,19 @@ void checkIR() {
   ADCSRA = prevADCSRA;
   ADMUX = prevADMUX;
   DIDR0 = prevDIDR0;
+  LeftServo.attach(OUTLEFT);
+  RightServo.attach(OUTRIGHT);
 }
 
+
+void figure8(){
+  if (c%8<4) {
+    sharpRight();
+  } else {
+    sharpLeft();
+  }
+  c++;
+}
 
 // directions
 void turnLeft() {
@@ -125,4 +142,17 @@ void fullStop() {
   LeftServo.write(90);
   RightServo.write(90);
   while (1);
+}
+void checkWall(){
+  if(analogRead(WALLRIGHT) > 100) {
+    sharpRight();
+  }
+  else {
+    if (analogRead(WALLFRONT) > 100) {
+      goStraight();
+    }
+    else {
+      sharpLeft();
+    }
+  }
 }
