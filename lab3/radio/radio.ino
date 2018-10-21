@@ -238,8 +238,19 @@ void loop(void)
             shape = "none";
             break;
         }
-        String results = "";
+        String results = "0,0,north=";
         results = results.concat(north);
+        results = results.concat(",east=");
+        results = results.concat(east);
+        results = results.concat(",south=");
+        results = results.concat(south);
+        results = results.concat(",west=");
+        results = results.concat(west);
+        results = results.concat(",tshape=");
+        results = results.concat(shape);
+        results = results.concat(",tcolor=");
+        results = results.concat(color);
+
 //        results = strcat(results,",east=");
 //        results = strcat(results,east);
 //        results = strcat(results,",south=");
@@ -258,7 +269,7 @@ void loop(void)
       radio.stopListening();
 
       // Send the final one back.
-      radio.write( &got_time, sizeof(unsigned long) );
+      //radio.write( &got_time, sizeof(unsigned long) );
       printf("Sent response.\n\r");
 
       // Now, resume listening so we catch the next packets.
