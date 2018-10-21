@@ -51,6 +51,8 @@ const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 // The role of the current running sketch
 role_e role = role_pong_back;
 
+unsigned long got_time;
+
 void setup(void)
 {
   //
