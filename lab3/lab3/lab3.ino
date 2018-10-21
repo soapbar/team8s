@@ -161,24 +161,30 @@ void fullStop() {
   while (1);
 }
 void checkWall(){
-  int right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)+analogRead(WALLRIGHT))/3;
-  int front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)+analogRead(WALLFRONT))/3;
-  if(right < 100) {
+  boolean right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)/2) > 100;
+  boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 100;
+  boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 100;
+  if(!right) {
     digitalWrite(rightLED, HIGH);
     sharpRight();
     digitalWrite(rightLED, LOW);
   }
   else {
-    if (front < 100) {
+    if (!front) {
       digitalWrite(frontLED, HIGH);
       goStraight();
       delay(300);
       digitalWrite(frontLED, LOW);
     }
     else {
-      digitalWrite(stopLED, HIGH);
-      oneEighty();
-      digitalWrite(stopLED, LOW);
+      if (!left) {
+        sharpLeft();
+      }
+      else {
+        digitalWrite(stopLED, HIGH);
+        oneEighty();
+        digitalWrite(stopLED, LOW);
+      }
     }
   }
 }
