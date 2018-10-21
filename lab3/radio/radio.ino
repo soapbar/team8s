@@ -271,7 +271,7 @@ void loop(void)
       radio.stopListening();
 
       // Send the final one back.
-      //radio.write( &got_time, sizeof(unsigned long) );
+      radio.write( &got_time, sizeof(unsigned long) );
       printf("Sent response.\n\r");
 
       // Now, resume listening so we catch the next packets.
