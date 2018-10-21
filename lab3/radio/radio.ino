@@ -51,6 +51,8 @@ const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 // The role of the current running sketch
 role_e role = role_pong_back;
 
+unsigned long got_time;
+
 void setup(void)
 {
   //
@@ -269,7 +271,7 @@ void loop(void)
       radio.stopListening();
 
       // Send the final one back.
-      //radio.write( &got_time, sizeof(unsigned long) );
+      radio.write( &got_time, sizeof(unsigned long) );
       printf("Sent response.\n\r");
 
       // Now, resume listening so we catch the next packets.
