@@ -51,6 +51,8 @@ const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 // The role of the current running sketch
 role_e role = role_pong_back;
 
+unsigned long got_time;
+
 void setup(void)
 {
   //
@@ -184,24 +186,24 @@ void loop(void)
         // Fetch the payload, and see if this was the last one.
         done = radio.read( &msg, sizeof(byte) );
 
-        boolean north;
-        boolean east;
-        boolean south;
-        boolean west;
-        char shape[];
-        char color[];
+        char north = 0;
+        char east = 0;
+        char south = 0;
+        char west = 0;
+        String shape;
+        String color;
 
         if (msg & B10000000 == B10000000) 
-          north = true;
+          north = 1;
 
         if (msg & B01000000 == B01000000) 
-          east = true;
+          east = 1;
 
         if (msg & B00100000 == B00100000) 
-          south = true;
+          south = 1;
 
         if (msg & B00010000 == B00010000) 
-          west = true;
+          west = 1;
 
         switch (msg & B00001100) {
           case B00000000:
@@ -238,8 +240,26 @@ void loop(void)
             shape = "none";
             break;
         }
+        String results = "0,0,north=";
+        results = results.concat(north);
+        results = results.concat(",east=");
+        results = results.concat(east);
+        results = results.concat(",south=");
+        results = results.concat(south);
+        results = results.concat(",west=");
+        results = results.concat(west);
+        results = results.concat(",tshape=");
+        results = results.concat(shape);
+        results = results.concat(",tcolor=");
+        results = results.concat(color);
 
-        Serial.println("0,0,north="+north+",east="+east+",south="+south+",west="+west+"tshape="+tshape+",tcolor="+tcolor);
+//        results = strcat(results,",east=");
+//        results = strcat(results,east);
+//        results = strcat(results,",south=");
+//        results = strcat(results,south);
+//        results = strcat(results,",west=");
+        //results = strcat(results,west);
+        Serial.println(results);
 
         // Delay just a little bit to let the other unit
         // make the transition to receiver

@@ -1,0 +1,7 @@
+pyserial
+
+argparse
+
+pandas
+
+numpy
