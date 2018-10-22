@@ -8,158 +8,158 @@ void setup() {
 void loop() {
 
   // CELL (0,0)
-  byte msg = B10110000;
+  byte msg = B11010000;
   int x = 0;
   int y = 0;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (1,0)
-  msg = B10100000;
+  msg = B01010000;
   x = 1;
   y = 0;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (2,0)
-  msg = B01100000;
+  msg = B00110000;
   x = 2;
   y = 0;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (2,1)
-  msg = B11000000;
+  msg = B01100000;
   x = 2;
   y = 1;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (1,1)
-  msg = B10100000;
+  msg = B01010000;
   x = 1;
   y = 1;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (0,1)
-  msg = B00110000;
+  msg = B10010000;
   x = 0;
   y = 1;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (0,2)
-  msg = B00010000;
+  msg = B10000000;
   x = 0;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (1,2)
-  msg = B10100000;
+  msg = B01010000;
   x = 1;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (2,2)
-  msg = B10100000;
+  msg = B01010000;
   x = 2;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,2)
-  msg = B01000000;
+  msg = B00100000;
   x = 3;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,1)
-  msg = B01010000;
+  msg = B10100000;
   x = 3;
   y = 1;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,0)
-  msg = B01110000;
+  msg = B10110000;
   x = 3;
   y = 0;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,1)
-  msg = B01010000;
+  msg = B10100000;
   x = 3;
   y = 1;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,2)
-  msg = B01000000;
+  msg = B00100000;
   x = 3;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,3)
-  msg = B11010000;
+  msg = B11100000;
   x = 3;
   y = 3;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (3,2)
-  msg = B01000000;
+  msg = B00100000;
   x = 3;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (2,2)
-  msg = B10100000;
+  msg = B01010000;
   x = 2;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (1,2)
-  msg = B10100000;
+  msg = B01010000;
   x = 1;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (0,2)
-  msg = B00010000;
+  msg = B10000000;
   x = 0;
   y = 2;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (0,3)
-  msg = B10010000;
+  msg = B11000000;
   x = 0;
   y = 3;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (1,3)
-  msg = B10100000;
+  msg = B01010000;
   x = 1;
   y = 3;
   updateGUI(msg, x, y);
   delay(1000);
 
   // CELL (2,3)
-  msg = B11100000;
+  msg = B01110000;
   x = 2;
   y = 3;
   updateGUI(msg, x, y);
-  delay(10000);
+  while(1);
 }
 
 void updateGUI(byte msg, int x, int y) {
@@ -215,5 +215,6 @@ void updateGUI(byte msg, int x, int y) {
       break;
   }
 
-  Serial.println(xcoord+","+ycoord+","+"north="+north+",east="+east+",south="+south+",west="+west+",tshape="+shape+",tcolor="+color);
+  //Serial.println(xcoord+","+ycoord+","+"north="+north+",east="+east+",south="+south+",west="+west+",tshape="+shape+",tcolor="+color);
+  Serial.println(xcoord+","+ycoord+","+"north="+north+",east="+east+",south="+south+",west="+west+",robot=false");
 }
