@@ -8,24 +8,33 @@
 Servo LeftServo;
 Servo RightServo;
 
+// LEDs - output pins
+
+// MUX
+// 000: microphone 
+// 001: IR sensor
+int MS0 = 2;
+int MS1 = 3;
+int MS2 = 4;
+
 // wheels - output pins
 int OUTLEFT = 5;
 int OUTRIGHT = 6;
 
+
+
 // line following sensors - analog input pins
 // L/R on either side of line
-int SENSELEFT = A2;
 int SENSERIGHT = A1;
+int SENSELEFT = A2;
 int WALLRIGHT = A3;
 int WALLFRONT = A4;
 int WALLLEFT = A5;
+int MUXSENSORS = A0;
 
 int start = 0;
 int c = 0;
 
-int rightLED = 3;
-int frontLED = 4;
-int stopLED = 2;
 
 /* The direction that the robot is currently facing:
     - 0-North
@@ -38,14 +47,16 @@ int direction;
 void setup() {
   // IR Setup
   Serial.begin(9600); // use the serial port
-
+  pinMode(MS0, OUTPUT);
+  pinMode(MS1, OUTPUT);
+  pinMode(MS2, OUTPUT);
   waitForSignal();
 
   // Servo Setup
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(rightLED, OUTPUT);
-  pinMode(frontLED, OUTPUT);
-  pinMode(stopLED, OUTPUT);
+  //pinMode(rightLED, OUTPUT);
+  //pinMode(frontLED, OUTPUT);
+  //pinMode(stopLED, OUTPUT);
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   direction = 0;
@@ -62,9 +73,13 @@ void waitForSignal(){
   byte prevADCSRA = ADCSRA;
   byte prevADMUX = ADMUX;
   byte prevDIDR0 = DIDR0;
+  // 001 = microphone
+  digitalWrite(MS0, HIGH);
+  digitalWrite(MS1, LOW);
+  digitalWrite(MS2, LOW);
   TIMSK0 = 0; // turn off timer0 for lower jitter
   ADCSRA = 0xe5; // set the adc to free running mode
-  ADMUX = 0x45; // use adc0
+  ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
   while(start == 0){
     for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
@@ -127,10 +142,16 @@ void checkIR() {
   byte prevADMUX = ADMUX;
   byte prevDIDR0 = DIDR0;
 
-    TIMSK0 = 0; // turn off timer0 for lower jitter
-    ADCSRA = 0xe5; // set the adc to free running mode
-    ADMUX = 0x40; // use adc0
-    DIDR0 = 0x01; // turn off the digital input for adc0
+  //010 = IR
+  digitalWrite(MS0, HIGH);
+  digitalWrite(MS1, LOW);
+  digitalWrite(MS2, LOW);
+  
+  TIMSK0 = 0; // turn off timer0 for lower jitter
+  ADCSRA = 0xe5; // set the adc to free running mode
+  ADMUX = 0x40; // use adc0
+  DIDR0 = 0x01; // turn off the digital input for adc0
+  
   for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
     while (!(ADCSRA & 0x10)); // wait for adc to be ready
     ADCSRA = 0xf5; // restart adc
@@ -180,25 +201,25 @@ void checkWall(){
   boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 100;
   boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 100;
   if(!right) {
-    digitalWrite(rightLED, HIGH);
+    //digitalWrite(rightLED, HIGH);
     sharpRight();
-    digitalWrite(rightLED, LOW);
+    //digitalWrite(rightLED, LOW);
   }
   else {
     if (!front) {
-      digitalWrite(frontLED, HIGH);
+      //digitalWrite(frontLED, HIGH);
       goStraight();
       delay(300);
-      digitalWrite(frontLED, LOW);
+      //digitalWrite(frontLED, LOW);
     }
     else {
       if (!left) {
         sharpLeft();
       }
       else {
-        digitalWrite(stopLED, HIGH);
+        //digitalWrite(stopLED, HIGH);
         oneEighty();
-        digitalWrite(stopLED, LOW);
+        //digitalWrite(stopLED, LOW);
       }
     }
   }
