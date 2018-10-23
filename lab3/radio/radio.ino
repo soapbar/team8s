@@ -33,7 +33,7 @@ RF24 radio(9,10);
 //
 
 // Radio pipe addresses for the 2 nodes to communicate.
-const uint64_t pipes[2] = { 0x0000000016LL, 0x0000000017LL };
+const uint64_t pipes[2] = { 0x0000000016LL, 0x00000000017LL };
 
 //
 // Role management
@@ -53,12 +53,40 @@ role_e role = role_pong_back;
 
 unsigned long got_time;
 
+int currentCell;
+
+int maze[21] = {
+  B0000000011010000,
+  B0000100001010000,
+  B0001000000110000,
+  B0001000101100000,
+  B0000100101010000,
+  B0000000110010000,
+  B0000001010000000,
+  B0000101001010000,
+  B0001001001010000,
+  B0001101000100000,
+  B0001100110100000,
+  B0001100010110000,
+  B0001100110100000,
+  B0001101000100000,
+  B0001101111100000,
+  B0001101000100000,
+  B0001001001010000,
+  B0000101001010000,
+  B0000001010000000,
+  B0000001111000000,
+  B0000101101010000,
+  B0001001101110000
+}
+
+
 void setup(void)
 {
   //
   // Print preamble
   //
-
+  currentCell = 0;
   Serial.begin(57600);
   printf_begin();
   printf("\n\rRF24/examples/GettingStarted/\n\r");
@@ -78,13 +106,13 @@ void setup(void)
   radio.setChannel(0x50);
   // set the power
   // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_HIGH);
+  radio.setPALevel(RF24_PA_MIN);
   //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setDataRate(RF24_250KBPS);
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  radio.setPayloadSize(1);
+  radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
@@ -127,40 +155,69 @@ void loop(void)
 
   if (role == role_ping_out)
   {
-    // First, stop listening so we can talk.
-    radio.stopListening();
-    
-    // Take the time, and send it.  This will block until complete
-    unsigned long time = millis();
-    byte msg = B1011000;
-    printf("Now sending %lu...",msg);
-    bool ok = radio.write( &msg, sizeof(byte) );
-
-    if (ok)
-      printf("ok...");
-    else
-      printf("failed.\n\r");
-
-    // Now, continue listening
-    radio.startListening();
-
-    // Wait here until we get a response, or timeout (250ms)
-    unsigned long started_waiting_at = millis();
-    while ( ! radio.available() );
-
-    // Describe the results
-
-
-    // Grab the response, compare, and send to debugging spew
-    unsigned long got_time;
-    radio.read( &got_time, sizeof(unsigned long) );
-
-    // Spew it
-    printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
-    
-
-    // Try again 1s later
-    delay(1000);
+    while (currentCell <= 21) {
+      // First, stop listening so we can talk.
+      radio.stopListening();
+      
+      // Take the time, and send it.  This will block until complete
+      unsigned long time = millis();
+      int msg = maze[currentCell];
+      printf("Now sending %lu...",msg);
+      bool ok = radio.write( &msg, sizeof(int) );
+  
+      if (ok)
+        printf("ok...");
+      else
+        printf("failed.\n\r");
+  
+      // Now, continue listening
+      radio.startListening();
+  
+      // Wait here until we get a response, or timeout (250ms)
+      unsigned long started_waiting_at = millis();
+      bool timeout = false;
+      while ( ! radio.available() && ! timeout )
+        if (millis() - started_waiting_at > 200 )
+          timeout = true;
+  
+      // Describe the results
+      if ( timeout )
+      {
+        while (timeout) {
+          printf("Now sending %lu...",msg);
+          bool ok = radio.write( &msg, sizeof(byte) );
+      
+          if (ok)
+            printf("ok...");
+          else
+            printf("failed.\n\r");
+      
+          // Now, continue listening
+          radio.startListening();
+      
+          // Wait here until we get a response, or timeout (250ms)
+          started_waiting_at = millis();
+          timeout = false;
+          while ( ! radio.available() && ! timeout )
+            if (millis() - started_waiting_at > 200 )
+              timeout = true;
+        }
+      }
+      else
+      {
+        // Grab the response, compare, and send to debugging spew
+        unsigned long got_time;
+        radio.read( &got_time, sizeof(unsigned long) );
+  
+        // Spew it
+        printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
+      }
+      
+  
+      // Try again 1s later
+      delay(1000);
+      currentCell = currentCell+1;
+    }
   }
 
   //
@@ -180,6 +237,8 @@ void loop(void)
         // Fetch the payload, and see if this was the last one.
         done = radio.read( &msg, sizeof(byte) );
 
+        String x = String(msg >> 11);
+        String y = String(msg >> 8);
         String north = "false";
         String east = "false";
         String south = "false";
@@ -234,7 +293,7 @@ void loop(void)
             color = "none";
             break;
         }
-        String results = "0,0,north="+north+",east="+east+",south="+south+",west="+west+",tshape="+shape+",tcolor="+color;
+        String results = x+","+y+",north="+north+",east="+east+",south="+south+",west="+west+",tshape="+shape+",tcolor="+color;
 //        results = results.concat(north);
 //        results = results.concat(",east=");
 //        results = results.concat(east);
