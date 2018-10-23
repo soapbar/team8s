@@ -84,7 +84,7 @@ void setup(void)
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  //radio.setPayloadSize(8);
+  radio.setPayloadSize(1);
 
   //
   // Open pipes to other nodes for communication
@@ -132,8 +132,9 @@ void loop(void)
     
     // Take the time, and send it.  This will block until complete
     unsigned long time = millis();
-    printf("Now sending %lu...",time);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
+    byte msg = B1011000;
+    printf("Now sending %lu...",msg);
+    bool ok = radio.write( &msg, sizeof(byte) );
 
     if (ok)
       printf("ok...");
@@ -145,25 +146,18 @@ void loop(void)
 
     // Wait here until we get a response, or timeout (250ms)
     unsigned long started_waiting_at = millis();
-    bool timeout = false;
-    while ( ! radio.available() && ! timeout )
-      if (millis() - started_waiting_at > 200 )
-        timeout = true;
+    while ( ! radio.available() );
 
     // Describe the results
-    if ( timeout )
-    {
-      printf("Failed, response timed out.\n\r");
-    }
-    else
-    {
-      // Grab the response, compare, and send to debugging spew
-      unsigned long got_time;
-      radio.read( &got_time, sizeof(unsigned long) );
 
-      // Spew it
-      printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
-    }
+
+    // Grab the response, compare, and send to debugging spew
+    unsigned long got_time;
+    radio.read( &got_time, sizeof(unsigned long) );
+
+    // Spew it
+    printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
+    
 
     // Try again 1s later
     delay(1000);
@@ -186,24 +180,24 @@ void loop(void)
         // Fetch the payload, and see if this was the last one.
         done = radio.read( &msg, sizeof(byte) );
 
-        char north = 0;
-        char east = 0;
-        char south = 0;
-        char west = 0;
+        String north = "false";
+        String east = "false";
+        String south = "false";
+        String west = "false";
         String shape;
         String color;
 
-        if (msg & B10000000 == B10000000) 
-          north = 1;
+        if ((msg & B10000000) == B10000000) 
+          north = "true";
 
-        if (msg & B01000000 == B01000000) 
-          east = 1;
+        if ((msg & B01000000) == B01000000) 
+          east = "true";
 
-        if (msg & B00100000 == B00100000) 
-          south = 1;
+        if ((msg & B00100000) == B00100000) 
+          south = "true";
 
-        if (msg & B00010000 == B00010000) 
-          west = 1;
+        if ((msg & B00010000) == B00010000) 
+          west = "true";
 
         switch (msg & B00001100) {
           case B00000000:
@@ -225,40 +219,34 @@ void loop(void)
 
         switch (msg & B00000011) {
           case B00000000:
-            shape = "none";
+            color = "none";
             break;
           case B00000001:
-            shape = "red";
+            color = "red";
             break;
           case B00000010:
-            shape = "green";
+            color = "green";
             break;
           case B00000011:
-            shape = "blue";
+            color = "blue";
             break;
           default:
-            shape = "none";
+            color = "none";
             break;
         }
-        String results = "0,0,north=";
-        results = results.concat(north);
-        results = results.concat(",east=");
-        results = results.concat(east);
-        results = results.concat(",south=");
-        results = results.concat(south);
-        results = results.concat(",west=");
-        results = results.concat(west);
-        results = results.concat(",tshape=");
-        results = results.concat(shape);
-        results = results.concat(",tcolor=");
-        results = results.concat(color);
+        String results = "0,0,north="+north+",east="+east+",south="+south+",west="+west+",tshape="+shape+",tcolor="+color;
+//        results = results.concat(north);
+//        results = results.concat(",east=");
+//        results = results.concat(east);
+//        results = results.concat(",south=");
+//        results = results.concat(south);
+//        results = results.concat(",west=");
+//        results = results.concat(west);
+//        results = results.concat(",tshape=");
+//        results = results.concat(shape);
+//        results = results.concat(",tcolor=");
+//        results = results.concat(color);
 
-//        results = strcat(results,",east=");
-//        results = strcat(results,east);
-//        results = strcat(results,",south=");
-//        results = strcat(results,south);
-//        results = strcat(results,",west=");
-        //results = strcat(results,west);
         Serial.println(results);
 
         // Delay just a little bit to let the other unit
