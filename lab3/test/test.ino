@@ -1,5 +1,58 @@
+#include "nRF24L01.h"
+#include "RF24.h"
+
+// Set up nRF24L01 radio on SPI bus plus pins 9 & 10
+
+RF24 radio(9,10);
+
+// Radio pipe addresses for the 2 nodes to communicate.
+const uint64_t pipes[2] = { 0x0000000016LL, 0x00000000017LL }
+
 void setup() {
   Serial.begin(9600);
+  // optionally, increase the delay between retries & # of retries
+  radio.setRetries(15,15);
+  radio.setAutoAck(true);
+  // set the channel
+  radio.setChannel(0x50);
+  // set the power
+  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+  radio.setPALevel(RF24_PA_MIN);
+  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+  radio.setDataRate(RF24_250KBPS);
+
+  //
+  // Open pipes to other nodes for communication
+  //
+
+  // This simple sketch opens two pipes for these two nodes to communicate
+  // back and forth.
+  // Open 'our' pipe for writing
+  // Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
+
+  if ( role == role_ping_out )
+  {
+    radio.openWritingPipe(pipes[0]);
+    radio.openReadingPipe(1,pipes[1]);
+  }
+  else
+  {
+    radio.openWritingPipe(pipes[1]);
+    radio.openReadingPipe(1,pipes[0]);
+  }
+
+  //
+  // Start listening
+  //
+
+  radio.startListening();
+
+  //
+  // Dump the configuration of the rf unit for debugging
+  //
+
+  radio.printDetails();
+  radio.begin();
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
