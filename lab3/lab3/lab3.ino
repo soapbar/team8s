@@ -41,8 +41,13 @@ int c = 0;
     - 1-East
     - 2-South
     - 3-West
+   The coordinates of the robot are encoded as a single number
+    - x=location%dim
+    - y=location/dim
 */
-int direction;
+int dir;
+int dim = 9; // dimentions of the maze
+int location;
 
 void setup() {
   // IR Setup
@@ -59,7 +64,8 @@ void setup() {
   //pinMode(stopLED, OUTPUT);
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
-  direction = 0;
+  dir = 1;
+  location = 0;
 }
 
 void loop() {
@@ -114,12 +120,14 @@ void followLine() {
   bool leftIsWhite = analogRead(SENSELEFT) < 860;
   bool reachedIntersection = rightIsWhite && leftIsWhite;
   if (reachedIntersection) { // intersection
+    int msg = 0;
+    msg = updateCoord(msg);
     LeftServo.write(90);
     RightServo.write(90);
-    checkIR();
+    msg = checkIR(msg);
     delay(100);
     //figure8();
-    checkWall();
+    msg = checkWall(msg);
   }
   else if (rightIsWhite) {
     turnRight();
@@ -132,7 +140,8 @@ void followLine() {
   }
 }
 
-void checkIR() {
+int checkIR(int msg) {
+  int robot = 0;
   LeftServo.detach();
   RightServo.detach();
   cli();  // UDRE interrupt slows this way down on arduino1.0
@@ -170,6 +179,7 @@ void checkIR() {
   sei();
   if (fft_log_out[42] > 160) {
     fullStop();
+    robot = 1;
   }
 
   TIMSK0 = prevTIMSK0;
@@ -178,6 +188,7 @@ void checkIR() {
   DIDR0 = prevDIDR0;
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
+  return msg | (robot << 14);
 }
 
 // directions
@@ -196,10 +207,50 @@ void goStraight() {
   RightServo.write(87);
 }
 
-void checkWall(){
+int checkWall(int msg){
+  int north = 0;
+  int east = 0;
+  int south = 0;
+  int west = 0;
   boolean right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)/2) > 100;
   boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 100;
   boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 100;
+  if (right) {
+    switch(dir) {
+      case 0: east = 1;
+              break;
+      case 1: south = 1;
+              break;
+      case 2: west = 1;
+              break;
+      case 3: north = 1;
+              break;
+    }
+  }
+  if (front) {
+    switch(dir) {
+      case 0: north = 1;
+              break;
+      case 1: east = 1;
+              break;
+      case 2: south = 1;
+              break;
+      case 3: west = 1;
+              break;
+    }
+  }
+  if (left) {
+    switch(dir) {
+      case 0: west = 1;
+              break;
+      case 1: north = 1;
+              break;
+      case 2: east = 1;
+              break;
+      case 3: south = 1;
+              break;
+    }
+  }
   if(!right) {
     //digitalWrite(rightLED, HIGH);
     sharpRight();
@@ -223,26 +274,27 @@ void checkWall(){
       }
     }
   }
+  return msg | (north << 7) | (east << 6) | (south << 5) | (west << 4);
 }
 
 void sharpLeft() {
   LeftServo.write(85);
   RightServo.write(20);
-  direction = (direction-1)%4; // update direction
+  dir = (dir-1)%4; // update direction
   delay(300);
 
 }
 void sharpRight() {
   LeftServo.write(160);
   RightServo.write(95);
-  direction = (direction+1)%4; // update direction
+  dir = (dir+1)%4; // update direction
   delay(300);
 }
 
 void oneEighty() {
   LeftServo.write(100);
   RightServo.write(100);
-  direction = (direction+2)%4; //update direction
+  dir = (dir+2)%4; //update direction
   delay(660);
 }
 
@@ -252,3 +304,17 @@ void fullStop() {
   while (1);
 }
 
+int updateCoord(int msg) {
+  switch(dir) {
+    case 0: location = location - 1;
+            break;
+    case 1: location = location + dim;
+            break;
+    case 2: location = location + 1;
+            break;
+    case 3: location = location - dim;
+            break;
+    default: break;   
+  }
+  return (location << 8) | msg;
+}
