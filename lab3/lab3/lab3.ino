@@ -3,6 +3,14 @@
 #define LOG_OUT 1 // use the log output function
 #define FFT_N 256 // set to 256 point fft
 #include <FFT.h> // include the library
+#include <SPI.h>
+#include "nRF24L01.h"
+#include "RF24.h"
+#include "printf.h"
+
+RF24 radio(9,10);
+const uint64_t pipes[2] = { 0x0000000016LL, 0x00000000017LL };
+unsigned long got_time;
 
 // wheels
 Servo LeftServo;
@@ -44,7 +52,7 @@ int c = 0;
     - y=location/dim
 */
 int dir;
-int dim = 9; // dimentions of the maze
+int dim = 3; // dimentions of the maze
 int location;
 
 void setup() {
@@ -53,6 +61,39 @@ void setup() {
   pinMode(MS0, OUTPUT);
   pinMode(MS1, OUTPUT);
   pinMode(MS2, OUTPUT);
+
+  //
+  // Setup and configure rf radio
+  //
+
+  radio.begin();
+
+  // optionally, increase the delay between retries & # of retries
+  radio.setRetries(15,15);
+  radio.setAutoAck(true);
+  // set the channel
+  radio.setChannel(0x50);
+  // set the power
+  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+  radio.setPALevel(RF24_PA_MIN);
+  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+  radio.setDataRate(RF24_250KBPS);
+
+  // optionally, reduce the payload size.  seems to
+  // improve reliability
+  radio.setPayloadSize(2);
+  // Start listening
+  //
+
+  radio.startListening();
+
+  //
+  // Dump the configuration of the rf unit for debugging
+  //
+
+  radio.printDetails();
+  radio.openWritingPipe(pipes[0]);
+  radio.openReadingPipe(1,pipes[1]);
   
   waitForSignal();
 
@@ -123,6 +164,9 @@ void followLine() {
     delay(100);
     //figure8();
     msg = checkWall(msg);
+    LeftServo.write(90);
+    RightServo.write(90);
+    sendMSG(msg);
   }
   else if (rightIsWhite) {
     turnRight();
@@ -312,4 +356,63 @@ int updateCoord(int msg) {
     default: break;   
   }
   return (location << 8) | msg;
+}
+
+void sendMSG(int msg) {
+  // First, stop listening so we can talk.
+  radio.stopListening();
+  
+  // Take the time, and send it.  This will block until complete
+  unsigned long time = millis();
+  printf("Now sending %lu...",msg);
+  bool ok = radio.write( &msg, sizeof(int) );
+
+  if (ok)
+    printf("ok...");
+  else
+    printf("failed.\n\r");
+
+  // Now, continue listening
+  radio.startListening();
+
+  // Wait here until we get a response, or timeout (250ms)
+  unsigned long started_waiting_at = millis();
+  bool timeout = false;
+  while ( ! radio.available() && ! timeout )
+    if (millis() - started_waiting_at > 200 )
+      timeout = true;
+
+  // Describe the results
+  if ( timeout )
+  {
+    while (timeout) {
+      radio.stopListening();
+      printf("Now sending %lu...",msg);
+      bool ok = radio.write( &msg, sizeof(int) );
+  
+      if (ok)
+        printf("ok...");
+      else
+        printf("failed.\n\r");
+  
+      // Now, continue listening
+      radio.startListening();
+  
+      // Wait here until we get a response, or timeout (250ms)
+      started_waiting_at = millis();
+      timeout = false;
+      while ( ! radio.available() && ! timeout )
+        if (millis() - started_waiting_at > 200 )
+          timeout = true;
+    }
+  }
+  else
+  {
+    // Grab the response, compare, and send to debugging spew
+    unsigned long got_time;
+    radio.read( &got_time, sizeof(unsigned long) );
+
+    // Spew it
+    printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
+  }
 }

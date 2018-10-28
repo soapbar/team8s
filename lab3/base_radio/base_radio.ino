@@ -81,7 +81,7 @@ int maze[22] = {
 };
 
 bool didZero = false;
-int dim = 4;
+int dim = 3;
 
 
 void setup(void)
