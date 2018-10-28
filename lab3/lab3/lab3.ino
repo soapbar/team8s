@@ -21,8 +21,6 @@ int MS2 = 4;
 int OUTLEFT = 5;
 int OUTRIGHT = 6;
 
-
-
 // line following sensors - analog input pins
 // L/R on either side of line
 int SENSERIGHT = A1;
@@ -58,10 +56,6 @@ void setup() {
   waitForSignal();
 
   // Servo Setup
-  pinMode(LED_BUILTIN, OUTPUT);
-  //pinMode(rightLED, OUTPUT);
-  //pinMode(frontLED, OUTPUT);
-  //pinMode(stopLED, OUTPUT);
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   dir = 1;
@@ -79,8 +73,8 @@ void waitForSignal(){
   byte prevADCSRA = ADCSRA;
   byte prevADMUX = ADMUX;
   byte prevDIDR0 = DIDR0;
-  // 001 = microphone
-  digitalWrite(MS0, HIGH);
+  // 000 = microphone
+  digitalWrite(MS0, LOW);
   digitalWrite(MS1, LOW);
   digitalWrite(MS2, LOW);
   TIMSK0 = 0; // turn off timer0 for lower jitter
@@ -104,7 +98,7 @@ void waitForSignal(){
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();
-    if (fft_log_out[5] > 180) 
+    if (fft_log_out[5] > 160) 
       start = 1;
   
   }
@@ -151,7 +145,7 @@ int checkIR(int msg) {
   byte prevADMUX = ADMUX;
   byte prevDIDR0 = DIDR0;
 
-  //010 = IR
+  //001 = IR
   digitalWrite(MS0, HIGH);
   digitalWrite(MS1, LOW);
   digitalWrite(MS2, LOW);
