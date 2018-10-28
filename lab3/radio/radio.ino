@@ -53,12 +53,40 @@ role_e role = role_pong_back;
 
 unsigned long got_time;
 
+int currentCell;
+
+int maze[22] = {
+  0x00D0,//  B0000|0000|1101|0000,
+  0x0850,//  B0000|1000|0101|0000,
+  0x1030,//  B0001|0000|0011|0000,
+  0x1160,//  B0001|0001|0110|0000,
+  0x0950,//  B0000|1001|0101|0000,
+  0x0190,//  B0000|0001|1001|0000,
+  0x0280,//  B0000|0010|1000|0000,
+  0x0A50,//  B0000|1010|0101|0000,
+  0x1250,//  B0001|0010|0101|0000,
+  0x1A20,//  B0001|1010|0010|0000,
+  0x19A0,//  B0001|1001|1010|0000,
+  0x18B0,//  B0001|1000|1011|0000,
+  0x19A0,//  B0001|1001|1010|0000,
+  0x1A20,//  B0001|1010|0010|0000,
+  0x1BE0,//  B0001|1011|1110|0000,
+  0x1A20,//  B0001|1010|0010|0000,
+  0x1250,//  B0001|0010|0101|0000,
+  0x0A50,//  B0000|1010|0101|0000,
+  0x0280,//  B0000|0010|1000|0000,
+  0x03C0,//  B0000|0011|1100|0000,
+  0x0B50,//  B0000|1011|0101|0000,
+  0x1370,//  B0001|0011|0111|0000
+};
+
+
 void setup(void)
 {
   //
   // Print preamble
   //
-
+  currentCell = 0;
   Serial.begin(57600);
   printf_begin();
   printf("\n\rRF24/examples/GettingStarted/\n\r");
@@ -84,7 +112,7 @@ void setup(void)
 
   // optionally, reduce the payload size.  seems to
   // improve reliability
-  //radio.setPayloadSize(8);
+  radio.setPayloadSize(2);
 
   //
   // Open pipes to other nodes for communication
@@ -127,46 +155,69 @@ void loop(void)
 
   if (role == role_ping_out)
   {
-    // First, stop listening so we can talk.
-    radio.stopListening();
-    
-    // Take the time, and send it.  This will block until complete
-    unsigned long time = millis();
-    printf("Now sending %lu...",time);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
-
-    if (ok)
-      printf("ok...");
-    else
-      printf("failed.\n\r");
-
-    // Now, continue listening
-    radio.startListening();
-
-    // Wait here until we get a response, or timeout (250ms)
-    unsigned long started_waiting_at = millis();
-    bool timeout = false;
-    while ( ! radio.available() && ! timeout )
-      if (millis() - started_waiting_at > 200 )
-        timeout = true;
-
-    // Describe the results
-    if ( timeout )
-    {
-      printf("Failed, response timed out.\n\r");
+    while (currentCell <= 21) {
+      // First, stop listening so we can talk.
+      radio.stopListening();
+      
+      // Take the time, and send it.  This will block until complete
+      unsigned long time = millis();
+      int msg = maze[currentCell];
+      printf("Now sending %lu...",msg);
+      bool ok = radio.write( &msg, sizeof(int) );
+  
+      if (ok)
+        printf("ok...");
+      else
+        printf("failed.\n\r");
+  
+      // Now, continue listening
+      radio.startListening();
+  
+      // Wait here until we get a response, or timeout (250ms)
+      unsigned long started_waiting_at = millis();
+      bool timeout = false;
+      while ( ! radio.available() && ! timeout )
+        if (millis() - started_waiting_at > 200 )
+          timeout = true;
+  
+      // Describe the results
+      if ( timeout )
+      {
+        while (timeout) {
+          printf("Now sending %lu...",msg);
+          bool ok = radio.write( &msg, sizeof(byte) );
+      
+          if (ok)
+            printf("ok...");
+          else
+            printf("failed.\n\r");
+      
+          // Now, continue listening
+          radio.startListening();
+      
+          // Wait here until we get a response, or timeout (250ms)
+          started_waiting_at = millis();
+          timeout = false;
+          while ( ! radio.available() && ! timeout )
+            if (millis() - started_waiting_at > 200 )
+              timeout = true;
+        }
+      }
+      else
+      {
+        // Grab the response, compare, and send to debugging spew
+        unsigned long got_time;
+        radio.read( &got_time, sizeof(unsigned long) );
+  
+        // Spew it
+        printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
+      }
+      
+  
+      // Try again 1s later
+      delay(1000);
+      currentCell = currentCell+1;
     }
-    else
-    {
-      // Grab the response, compare, and send to debugging spew
-      unsigned long got_time;
-      radio.read( &got_time, sizeof(unsigned long) );
-
-      // Spew it
-      printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
-    }
-
-    // Try again 1s later
-    delay(1000);
   }
 
   //
@@ -186,24 +237,26 @@ void loop(void)
         // Fetch the payload, and see if this was the last one.
         done = radio.read( &msg, sizeof(byte) );
 
-        char north = 0;
-        char east = 0;
-        char south = 0;
-        char west = 0;
+        String x = String(msg >> 11);
+        String y = String(msg >> 8);
+        String north = "false";
+        String east = "false";
+        String south = "false";
+        String west = "false";
         String shape;
         String color;
 
-        if (msg & B10000000 == B10000000) 
-          north = 1;
+        if ((msg & B10000000) == B10000000) 
+          north = "true";
 
-        if (msg & B01000000 == B01000000) 
-          east = 1;
+        if ((msg & B01000000) == B01000000) 
+          east = "true";
 
-        if (msg & B00100000 == B00100000) 
-          south = 1;
+        if ((msg & B00100000) == B00100000) 
+          south = "true";
 
-        if (msg & B00010000 == B00010000) 
-          west = 1;
+        if ((msg & B00010000) == B00010000) 
+          west = "true";
 
         switch (msg & B00001100) {
           case B00000000:
@@ -225,40 +278,34 @@ void loop(void)
 
         switch (msg & B00000011) {
           case B00000000:
-            shape = "none";
+            color = "none";
             break;
           case B00000001:
-            shape = "red";
+            color = "red";
             break;
           case B00000010:
-            shape = "green";
+            color = "green";
             break;
           case B00000011:
-            shape = "blue";
+            color = "blue";
             break;
           default:
-            shape = "none";
+            color = "none";
             break;
         }
-        String results = "0,0,north=";
-        results = results.concat(north);
-        results = results.concat(",east=");
-        results = results.concat(east);
-        results = results.concat(",south=");
-        results = results.concat(south);
-        results = results.concat(",west=");
-        results = results.concat(west);
-        results = results.concat(",tshape=");
-        results = results.concat(shape);
-        results = results.concat(",tcolor=");
-        results = results.concat(color);
+        String results = x+","+y+",north="+north+",east="+east+",south="+south+",west="+west+",tshape="+shape+",tcolor="+color;
+//        results = results.concat(north);
+//        results = results.concat(",east=");
+//        results = results.concat(east);
+//        results = results.concat(",south=");
+//        results = results.concat(south);
+//        results = results.concat(",west=");
+//        results = results.concat(west);
+//        results = results.concat(",tshape=");
+//        results = results.concat(shape);
+//        results = results.concat(",tcolor=");
+//        results = results.concat(color);
 
-//        results = strcat(results,",east=");
-//        results = strcat(results,east);
-//        results = strcat(results,",south=");
-//        results = strcat(results,south);
-//        results = strcat(results,",west=");
-        //results = strcat(results,west);
         Serial.println(results);
 
         // Delay just a little bit to let the other unit
