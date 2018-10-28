@@ -53,6 +53,7 @@ void setup() {
   pinMode(MS0, OUTPUT);
   pinMode(MS1, OUTPUT);
   pinMode(MS2, OUTPUT);
+  
   waitForSignal();
 
   // Servo Setup
@@ -206,9 +207,9 @@ int checkWall(int msg){
   int east = 0;
   int south = 0;
   int west = 0;
-  boolean right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)/2) > 100;
-  boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 100;
-  boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 100;
+  boolean right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)/2) > 200;
+  boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 200;
+  boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 200;
   if (right) {
     switch(dir) {
       case 0: east = 1;
