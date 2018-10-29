@@ -95,10 +95,13 @@
         <p>
           Since our group has 2 fake Arduinos, we are unable to demonstrate the radios working with the robot traversing through the maze.
         </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/SVG0_TKnRvg" frameborder="0" allowfullscreen=""></iframe>
+        </div>
 
         <h2 class="subtitle">Robot Integration</h2>
         <p>
-          For this part of the lab, the main task was to combine what we had working in milestone 2 with starting at a 660 Hz tone. We also had to add a left wall sensor to our robot as we did not have time to include one for milestone 2. 
+          For this part of the lab, the main task was to combine what we had working in milestone 2 with starting at a 660 Hz tone. We also had to add a left wall sensor to our robot as we did not have time to include one for milestone 2.
         </p>
         <p>
           With this new sensor attached, we adjusted our right wall following logic to check for left walls if there is a wall and front and to the right. If there is no left wall we turn left, otherwise (meaning there are walls on all three sides), we make a 180 degree turn.
@@ -106,10 +109,11 @@
         <p>
           To add be able to detect the 660Hz tone, we added the circuitry from lab 2 to our robot. Because all of the analog input pins on the Arduino were occupied (2 line sensors, IR sensor, 3 wall sensors), we added a mux to increase the number of analog inputs we can have. By feeding the output of the microphone circuit and the IR to an 8 to 1 mux and using 3 digital output pins to select which mux input to use, we were able to integrate everything. We then only enter the loop() function if the microphone circuit is able to detect above a threshold in bin 5 of the fft of the microphone output. After the initial start sequence, the mux select is set to 1 so that the IR sensor reading is the input the Arduino. In this way, all aspects of the robot are able to work as intended.
         </p>
-
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/49LQL2U-Ufw" frameborder="0" allowfullscreen=""></iframe>
+        </div>
       </div>
     </section>
-
 
 
     <!-- Footer -->
