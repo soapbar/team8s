@@ -81,33 +81,30 @@
 
         <h2 class="subtitle">Radio Communication</h2>
         <p>
-          The first part of the lab was to use radio communication to send information from our robot Arduino to our Base Station Arduino. Once we got the GUI and sample radio code downloaded, we were able to get the example code working. Unfortunately, when we returned to open lab hours on the weekend we found that one of our radios had gone missing, so we weren’t able to finish the radio portion of the lab.
+          The first part of the lab was to use radio communication to send information from our robot Arduino to our Base Station Arduino. Once we got the GUI and sample radio code downloaded, we were able to get the example code working.
         </p>
         <p>
-          We were able to decide on an encoding for maze information and also decode those messages. We use 8 bits, the first four bits to encode whether or not there is a wall in each of the cardinal directions. The next two bits encode the shape of potential treasures, and the last two encode the color. We plan to send the coordinate bits as a separate message because these are known as soon as we change direction, while the other information can only be determined once we reach the next intersection.
+          We were able to decide on an encoding for maze information and also decode those messages. We use 16 bits, the least four significant bits encode the color and shape of any treasure that is present. The next four bits each represent a wall in one of the four cardinal directions. The next seven bits encode the coordinates. To encode the coordinates, we use a single number. When that number is divided by n in (we assume the maze is size n-by-n), the remainder is the x-coordinate and the quotient is the y-coordinate. The final bit indicates whether or not another robot is detected.
         </p>
         <p>
-          We created byte encodings of a maze and traverse it using right hand wall following. We use bit masks and switch statements to decode each message, and then write the corresponding message to the GUI. While testing, we actually encountered a few problems with the GUI. First was that there were no sprites for treasures, so any cells that was supposed to have a treasure did not load. The second was that the last entry of the message sent to the GUI was parsed with a “\r\n” at the end of the parameter. This caused the parameter to be read as True, even if it was intended to be False. The meant that after we removed treasures from our maze, the last parameter was the west wall. Each cell in the GUI was drawn with a west wall even when we wrote false. To work around this, we added “robot=false” to the end of each message. If this bug is not fixed by the course staff, we will go into to Python code and correct the parsing. There was also an issue where the display would break and we would have to refresh the web browser. We were not able to identify the cause of this bug. The video below shows the traversal of our fake maze.
+          We created byte encodings of a maze in an array and loop through it to simulate traversing it using right hand wall following. We use bit masks and switch statements to decode each message, and then write the corresponding message to the GUI. While testing, we actually encountered a few problems with the GUI. First was that there were no sprites for treasures, so any cells that was supposed to have a treasure did not load. The second was that the last entry of the message sent to the GUI was parsed with a “\r\n” at the end of the parameter. This caused the parameter to be read as True, even if it was intended to be False. The meant that after we removed treasures from our maze, the last parameter was the west wall. Each cell in the GUI was drawn with a west wall even when we wrote false. To work around this, we added “robot=false” to the end of each message. If this bug is not fixed by the course staff, we will go into to Python code and correct the parsing. There was also an issue where the display would break and we would have to refresh the web browser. We were not able to identify the cause of this bug. The video below shows the traversal of our fake maze.
         </p>
-        <div style="text-align: center">
-          <iframe width="534" height="300" src="https://www.youtube.com/embed/tHXttVa-O-c" frameborder="0" allowfullscreen=""></iframe>
-        </div>
         <p>
-          Once we have two radios again, the next step will be to separate our robot code from our base station code and use the radios to send the message between them.
+          Once we got two radios again, we separated out our code to have one transmitter (the robot) and one receiver (the base-station). Again we had the transmitter loop through an array of integers, and each time we attempt to send the message. Because we want to receive each message exactly once, if there is no response from the base-station we keep trying to send it until the response is received. The video below shows one Arduino transmitting the messages and the other receiving and writing to the GUI.
+        </p>
+        <p>
+          Since our group has 2 fake Arduinos, we are unable to demonstrate the radios working with the robot traversing through the maze.
         </p>
 
         <h2 class="subtitle">Robot Integration</h2>
         <p>
-          For this part of the lab, the main task was to combine what we had working in milestone 2 with starting at a 660 Hz tone. We also had to add a left wall sensor to our robot as we did not have time to include one for milestone 2.
+          For this part of the lab, the main task was to combine what we had working in milestone 2 with starting at a 660 Hz tone. We also had to add a left wall sensor to our robot as we did not have time to include one for milestone 2. 
         </p>
         <p>
-          We had to solder wires directly onto the sensor because there were no more connectors. With this new sensor attached, we adjusted our right wall following logic to check for left walls if there is a wall and front and to the right. If there is no left wall we turn left, otherwise (meaning there are walls on all three sides), we make a 180 degree turn.
+          With this new sensor attached, we adjusted our right wall following logic to check for left walls if there is a wall and front and to the right. If there is no left wall we turn left, otherwise (meaning there are walls on all three sides), we make a 180 degree turn.
         </p>
         <p>
-          To add be able to detect the 660Hz tone, we added the circuitry from lab 2 to our robot. Because we were already using the A0 pin for IR detection, we modified the microphone code to change the ADMUX register to use A5. We then only enter the loop() function if we read above a specific threshold in bin 5.
-        </p>
-        <p>
-          Unfortunately, adding the left sensor and the microphone meant that we needed a total of 7 analog input pins (three wall sensors, two line sensors, IR, microphone). To work around this, we are currently working on using a mux IC to allow us to use multiple peripherals on singles pins. Specifically, we want to consolidate the microphone and IR detection to one pine, and the three wall sensors to another pin, reducing the total number of pins we would need to four. Because we did not have time to finish these changes, we were not able to record a demo of our starting at the tone and avoiding walls and other robots.
+          To add be able to detect the 660Hz tone, we added the circuitry from lab 2 to our robot. Because all of the analog input pins on the Arduino were occupied (2 line sensors, IR sensor, 3 wall sensors), we added a mux to increase the number of analog inputs we can have. By feeding the output of the microphone circuit and the IR to an 8 to 1 mux and using 3 digital output pins to select which mux input to use, we were able to integrate everything. We then only enter the loop() function if the microphone circuit is able to detect above a threshold in bin 5 of the fft of the microphone output. After the initial start sequence, the mux select is set to 1 so that the IR sensor reading is the input the Arduino. In this way, all aspects of the robot are able to work as intended.
         </p>
 
       </div>
