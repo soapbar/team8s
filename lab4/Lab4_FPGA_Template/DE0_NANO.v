@@ -122,6 +122,7 @@ always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		end
 end
 
+// Should be reading on pclk FIX THIS
 always @ (posedge c0_sig) begin
 
 
