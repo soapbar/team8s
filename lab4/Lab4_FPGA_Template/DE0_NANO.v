@@ -51,6 +51,7 @@ wire			VGA_VSYNC_NEG;
 wire			VGA_HSYNC_NEG;
 reg			VGA_READ_MEM_EN;
 
+
 assign GPIO_0_D[5] = VGA_VSYNC_NEG;
 assign VGA_RESET = ~KEY[0];
 
@@ -71,7 +72,7 @@ assign GPIO_0_D[32] = c0_sig;
 ///////* INSTANTIATE YOUR PLL HERE *///////
 sweetPLL	sweetPLL_inst (
 	.inclk0 ( CLOCK_50 ),
-	.c0 ( c0_sig ),
+	.c0 ( c0_sig ), // 24 MHz
 	.c1 ( c1_sig ),
 	.c2 ( c2_sig )
 	);
@@ -121,31 +122,37 @@ always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		end
 end
 
+// Should be reading on pclk FIX THIS
 always @ (posedge c0_sig) begin
+
+
+	if(!GPIO_1_D[24]) begin
+			Y_ADDR = Y_ADDR + 1;
+			X_ADDR = 0;	
+	end
+	
+	if(!GPIO_1_D[26]) begin
+			Y_ADDR = 0;
+			X_ADDR = 0;
+	end
+	
+	
+	
 	if(start == 0) begin 
 		pixel_data_RGB332[7:2] = {GPIO_1_D[22],GPIO_1_D[20],GPIO_1_D[18],GPIO_1_D[12],GPIO_1_D[10],GPIO_1_D[8]};
+		//pixel_data_RGB332[7:5] = {GPIO_1_D[22],GPIO_1_D[20],GPIO_1_D[18]};
+		//pixel_data_RGB332[4:2] = 3'b001;
 		start = 1;
 		W_EN = 0;
 	end
 	else begin
 		pixel_data_RGB332[1:0] = {GPIO_1_D[16],GPIO_1_D[14]};
+		//pixel_data_RGB332[1:0] = 2'b01;
 		start = 0;
 		X_ADDR = X_ADDR + 1;
 		W_EN = 1;
 	end
-	
-	if(GPIO_1_D[24]) begin
-		if(Y_ADDR > `SCREEN_HEIGHT-1) begin 
-			Y_ADDR = 0;
-			X_ADDR = 0;
-		end
-		else begin 
-			Y_ADDR = Y_ADDR + 1;
-			X_ADDR = 0;
-		end
-	
-	end
-		
+			
 end
 
 	
