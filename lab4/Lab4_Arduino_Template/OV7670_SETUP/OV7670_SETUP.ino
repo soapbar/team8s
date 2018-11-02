@@ -4,12 +4,13 @@
 
 //registers
 #define COM7 0x12
-#define COM3 0x0C
-#define CLKRC 0x11
-#define COM15 0x40
+//#define COM3 0x0C
+//#define CLKRC 0x11
+//#define COM15 0x40
 #define COM17 0x42
-#define MVFP 0x1E
-#define COM9 0x14
+//#define MVFP 0x1E
+//#define COM9 0x14
+
 //#define PSHFT 0x1B
 
 
@@ -19,16 +20,18 @@ void setup() {
   Serial.begin(9600);
   
   // TODO: WRITE KEY REGISTERS
-  OV7670_write_register(COM7, 0x80); // Reset the registers 
+  /*OV7670_write_register(COM7, 0x80); // Reset the registers 
   OV7670_write_register(COM3, 0x08); // Scaling enable
   OV7670_write_register(CLKRC, 0x80); // use external clock as internal - enable double clock 
   OV7670_write_register(COM15, 0xD0); // RGB 565 output F0
   OV7670_write_register(COM7, 0x0E); // RGB output, color bar enabled, QCIF selection
-  OV7670_write_register(COM17, 0x08); // dsp color bar enabled
+  OV7670_write_register(COM17, 0x08); // dsp color bar enabled 
   OV7670_write_register(MVFP, 0x30); // mirror and flipped
-  OV7670_write_register(COM9, 0xA); // gain
+  OV7670_write_register(COM9, 0xA); // gain */
   
-  
+  OV7670_write_register(COM7, 0x02); // color bar enable
+  OV7670_write_register(COM17, 0x08); // dsp color bar enabled 
+
   set_color_matrix();
   delay(100);
 
@@ -44,12 +47,12 @@ void loop(){
 void read_key_registers(){
   /*TODO: DEFINE THIS FUNCTION*/
   read_register_value(COM7);
-  read_register_value(COM3);
-  read_register_value(CLKRC);
-  read_register_value(COM15);
+  //read_register_value(COM3);
+  //read_register_value(CLKRC);
+  //read_register_value(COM15);
   read_register_value(COM17);
-  read_register_value(MVFP);
-  read_register_value(COM9);
+  //read_register_value(MVFP);
+  //read_register_value(COM9);
   
 }
 
