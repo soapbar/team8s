@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE0_NANO
-Thu Nov 01 19:19:56 2018
+Sat Nov 03 18:29:35 2018
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -20,7 +20,7 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
  12. General Register Statistics
  13. Registers Packed Into Inferred Megafunctions
  14. Multiplexer Restructuring Statistics (Restructuring Performed)
- 15. Source assignments for Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_j5f1:auto_generated
+ 15. Source assignments for Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_95f1:auto_generated
  16. Parameter Settings for User Entity Instance: sweetPLL:sweetPLL_inst|altpll:altpll_component
  17. Parameter Settings for Inferred Entity Instance: Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0
  18. Parameter Settings for Inferred Entity Instance: lpm_mult:Mult0
@@ -33,6 +33,7 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
  25. Post-Synthesis Netlist Statistics for Top Partition
  26. Elapsed Time Per Partition
  27. Analysis & Synthesis Messages
+ 28. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -59,18 +60,18 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Nov 01 19:19:56 2018       ;
+; Analysis & Synthesis Status        ; Successful - Sat Nov 03 18:29:35 2018       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_NANO                                    ;
 ; Top-level Entity Name              ; DE0_NANO                                    ;
 ; Family                             ; Cyclone IV E                                ;
-; Total logic elements               ; 179                                         ;
-;     Total combinational functions  ; 171                                         ;
-;     Dedicated logic registers      ; 57                                          ;
-; Total registers                    ; 57                                          ;
+; Total logic elements               ; 187                                         ;
+;     Total combinational functions  ; 184                                         ;
+;     Dedicated logic registers      ; 52                                          ;
+; Total registers                    ; 52                                          ;
 ; Total pins                         ; 71                                          ;
 ; Total virtual pins                 ; 0                                           ;
-; Total memory bits                  ; 202,752                                     ;
+; Total memory bits                  ; 76,032                                      ;
 ; Embedded Multiplier 9-bit elements ; 0                                           ;
 ; Total PLLs                         ; 1                                           ;
 +------------------------------------+---------------------------------------------+
@@ -175,98 +176,97 @@ agreement for further details.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.0%      ;
-;     Processors 3-4         ;   0.0%      ;
+;     Processors 2-4         ;   0.0%      ;
 +----------------------------+-------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                         ;
-+----------------------------------+-----------------+------------------------------+----------------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                     ; Library ;
-+----------------------------------+-----------------+------------------------------+----------------------------------------------------------------------------------+---------+
-; VGA_DRIVER.v                     ; yes             ; User Verilog HDL File        ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v           ;         ;
-; DE0_NANO.v                       ; yes             ; User Verilog HDL File        ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v             ;         ;
-; Dual_Port_RAM_M9K.v              ; yes             ; User Verilog HDL File        ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/Dual_Port_RAM_M9K.v    ;         ;
-; IMAGE_PROCESSOR.v                ; yes             ; User Verilog HDL File        ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v      ;         ;
-; sweetPLL.v                       ; yes             ; User Wizard-Generated File   ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v             ;         ;
-; altpll.tdf                       ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altpll.tdf                ;         ;
-; aglobal170.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/aglobal170.inc            ;         ;
-; stratix_pll.inc                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/stratix_pll.inc           ;         ;
-; stratixii_pll.inc                ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/stratixii_pll.inc         ;         ;
-; cycloneii_pll.inc                ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/cycloneii_pll.inc         ;         ;
-; db/sweetpll_altpll.v             ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/sweetpll_altpll.v   ;         ;
-; altsyncram.tdf                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altsyncram.tdf            ;         ;
-; stratix_ram_block.inc            ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/stratix_ram_block.inc     ;         ;
-; lpm_mux.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_mux.inc               ;         ;
-; lpm_decode.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_decode.inc            ;         ;
-; a_rdenreg.inc                    ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/a_rdenreg.inc             ;         ;
-; altrom.inc                       ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altrom.inc                ;         ;
-; altram.inc                       ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altram.inc                ;         ;
-; altdpram.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altdpram.inc              ;         ;
-; db/altsyncram_j5f1.tdf           ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/altsyncram_j5f1.tdf ;         ;
-; db/decode_msa.tdf                ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/decode_msa.tdf      ;         ;
-; db/decode_f8a.tdf                ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/decode_f8a.tdf      ;         ;
-; db/mux_6nb.tdf                   ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/mux_6nb.tdf         ;         ;
-; lpm_mult.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_mult.tdf              ;         ;
-; lpm_add_sub.inc                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_add_sub.inc           ;         ;
-; multcore.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/multcore.inc              ;         ;
-; bypassff.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/bypassff.inc              ;         ;
-; altshift.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altshift.inc              ;         ;
-; multcore.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/multcore.tdf              ;         ;
-; csa_add.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/csa_add.inc               ;         ;
-; mpar_add.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.inc              ;         ;
-; muleabz.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/muleabz.inc               ;         ;
-; mul_lfrg.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mul_lfrg.inc              ;         ;
-; mul_boothc.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mul_boothc.inc            ;         ;
-; alt_ded_mult.inc                 ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/alt_ded_mult.inc          ;         ;
-; alt_ded_mult_y.inc               ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/alt_ded_mult_y.inc        ;         ;
-; dffpipe.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/dffpipe.inc               ;         ;
-; mpar_add.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.tdf              ;         ;
-; lpm_add_sub.tdf                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_add_sub.tdf           ;         ;
-; addcore.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/addcore.inc               ;         ;
-; look_add.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/look_add.inc              ;         ;
-; alt_stratix_add_sub.inc          ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/alt_stratix_add_sub.inc   ;         ;
-; db/add_sub_lgh.tdf               ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/add_sub_lgh.tdf     ;         ;
-; db/add_sub_pgh.tdf               ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/add_sub_pgh.tdf     ;         ;
-; altshift.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altshift.tdf              ;         ;
-+----------------------------------+-----------------+------------------------------+----------------------------------------------------------------------------------+---------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                       ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                   ; Library ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------+---------+
+; VGA_DRIVER.v                     ; yes             ; User Verilog HDL File        ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v                   ;         ;
+; DE0_NANO.v                       ; yes             ; User Verilog HDL File        ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v                     ;         ;
+; Dual_Port_RAM_M9K.v              ; yes             ; User Verilog HDL File        ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/Dual_Port_RAM_M9K.v            ;         ;
+; IMAGE_PROCESSOR.v                ; yes             ; User Verilog HDL File        ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v              ;         ;
+; sweetPLL.v                       ; yes             ; User Wizard-Generated File   ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v                     ;         ;
+; altpll.tdf                       ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altpll.tdf              ;         ;
+; aglobal170.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/aglobal170.inc          ;         ;
+; stratix_pll.inc                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/stratix_pll.inc         ;         ;
+; stratixii_pll.inc                ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/stratixii_pll.inc       ;         ;
+; cycloneii_pll.inc                ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/cycloneii_pll.inc       ;         ;
+; db/sweetpll_altpll.v             ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/sweetpll_altpll.v           ;         ;
+; altsyncram.tdf                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altsyncram.tdf          ;         ;
+; stratix_ram_block.inc            ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/stratix_ram_block.inc   ;         ;
+; lpm_mux.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_mux.inc             ;         ;
+; lpm_decode.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_decode.inc          ;         ;
+; a_rdenreg.inc                    ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/a_rdenreg.inc           ;         ;
+; altrom.inc                       ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altrom.inc              ;         ;
+; altram.inc                       ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altram.inc              ;         ;
+; altdpram.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altdpram.inc            ;         ;
+; db/altsyncram_95f1.tdf           ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/altsyncram_95f1.tdf         ;         ;
+; db/decode_msa.tdf                ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/decode_msa.tdf              ;         ;
+; db/decode_f8a.tdf                ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/decode_f8a.tdf              ;         ;
+; db/mux_1nb.tdf                   ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/mux_1nb.tdf                 ;         ;
+; lpm_mult.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_mult.tdf            ;         ;
+; lpm_add_sub.inc                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_add_sub.inc         ;         ;
+; multcore.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/multcore.inc            ;         ;
+; bypassff.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/bypassff.inc            ;         ;
+; altshift.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altshift.inc            ;         ;
+; multcore.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/multcore.tdf            ;         ;
+; csa_add.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/csa_add.inc             ;         ;
+; mpar_add.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.inc            ;         ;
+; muleabz.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/muleabz.inc             ;         ;
+; mul_lfrg.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mul_lfrg.inc            ;         ;
+; mul_boothc.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mul_boothc.inc          ;         ;
+; alt_ded_mult.inc                 ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/alt_ded_mult.inc        ;         ;
+; alt_ded_mult_y.inc               ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/alt_ded_mult_y.inc      ;         ;
+; dffpipe.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/dffpipe.inc             ;         ;
+; mpar_add.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.tdf            ;         ;
+; lpm_add_sub.tdf                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_add_sub.tdf         ;         ;
+; addcore.inc                      ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/addcore.inc             ;         ;
+; look_add.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/look_add.inc            ;         ;
+; alt_stratix_add_sub.inc          ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/alt_stratix_add_sub.inc ;         ;
+; db/add_sub_lgh.tdf               ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/add_sub_lgh.tdf             ;         ;
+; db/add_sub_pgh.tdf               ; yes             ; Auto-Generated Megafunction  ; C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/add_sub_pgh.tdf             ;         ;
+; altshift.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altshift.tdf            ;         ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------+---------+
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary                                                                                                  ;
-+---------------------------------------------+------------------------------------------------------------------------------------------------+
-; Resource                                    ; Usage                                                                                          ;
-+---------------------------------------------+------------------------------------------------------------------------------------------------+
-; Estimated Total logic elements              ; 179                                                                                            ;
-;                                             ;                                                                                                ;
-; Total combinational functions               ; 171                                                                                            ;
-; Logic element usage by number of LUT inputs ;                                                                                                ;
-;     -- 4 input functions                    ; 48                                                                                             ;
-;     -- 3 input functions                    ; 60                                                                                             ;
-;     -- <=2 input functions                  ; 63                                                                                             ;
-;                                             ;                                                                                                ;
-; Logic elements by mode                      ;                                                                                                ;
-;     -- normal mode                          ; 93                                                                                             ;
-;     -- arithmetic mode                      ; 78                                                                                             ;
-;                                             ;                                                                                                ;
-; Total registers                             ; 57                                                                                             ;
-;     -- Dedicated logic registers            ; 57                                                                                             ;
-;     -- I/O registers                        ; 0                                                                                              ;
-;                                             ;                                                                                                ;
-; I/O pins                                    ; 71                                                                                             ;
-; Total memory bits                           ; 202752                                                                                         ;
-;                                             ;                                                                                                ;
-; Embedded Multiplier 9-bit elements          ; 0                                                                                              ;
-;                                             ;                                                                                                ;
-; Total PLLs                                  ; 1                                                                                              ;
-;     -- PLLs                                 ; 1                                                                                              ;
-;                                             ;                                                                                                ;
-; Maximum fan-out node                        ; sweetPLL:sweetPLL_inst|altpll:altpll_component|sweetPLL_altpll:auto_generated|wire_pll1_clk[0] ;
-; Maximum fan-out                             ; 91                                                                                             ;
-; Total fan-out                               ; 1693                                                                                           ;
-; Average fan-out                             ; 4.20                                                                                           ;
-+---------------------------------------------+------------------------------------------------------------------------------------------------+
++---------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary             ;
++---------------------------------------------+-----------+
+; Resource                                    ; Usage     ;
++---------------------------------------------+-----------+
+; Estimated Total logic elements              ; 187       ;
+;                                             ;           ;
+; Total combinational functions               ; 184       ;
+; Logic element usage by number of LUT inputs ;           ;
+;     -- 4 input functions                    ; 45        ;
+;     -- 3 input functions                    ; 61        ;
+;     -- <=2 input functions                  ; 78        ;
+;                                             ;           ;
+; Logic elements by mode                      ;           ;
+;     -- normal mode                          ; 92        ;
+;     -- arithmetic mode                      ; 92        ;
+;                                             ;           ;
+; Total registers                             ; 52        ;
+;     -- Dedicated logic registers            ; 52        ;
+;     -- I/O registers                        ; 0         ;
+;                                             ;           ;
+; I/O pins                                    ; 71        ;
+; Total memory bits                           ; 76032     ;
+;                                             ;           ;
+; Embedded Multiplier 9-bit elements          ; 0         ;
+;                                             ;           ;
+; Total PLLs                                  ; 1         ;
+;     -- PLLs                                 ; 1         ;
+;                                             ;           ;
+; Maximum fan-out node                        ; X_ADDR~15 ;
+; Maximum fan-out                             ; 41        ;
+; Total fan-out                               ; 1135      ;
+; Average fan-out                             ; 2.90      ;
++---------------------------------------------+-----------+
 
 
 +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -274,13 +274,13 @@ agreement for further details.
 +------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------+-------------------+--------------+
 ; Compilation Hierarchy Node                     ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                              ; Entity Name       ; Library Name ;
 +------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------+-------------------+--------------+
-; |DE0_NANO                                      ; 171 (52)            ; 57 (35)                   ; 202752      ; 0            ; 0       ; 0         ; 71   ; 0            ; |DE0_NANO                                                                                                                        ; DE0_NANO          ; work         ;
-;    |Dual_Port_RAM_M9K:mem|                     ; 8 (0)               ; 2 (0)                     ; 202752      ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem                                                                                                  ; Dual_Port_RAM_M9K ; work         ;
-;       |altsyncram:mem_rtl_0|                   ; 8 (0)               ; 2 (0)                     ; 202752      ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0                                                                             ; altsyncram        ; work         ;
-;          |altsyncram_j5f1:auto_generated|      ; 8 (0)               ; 2 (2)                     ; 202752      ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_j5f1:auto_generated                                              ; altsyncram_j5f1   ; work         ;
-;             |decode_f8a:rden_decode_b|         ; 4 (4)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_j5f1:auto_generated|decode_f8a:rden_decode_b                     ; decode_f8a        ; work         ;
-;             |decode_msa:decode2|               ; 4 (4)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_j5f1:auto_generated|decode_msa:decode2                           ; decode_msa        ; work         ;
-;    |VGA_DRIVER:driver|                         ; 60 (60)             ; 20 (20)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|VGA_DRIVER:driver                                                                                                      ; VGA_DRIVER        ; work         ;
+; |DE0_NANO                                      ; 184 (80)            ; 52 (30)                   ; 76032       ; 0            ; 0       ; 0         ; 71   ; 0            ; |DE0_NANO                                                                                                                        ; DE0_NANO          ; work         ;
+;    |Dual_Port_RAM_M9K:mem|                     ; 8 (0)               ; 2 (0)                     ; 76032       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem                                                                                                  ; Dual_Port_RAM_M9K ; work         ;
+;       |altsyncram:mem_rtl_0|                   ; 8 (0)               ; 2 (0)                     ; 76032       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0                                                                             ; altsyncram        ; work         ;
+;          |altsyncram_95f1:auto_generated|      ; 8 (0)               ; 2 (2)                     ; 76032       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_95f1:auto_generated                                              ; altsyncram_95f1   ; work         ;
+;             |decode_f8a:rden_decode_b|         ; 4 (4)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_95f1:auto_generated|decode_f8a:rden_decode_b                     ; decode_f8a        ; work         ;
+;             |decode_msa:decode2|               ; 4 (4)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_95f1:auto_generated|decode_msa:decode2                           ; decode_msa        ; work         ;
+;    |VGA_DRIVER:driver|                         ; 45 (45)             ; 20 (20)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|VGA_DRIVER:driver                                                                                                      ; VGA_DRIVER        ; work         ;
 ;    |lpm_mult:Mult0|                            ; 25 (0)              ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|lpm_mult:Mult0                                                                                                         ; lpm_mult          ; work         ;
 ;       |multcore:mult_core|                     ; 25 (15)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|lpm_mult:Mult0|multcore:mult_core                                                                                      ; multcore          ; work         ;
 ;          |mpar_add:padder|                     ; 10 (0)              ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_NANO|lpm_mult:Mult0|multcore:mult_core|mpar_add:padder                                                                      ; mpar_add          ; work         ;
@@ -304,13 +304,13 @@ agreement for further details.
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis RAM Summary                                                                                                                                                           ;
-+--------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+--------+------+
-; Name                                                                                 ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size   ; MIF  ;
-+--------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+--------+------+
-; Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_j5f1:auto_generated|ALTSYNCRAM ; M9K  ; Simple Dual Port ; 25344        ; 8            ; 25344        ; 8            ; 202752 ; None ;
-+--------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+--------+------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                          ;
++--------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; Name                                                                                 ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF  ;
++--------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_95f1:auto_generated|ALTSYNCRAM ; M9K  ; Simple Dual Port ; 25344        ; 3            ; 25344        ; 3            ; 76032 ; None ;
++--------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
 
 
 +--------------------------------------------------------------------------------------------------------------------+
@@ -322,24 +322,29 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +--------+--------------+---------+--------------+--------------+----------------------------------+-----------------+
 
 
-+------------------------------------------------------------+
-; Registers Removed During Synthesis                         ;
-+---------------------------------------+--------------------+
-; Register name                         ; Reason for Removal ;
-+---------------------------------------+--------------------+
-; W_EN                                  ; Merged with start  ;
-; Y_ADDR[11..14]                        ; Lost fanout        ;
-; Total Number of Removed Registers = 5 ;                    ;
-+---------------------------------------+--------------------+
++----------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                               ;
++-----------------------------------------+----------------------------------------+
+; Register name                           ; Reason for Removal                     ;
++-----------------------------------------+----------------------------------------+
+; pixel_data_RGB332[0..4]                 ; Stuck at GND due to stuck port data_in ;
+; Dual_Port_RAM_M9K:mem|output_data[0..4] ; Stuck at GND due to stuck port data_in ;
+; W_EN                                    ; Merged with start                      ;
+; Y_ADDR[11..14]                          ; Lost fanout                            ;
+; Total Number of Removed Registers = 15  ;                                        ;
++-----------------------------------------+----------------------------------------+
 
 
-+-----------------------------------------------------------------------------+
-; Removed Registers Triggering Further Register Optimizations                 ;
-+---------------+--------------------+----------------------------------------+
-; Register name ; Reason for Removal ; Registers Removed due to This Register ;
-+---------------+--------------------+----------------------------------------+
-; Y_ADDR[12]    ; Lost Fanouts       ; Y_ADDR[11]                             ;
-+---------------+--------------------+----------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                                    ;
++----------------------+---------------------------+-----------------------------------------------------------------------------+
+; Register name        ; Reason for Removal        ; Registers Removed due to This Register                                      ;
++----------------------+---------------------------+-----------------------------------------------------------------------------+
+; pixel_data_RGB332[4] ; Stuck at GND              ; Dual_Port_RAM_M9K:mem|output_data[4], Dual_Port_RAM_M9K:mem|output_data[3], ;
+;                      ; due to stuck port data_in ; Dual_Port_RAM_M9K:mem|output_data[2], Dual_Port_RAM_M9K:mem|output_data[1], ;
+;                      ;                           ; Dual_Port_RAM_M9K:mem|output_data[0]                                        ;
+; Y_ADDR[12]           ; Lost Fanouts              ; Y_ADDR[11]                                                                  ;
++----------------------+---------------------------+-----------------------------------------------------------------------------+
 
 
 +------------------------------------------------------+
@@ -347,12 +352,12 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 57    ;
+; Total registers                              ; 52    ;
 ; Number of registers using Synchronous Clear  ; 31    ;
-; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Synchronous Load   ; 15    ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 29    ;
+; Number of registers using Clock Enable       ; 24    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -362,7 +367,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +-----------------------------------------+---------------------------------+------+
 ; Register Name                           ; Megafunction                    ; Type ;
 +-----------------------------------------+---------------------------------+------+
-; Dual_Port_RAM_M9K:mem|output_data[0..7] ; Dual_Port_RAM_M9K:mem|mem_rtl_0 ; RAM  ;
+; Dual_Port_RAM_M9K:mem|output_data[5..7] ; Dual_Port_RAM_M9K:mem|mem_rtl_0 ; RAM  ;
 +-----------------------------------------+---------------------------------+------+
 
 
@@ -371,16 +376,16 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                     ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------+
-; 3:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |DE0_NANO|VGA_DRIVER:driver|pixel_count[5]     ;
-; 3:1                ; 15 bits   ; 30 LEs        ; 15 LEs               ; 15 LEs                 ; Yes        ; |DE0_NANO|Y_ADDR[1]                            ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |DE0_NANO|VGA_DRIVER:driver|pixel_count[8]     ;
+; 3:1                ; 15 bits   ; 30 LEs        ; 15 LEs               ; 15 LEs                 ; Yes        ; |DE0_NANO|Y_ADDR[4]                            ;
 ; 4:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |DE0_NANO|VGA_DRIVER:driver|line_count[1]      ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |DE0_NANO|VGA_DRIVER:driver|PIXEL_COLOR_OUT[1] ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; No         ; |DE0_NANO|VGA_DRIVER:driver|PIXEL_COLOR_OUT[7] ;
 ; 3:1                ; 15 bits   ; 30 LEs        ; 15 LEs               ; 15 LEs                 ; No         ; |DE0_NANO|X_ADDR                               ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------+
 
 
 +--------------------------------------------------------------------------------------------------+
-; Source assignments for Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_j5f1:auto_generated ;
+; Source assignments for Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0|altsyncram_95f1:auto_generated ;
 +---------------------------------+--------------------+------+------------------------------------+
 ; Assignment                      ; Value              ; From ; To                                 ;
 +---------------------------------+--------------------+------+------------------------------------+
@@ -774,7 +779,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                  ;
 ; WIDTH_BYTEENA                      ; 1                    ; Untyped                         ;
 ; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                         ;
-; WIDTH_A                            ; 8                    ; Untyped                         ;
+; WIDTH_A                            ; 3                    ; Untyped                         ;
 ; WIDTHAD_A                          ; 15                   ; Untyped                         ;
 ; NUMWORDS_A                         ; 25344                ; Untyped                         ;
 ; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                         ;
@@ -783,7 +788,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                         ;
 ; INDATA_ACLR_A                      ; NONE                 ; Untyped                         ;
 ; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                         ;
-; WIDTH_B                            ; 8                    ; Untyped                         ;
+; WIDTH_B                            ; 3                    ; Untyped                         ;
 ; WIDTHAD_B                          ; 15                   ; Untyped                         ;
 ; NUMWORDS_B                         ; 25344                ; Untyped                         ;
 ; INDATA_REG_B                       ; CLOCK1               ; Untyped                         ;
@@ -818,7 +823,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                         ;
 ; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                         ;
 ; DEVICE_FAMILY                      ; Cyclone IV E         ; Untyped                         ;
-; CBXI_PARAMETER                     ; altsyncram_j5f1      ; Untyped                         ;
+; CBXI_PARAMETER                     ; altsyncram_95f1      ; Untyped                         ;
 +------------------------------------+----------------------+---------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -918,10 +923,10 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Number of entity instances                ; 1                                          ;
 ; Entity Instance                           ; Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0 ;
 ;     -- OPERATION_MODE                     ; DUAL_PORT                                  ;
-;     -- WIDTH_A                            ; 8                                          ;
+;     -- WIDTH_A                            ; 3                                          ;
 ;     -- NUMWORDS_A                         ; 25344                                      ;
 ;     -- OUTDATA_REG_A                      ; UNREGISTERED                               ;
-;     -- WIDTH_B                            ; 8                                          ;
+;     -- WIDTH_B                            ; 3                                          ;
 ;     -- NUMWORDS_B                         ; 25344                                      ;
 ;     -- ADDRESS_REG_B                      ; CLOCK1                                     ;
 ;     -- OUTDATA_REG_B                      ; UNREGISTERED                               ;
@@ -985,26 +990,27 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
 ; boundary_port         ; 71                          ;
-; cycloneiii_ff         ; 57                          ;
-;     ENA               ; 8                           ;
+; cycloneiii_ff         ; 52                          ;
+;     ENA               ; 3                           ;
 ;     ENA SCLR          ; 21                          ;
 ;     SCLR              ; 10                          ;
-;     plain             ; 18                          ;
-; cycloneiii_lcell_comb ; 172                         ;
-;     arith             ; 78                          ;
-;         2 data inputs ; 36                          ;
+;     SLD               ; 15                          ;
+;     plain             ; 3                           ;
+; cycloneiii_lcell_comb ; 186                         ;
+;     arith             ; 92                          ;
+;         2 data inputs ; 50                          ;
 ;         3 data inputs ; 42                          ;
 ;     normal            ; 94                          ;
 ;         0 data inputs ; 1                           ;
-;         1 data inputs ; 7                           ;
+;         1 data inputs ; 9                           ;
 ;         2 data inputs ; 20                          ;
-;         3 data inputs ; 18                          ;
-;         4 data inputs ; 48                          ;
+;         3 data inputs ; 19                          ;
+;         4 data inputs ; 45                          ;
 ; cycloneiii_pll        ; 1                           ;
-; cycloneiii_ram_block  ; 32                          ;
+; cycloneiii_ram_block  ; 12                          ;
 ;                       ;                             ;
 ; Max LUT depth         ; 5.60                        ;
-; Average LUT depth     ; 3.15                        ;
+; Average LUT depth     ; 3.81                        ;
 +-----------------------+-----------------------------+
 
 
@@ -1023,7 +1029,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Thu Nov 01 19:19:45 2018
+    Info: Processing started: Sat Nov 03 18:29:24 2018
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE0_NANO -c DE0_NANO
 Warning (125092): Tcl Script File DE_NANO_SOPC.qip not found
     Info (125063): set_global_assignment -name QIP_FILE DE_NANO_SOPC.qip
@@ -1032,36 +1038,42 @@ Warning (125092): Tcl Script File pll.qip not found
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file vga_driver.v
-    Info (12023): Found entity 1: VGA_DRIVER File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v Line: 14
+    Info (12023): Found entity 1: VGA_DRIVER File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v Line: 14
 Info (12021): Found 1 design units, including 1 entities, in source file de0_nano.v
-    Info (12023): Found entity 1: DE0_NANO File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 5
+    Info (12023): Found entity 1: DE0_NANO File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 5
 Info (12021): Found 1 design units, including 1 entities, in source file dual_port_ram_m9k.v
-    Info (12023): Found entity 1: Dual_Port_RAM_M9K File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/Dual_Port_RAM_M9K.v Line: 4
+    Info (12023): Found entity 1: Dual_Port_RAM_M9K File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/Dual_Port_RAM_M9K.v Line: 4
 Info (12021): Found 1 design units, including 1 entities, in source file image_processor.v
-    Info (12023): Found entity 1: IMAGE_PROCESSOR File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v Line: 6
+    Info (12023): Found entity 1: IMAGE_PROCESSOR File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v Line: 6
 Info (12021): Found 1 design units, including 1 entities, in source file sweetpll.v
-    Info (12023): Found entity 1: sweetPLL File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 40
+    Info (12023): Found entity 1: sweetPLL File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 40
 Info (12127): Elaborating entity "DE0_NANO" for the top level hierarchy
-Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(42): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
-Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(116): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 116
-Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(129): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 129
-Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(151): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 151
-Warning (10034): Output port "GPIO_0_D[33]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[31..24]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[22]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[20]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[18]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[16]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[14]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[12]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[10]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[8]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[6]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Warning (10034): Output port "GPIO_0_D[4..0]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-Info (12128): Elaborating entity "sweetPLL" for hierarchy "sweetPLL:sweetPLL_inst" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 78
-Info (12128): Elaborating entity "altpll" for hierarchy "sweetPLL:sweetPLL_inst|altpll:altpll_component" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 99
-Info (12130): Elaborated megafunction instantiation "sweetPLL:sweetPLL_inst|altpll:altpll_component" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 99
-Info (12133): Instantiated megafunction "sweetPLL:sweetPLL_inst|altpll:altpll_component" with the following parameter: File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 99
+Warning (10036): Verilog HDL or VHDL warning at DE0_NANO.v(72): object "D4" assigned a value but never read File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 72
+Warning (10036): Verilog HDL or VHDL warning at DE0_NANO.v(72): object "D3" assigned a value but never read File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 72
+Warning (10036): Verilog HDL or VHDL warning at DE0_NANO.v(72): object "D2" assigned a value but never read File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 72
+Warning (10036): Verilog HDL or VHDL warning at DE0_NANO.v(72): object "D1" assigned a value but never read File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 72
+Warning (10036): Verilog HDL or VHDL warning at DE0_NANO.v(72): object "D0" assigned a value but never read File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 72
+Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(42): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
+Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(131): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 131
+Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(144): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 144
+Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(154): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 154
+Warning (10230): Verilog HDL assignment warning at DE0_NANO.v(168): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 168
+Warning (10034): Output port "GPIO_0_D[33]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[31..24]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[22]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[20]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[18]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[16]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[14]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[12]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[10]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[8]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[6]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Warning (10034): Output port "GPIO_0_D[4..0]" at DE0_NANO.v(28) has no driver File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+Info (12128): Elaborating entity "sweetPLL" for hierarchy "sweetPLL:sweetPLL_inst" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 92
+Info (12128): Elaborating entity "altpll" for hierarchy "sweetPLL:sweetPLL_inst|altpll:altpll_component" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 99
+Info (12130): Elaborated megafunction instantiation "sweetPLL:sweetPLL_inst|altpll:altpll_component" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 99
+Info (12133): Instantiated megafunction "sweetPLL:sweetPLL_inst|altpll:altpll_component" with the following parameter: File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/sweetPLL.v Line: 99
     Info (12134): Parameter "bandwidth_type" = "AUTO"
     Info (12134): Parameter "clk0_divide_by" = "25"
     Info (12134): Parameter "clk0_duty_cycle" = "50"
@@ -1125,24 +1137,24 @@ Info (12133): Instantiated megafunction "sweetPLL:sweetPLL_inst|altpll:altpll_co
     Info (12134): Parameter "port_extclk3" = "PORT_UNUSED"
     Info (12134): Parameter "width_clock" = "5"
 Info (12021): Found 1 design units, including 1 entities, in source file db/sweetpll_altpll.v
-    Info (12023): Found entity 1: sweetPLL_altpll File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/sweetpll_altpll.v Line: 30
+    Info (12023): Found entity 1: sweetPLL_altpll File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/sweetpll_altpll.v Line: 30
 Info (12128): Elaborating entity "sweetPLL_altpll" for hierarchy "sweetPLL:sweetPLL_inst|altpll:altpll_component|sweetPLL_altpll:auto_generated" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/altpll.tdf Line: 898
-Info (12128): Elaborating entity "Dual_Port_RAM_M9K" for hierarchy "Dual_Port_RAM_M9K:mem" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 89
-Warning (10036): Verilog HDL or VHDL warning at Dual_Port_RAM_M9K.v(34): object "r_addr_reg" assigned a value but never read File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/Dual_Port_RAM_M9K.v Line: 34
-Info (12128): Elaborating entity "VGA_DRIVER" for hierarchy "VGA_DRIVER:driver" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 101
-Warning (10230): Verilog HDL assignment warning at VGA_DRIVER.v(71): truncated value with size 32 to match size of target (10) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v Line: 71
-Warning (10230): Verilog HDL assignment warning at VGA_DRIVER.v(75): truncated value with size 32 to match size of target (10) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v Line: 75
-Info (12128): Elaborating entity "IMAGE_PROCESSOR" for hierarchy "IMAGE_PROCESSOR:proc" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 111
-Warning (10230): Verilog HDL assignment warning at IMAGE_PROCESSOR.v(36): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v Line: 36
-Warning (10230): Verilog HDL assignment warning at IMAGE_PROCESSOR.v(39): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v Line: 39
+Info (12128): Elaborating entity "Dual_Port_RAM_M9K" for hierarchy "Dual_Port_RAM_M9K:mem" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 103
+Warning (10036): Verilog HDL or VHDL warning at Dual_Port_RAM_M9K.v(34): object "r_addr_reg" assigned a value but never read File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/Dual_Port_RAM_M9K.v Line: 34
+Info (12128): Elaborating entity "VGA_DRIVER" for hierarchy "VGA_DRIVER:driver" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 115
+Warning (10230): Verilog HDL assignment warning at VGA_DRIVER.v(71): truncated value with size 32 to match size of target (10) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v Line: 71
+Warning (10230): Verilog HDL assignment warning at VGA_DRIVER.v(75): truncated value with size 32 to match size of target (10) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/VGA_DRIVER.v Line: 75
+Info (12128): Elaborating entity "IMAGE_PROCESSOR" for hierarchy "IMAGE_PROCESSOR:proc" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 125
+Warning (10230): Verilog HDL assignment warning at IMAGE_PROCESSOR.v(36): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v Line: 36
+Warning (10230): Verilog HDL assignment warning at IMAGE_PROCESSOR.v(39): truncated value with size 32 to match size of target (15) File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/IMAGE_PROCESSOR.v Line: 39
 Warning (276027): Inferred dual-clock RAM node "Dual_Port_RAM_M9K:mem|mem_rtl_0" from synchronous design logic.  The read-during-write behavior of a dual-clock RAM is undefined and may not match the behavior of the original design.
 Info (19000): Inferred 1 megafunctions from design logic
     Info (276029): Inferred altsyncram megafunction from the following design logic: "Dual_Port_RAM_M9K:mem|mem_rtl_0" 
         Info (286033): Parameter OPERATION_MODE set to DUAL_PORT
-        Info (286033): Parameter WIDTH_A set to 8
+        Info (286033): Parameter WIDTH_A set to 3
         Info (286033): Parameter WIDTHAD_A set to 15
         Info (286033): Parameter NUMWORDS_A set to 25344
-        Info (286033): Parameter WIDTH_B set to 8
+        Info (286033): Parameter WIDTH_B set to 3
         Info (286033): Parameter WIDTHAD_B set to 15
         Info (286033): Parameter NUMWORDS_B set to 25344
         Info (286033): Parameter ADDRESS_ACLR_A set to NONE
@@ -1154,15 +1166,15 @@ Info (19000): Inferred 1 megafunctions from design logic
         Info (286033): Parameter WRCONTROL_ACLR_A set to NONE
         Info (286033): Parameter RAM_BLOCK_TYPE set to M9K
 Info (278001): Inferred 2 megafunctions from design logic
-    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "Mult0" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
-    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "Mult1" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 116
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "Mult0" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "Mult1" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 131
 Info (12130): Elaborated megafunction instantiation "Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0"
 Info (12133): Instantiated megafunction "Dual_Port_RAM_M9K:mem|altsyncram:mem_rtl_0" with the following parameter:
     Info (12134): Parameter "OPERATION_MODE" = "DUAL_PORT"
-    Info (12134): Parameter "WIDTH_A" = "8"
+    Info (12134): Parameter "WIDTH_A" = "3"
     Info (12134): Parameter "WIDTHAD_A" = "15"
     Info (12134): Parameter "NUMWORDS_A" = "25344"
-    Info (12134): Parameter "WIDTH_B" = "8"
+    Info (12134): Parameter "WIDTH_B" = "3"
     Info (12134): Parameter "WIDTHAD_B" = "15"
     Info (12134): Parameter "NUMWORDS_B" = "25344"
     Info (12134): Parameter "ADDRESS_ACLR_A" = "NONE"
@@ -1173,16 +1185,16 @@ Info (12133): Instantiated megafunction "Dual_Port_RAM_M9K:mem|altsyncram:mem_rt
     Info (12134): Parameter "INDATA_ACLR_A" = "NONE"
     Info (12134): Parameter "WRCONTROL_ACLR_A" = "NONE"
     Info (12134): Parameter "RAM_BLOCK_TYPE" = "M9K"
-Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_j5f1.tdf
-    Info (12023): Found entity 1: altsyncram_j5f1 File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/altsyncram_j5f1.tdf Line: 34
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_95f1.tdf
+    Info (12023): Found entity 1: altsyncram_95f1 File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/altsyncram_95f1.tdf Line: 34
 Info (12021): Found 1 design units, including 1 entities, in source file db/decode_msa.tdf
-    Info (12023): Found entity 1: decode_msa File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/decode_msa.tdf Line: 23
+    Info (12023): Found entity 1: decode_msa File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/decode_msa.tdf Line: 23
 Info (12021): Found 1 design units, including 1 entities, in source file db/decode_f8a.tdf
-    Info (12023): Found entity 1: decode_f8a File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/decode_f8a.tdf Line: 23
-Info (12021): Found 1 design units, including 1 entities, in source file db/mux_6nb.tdf
-    Info (12023): Found entity 1: mux_6nb File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/mux_6nb.tdf Line: 23
-Info (12130): Elaborated megafunction instantiation "lpm_mult:Mult0" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
-Info (12133): Instantiated megafunction "lpm_mult:Mult0" with the following parameter: File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
+    Info (12023): Found entity 1: decode_f8a File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/decode_f8a.tdf Line: 23
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_1nb.tdf
+    Info (12023): Found entity 1: mux_1nb File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/mux_1nb.tdf Line: 23
+Info (12130): Elaborated megafunction instantiation "lpm_mult:Mult0" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
+Info (12133): Instantiated megafunction "lpm_mult:Mult0" with the following parameter: File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 42
     Info (12134): Parameter "LPM_WIDTHA" = "15"
     Info (12134): Parameter "LPM_WIDTHB" = "8"
     Info (12134): Parameter "LPM_WIDTHP" = "23"
@@ -1196,14 +1208,14 @@ Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult0|multcore:mul
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult0|multcore:mult_core|mpar_add:padder", which is child of megafunction instantiation "lpm_mult:Mult0" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/multcore.tdf Line: 229
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult0|multcore:mult_core|mpar_add:padder|lpm_add_sub:adder[1]", which is child of megafunction instantiation "lpm_mult:Mult0" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.tdf Line: 78
 Info (12021): Found 1 design units, including 1 entities, in source file db/add_sub_lgh.tdf
-    Info (12023): Found entity 1: add_sub_lgh File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/add_sub_lgh.tdf Line: 23
+    Info (12023): Found entity 1: add_sub_lgh File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/add_sub_lgh.tdf Line: 23
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult0|multcore:mult_core|mpar_add:padder|mpar_add:sub_par_add", which is child of megafunction instantiation "lpm_mult:Mult0" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.tdf Line: 138
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult0|multcore:mult_core|mpar_add:padder|mpar_add:sub_par_add|lpm_add_sub:adder[0]", which is child of megafunction instantiation "lpm_mult:Mult0" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.tdf Line: 78
 Info (12021): Found 1 design units, including 1 entities, in source file db/add_sub_pgh.tdf
-    Info (12023): Found entity 1: add_sub_pgh File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/add_sub_pgh.tdf Line: 23
+    Info (12023): Found entity 1: add_sub_pgh File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/add_sub_pgh.tdf Line: 23
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult0|altshift:external_latency_ffs", which is child of megafunction instantiation "lpm_mult:Mult0" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_mult.tdf Line: 352
-Info (12130): Elaborated megafunction instantiation "lpm_mult:Mult1" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 116
-Info (12133): Instantiated megafunction "lpm_mult:Mult1" with the following parameter: File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 116
+Info (12130): Elaborated megafunction instantiation "lpm_mult:Mult1" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 131
+Info (12133): Instantiated megafunction "lpm_mult:Mult1" with the following parameter: File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 131
     Info (12134): Parameter "LPM_WIDTHA" = "10"
     Info (12134): Parameter "LPM_WIDTHB" = "8"
     Info (12134): Parameter "LPM_WIDTHP" = "18"
@@ -1220,70 +1232,84 @@ Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult1|multcore:mul
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult1|multcore:mult_core|mpar_add:padder|mpar_add:sub_par_add|lpm_add_sub:adder[0]", which is child of megafunction instantiation "lpm_mult:Mult1" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/mpar_add.tdf Line: 78
 Info (12131): Elaborated megafunction instantiation "lpm_mult:Mult1|altshift:external_latency_ffs", which is child of megafunction instantiation "lpm_mult:Mult1" File: c:/intelfpga_lite/17.0/quartus/libraries/megafunctions/lpm_mult.tdf Line: 352
 Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "GPIO_0_D[0]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[1]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[2]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[3]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[4]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[6]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[8]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[10]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[12]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[14]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[16]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[18]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[20]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[22]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[24]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[25]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[26]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[27]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[28]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[29]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[30]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[31]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
-    Warning (13410): Pin "GPIO_0_D[33]" is stuck at GND File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[0]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[1]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[2]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[3]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[4]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[6]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[8]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[10]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[12]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[14]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[15]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[16]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[17]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[18]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[19]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[20]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[22]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[24]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[25]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[26]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[27]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[28]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[29]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[30]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[31]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
+    Warning (13410): Pin "GPIO_0_D[33]" is stuck at GND File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 28
 Info (286030): Timing-Driven Synthesis is running
 Info (17049): 4 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.map.smsg
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
-Warning (15899): PLL "sweetPLL:sweetPLL_inst|altpll:altpll_component|sweetPLL_altpll:auto_generated|pll1" has parameters clk2_multiply_by and clk2_divide_by specified but port CLK[2] is not connected File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/db/sweetpll_altpll.v Line: 44
-Warning (21074): Design contains 25 input pin(s) that do not drive logic
-    Warning (15610): No output dependent on input pin "GPIO_1_D[0]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[1]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[2]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[3]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[4]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[5]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[6]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[7]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[9]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[11]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[13]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[15]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[17]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[19]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[21]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[23]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[25]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[27]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[28]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[29]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[30]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[31]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[32]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "GPIO_1_D[33]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
-    Warning (15610): No output dependent on input pin "KEY[1]" File: C:/Users/labuser/Documents/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 31
-Info (21057): Implemented 285 device resources after synthesis - the final resource count might be different
+Warning (15899): PLL "sweetPLL:sweetPLL_inst|altpll:altpll_component|sweetPLL_altpll:auto_generated|pll1" has parameters clk2_multiply_by and clk2_divide_by specified but port CLK[2] is not connected File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/db/sweetpll_altpll.v Line: 44
+Warning (21074): Design contains 29 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "GPIO_1_D[0]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[1]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[2]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[3]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[4]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[5]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[6]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[7]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[8]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[9]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[10]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[11]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[12]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[13]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[14]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[15]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[16]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[17]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[19]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[21]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[23]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[25]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[27]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[29]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[30]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[31]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[32]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "GPIO_1_D[33]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 30
+    Warning (15610): No output dependent on input pin "KEY[1]" File: C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.v Line: 31
+Info (21057): Implemented 273 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 37 input pins
     Info (21059): Implemented 34 output pins
-    Info (21061): Implemented 181 logic cells
-    Info (21064): Implemented 32 RAM segments
+    Info (21061): Implemented 189 logic cells
+    Info (21064): Implemented 12 RAM segments
     Info (21065): Implemented 1 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 76 warnings
-    Info: Peak virtual memory: 692 megabytes
-    Info: Processing ended: Thu Nov 01 19:19:56 2018
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 89 warnings
+    Info: Peak virtual memory: 673 megabytes
+    Info: Processing ended: Sat Nov 03 18:29:35 2018
     Info: Elapsed time: 00:00:11
-    Info: Total CPU time (on all processors): 00:00:23
+    Info: Total CPU time (on all processors): 00:00:27
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/labuser/team8s/lab4/Lab4_FPGA_Template/DE0_NANO.map.smsg.
 
 

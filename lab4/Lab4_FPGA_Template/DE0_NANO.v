@@ -69,6 +69,20 @@ wire c1_sig;
 wire c2_sig;
 assign GPIO_0_D[32] = c0_sig;
 
+wire D7,D6,D5,D4,D3,D2,D1,D0, PCLK,HREF,VSYNC;
+assign PCLK = GPIO_1_D[28];
+assign VSYNC = GPIO_1_D[26];
+assign HREF = GPIO_1_D[24];
+assign D7 = GPIO_1_D[22];
+assign D6 = GPIO_1_D[20];
+assign D5 = GPIO_1_D[18];
+assign D4 = GPIO_1_D[16];
+assign D3 = GPIO_1_D[14];
+assign D2 = GPIO_1_D[12];
+assign D1 = GPIO_1_D[10];
+assign D0 = GPIO_1_D[8];
+
+
 ///////* INSTANTIATE YOUR PLL HERE *///////
 sweetPLL	sweetPLL_inst (
 	.inclk0 ( CLOCK_50 ),
@@ -112,6 +126,7 @@ IMAGE_PROCESSOR proc(
 
 
 ///////* Update Read Address *///////
+//always @ (posedge PCLK) begin
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
 		if(VGA_PIXEL_X>(`SCREEN_WIDTH-1) || VGA_PIXEL_Y>(`SCREEN_HEIGHT-1))begin
@@ -122,35 +137,36 @@ always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		end
 end
 
-// Should be reading on pclk FIX THIS
-always @ (posedge c0_sig) begin
 
+always @ (posedge PCLK) begin
 
-	if(!GPIO_1_D[24]) begin
+	if(!HREF) begin
 			Y_ADDR = Y_ADDR + 1;
 			X_ADDR = 0;	
 	end
 	
-	if(!GPIO_1_D[26]) begin
+	if(!VSYNC) begin
 			Y_ADDR = 0;
 			X_ADDR = 0;
 	end
 	
+	if(!start)
+		X_ADDR = X_ADDR + 1;
 	
 	
 	if(start == 0) begin 
-		pixel_data_RGB332[7:2] = {GPIO_1_D[22],GPIO_1_D[20],GPIO_1_D[18],GPIO_1_D[12],GPIO_1_D[10],GPIO_1_D[8]};
-		//pixel_data_RGB332[7:5] = {GPIO_1_D[22],GPIO_1_D[20],GPIO_1_D[18]};
-		//pixel_data_RGB332[4:2] = 3'b001;
-		start = 1;
-		W_EN = 0;
+		//pixel_data_RGB332[7:2] = {D7,D6,D5,D2,D1,D0};
+		pixel_data_RGB332[7:5] <= {D7,D6,D5};
+		pixel_data_RGB332[4:2] <= 3'b000;
+		start <= 1;
+		W_EN <= 0;
 	end
 	else begin
-		pixel_data_RGB332[1:0] = {GPIO_1_D[16],GPIO_1_D[14]};
-		//pixel_data_RGB332[1:0] = 2'b01;
-		start = 0;
-		X_ADDR = X_ADDR + 1;
-		W_EN = 1;
+		//pixel_data_RGB332[1:0] = {D4,D3};
+		pixel_data_RGB332[1:0] <= 2'b00;
+		start <= 0;
+		X_ADDR <= X_ADDR + 1;
+		W_EN <= 1;
 	end
 			
 end
