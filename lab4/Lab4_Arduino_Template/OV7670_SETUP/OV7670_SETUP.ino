@@ -20,6 +20,7 @@ void setup() {
   Serial.begin(9600);
   
   // TODO: WRITE KEY REGISTERS
+  // everything
   /*OV7670_write_register(COM7, 0x80); // Reset the registers 
   OV7670_write_register(COM3, 0x08); // Scaling enable
   OV7670_write_register(CLKRC, 0x80); // use external clock as internal - enable double clock 
@@ -28,7 +29,8 @@ void setup() {
   OV7670_write_register(COM17, 0x08); // dsp color bar enabled 
   OV7670_write_register(MVFP, 0x30); // mirror and flipped
   OV7670_write_register(COM9, 0xA); // gain */
-  
+
+  // only the color bar test
   OV7670_write_register(COM7, 0x02); // color bar enable
   OV7670_write_register(COM17, 0x08); // dsp color bar enabled 
 
