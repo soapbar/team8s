@@ -61,7 +61,7 @@ wire [8:0] RESULT;
 reg start = 0;
 
 /* WRITE ENABLE */
-reg W_EN;
+reg W_EN = 1;
 
 ///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
 wire c0_sig;
@@ -69,7 +69,7 @@ wire c1_sig;
 wire c2_sig;
 assign GPIO_0_D[32] = c0_sig;
 
-wire D7,D6,D5,D4,D3,D2,D1,D0, PCLK,HREF,VSYNC;
+wire D7,D6,D5,D4,D3,D2,D1,D0, PCLK,VSYNC, HREF;
 assign PCLK = GPIO_1_D[28];
 assign VSYNC = GPIO_1_D[26];
 assign HREF = GPIO_1_D[24];
@@ -139,37 +139,58 @@ end
 
 
 always @ (posedge PCLK) begin
-
-	if(!HREF) begin
-			Y_ADDR = Y_ADDR + 1;
-			X_ADDR = 0;	
-	end
-	
-	if(!VSYNC) begin
-			Y_ADDR = 0;
+	if(VSYNC) begin
 			X_ADDR = 0;
 	end
-	
-	if(!start)
-		X_ADDR = X_ADDR + 1;
-	
-	
-	if(start == 0) begin 
-		//pixel_data_RGB332[7:2] = {D7,D6,D5,D2,D1,D0};
-		pixel_data_RGB332[7:5] <= {D7,D6,D5};
-		pixel_data_RGB332[4:2] <= 3'b000;
-		start <= 1;
-		W_EN <= 0;
-	end
 	else begin
-		//pixel_data_RGB332[1:0] = {D4,D3};
-		pixel_data_RGB332[1:0] <= 2'b00;
-		start <= 0;
-		X_ADDR <= X_ADDR + 1;
-		W_EN <= 1;
+		if(HREF) begin			
+			if(start == 0) begin 
+				pixel_data_RGB332[7:2] = {D0,D1,D2,D5,D6,D7};
+				start = 1;
+				W_EN = 0;
+			end
+			else begin
+				pixel_data_RGB332[1:0] = {D3,D4};
+				start = 0;
+				X_ADDR = X_ADDR + 1;
+				W_EN = 1;
+			end				
+		end
+		else begin
+			X_ADDR = 0;
+		end
 	end
-			
 end
 
+always @ (negedge HREF or posedge VSYNC) begin
+	if (VSYNC) begin
+		Y_ADDR = 0;
+	end
+	else begin
+		Y_ADDR = Y_ADDR + 1;
+	end
+end
+
+//always @ (posedge PCLK) begin
+//	if (X_ADDR > `SCREEN_WIDTH) begin
+//		X_ADDR = 0;
+//		Y_ADDR = Y_ADDR + 1;
+//	end
+//	else begin
+//		if (Y_ADDR > `SCREEN_HEIGHT) begin
+//			X_ADDR = 0;
+//			Y_ADDR = 0;
+//		end
+//		else begin
+//			if (!start) begin
+//				pixel_data_RGB332[7:2] = 6'b000111;
+//				start = 1;
+//			end
+//				pixel_data_RGB332[1:0] = 2'b11;
+//				X_ADDR = X_ADDR + 1;
+//				start = 0;
+//		end
+//	end
+//end
 	
 endmodule 
