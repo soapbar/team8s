@@ -26,13 +26,6 @@ x_dim = 4;
 % Two wall configurations, for testing
 % You can uncomment any of the wall_loc arrays or write your own mazes
 
-% wall_loc = [...
-%     9 1 3 5
-%     8 4 11 4
-%     12 10 5 12
-%     8 5 14 12
-%     10 2 3 6];
-
 wall_loc = [...
     9 1 3 5
     8 6 13 12
@@ -70,11 +63,14 @@ curr_dir = 'N';
 segments = [];
 settled = [];
 frontier = [];
+walls = zeros(y_dim,x_dim);
 
 while (true)
     
     % Update node ID to current position
     ID= getNodeID(curr_x,curr_y);
+    
+    walls(curr_y,curr_x) = wall_loc(curr_y,curr_x);
     
     % Get wall information at current location
     wall_bin = de2bi(wall_loc(curr_y,curr_x), 4, 'right-msb');
@@ -99,37 +95,13 @@ while (true)
 %
 %    Must break if the maze is fully explored.
 %======================
-    if(wall_bin(1) == 0)
-        next_y = curr_y - 1;
-        next_x = curr_x;
-        if(next_y == 0)
-            break
-        end
-    elseif(wall_bin(4) == 0)
-        next_x = curr_x - 1;
-        next_y = curr_y;
-        if(next_x == 0)
-            break
-        end
-    elseif(wall_bin(2) == 0)
-        next_y = curr_y + 1;
-        next_x = curr_x;
-        if(next_y == 6)
-            break
-        end
-    elseif(wall_bin(3) == 0)
-        next_x = curr_x + 1;
-        next_y = curr_y;
-        if(next_x >= x_dim+1)
-            break
-        end
-    end
-
-       
     
-   
-
-
+    [next_x,next_y,settled,frontier] = djikstra(curr_x,curr_y,wall_bin,settled,frontier,walls);
+    
+    if(next_x == curr_x && next_y == curr_y)
+        break
+    end
+    
     % Update our position
     prev_y = curr_y;
     prev_x = curr_x;
@@ -157,6 +129,7 @@ while (true)
     pause(0.2);
     
     %Update drawing of the maze
+
     imagesc(curr_loc);
     caxis([0 1]); % Re-scale colormap to original scale
     draw_walls(wall_loc);
