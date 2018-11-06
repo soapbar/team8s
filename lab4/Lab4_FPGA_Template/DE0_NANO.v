@@ -126,7 +126,6 @@ IMAGE_PROCESSOR proc(
 
 
 ///////* Update Read Address *///////
-//always @ (posedge PCLK) begin
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
 		if(VGA_PIXEL_X>(`SCREEN_WIDTH-1) || VGA_PIXEL_Y>(`SCREEN_HEIGHT-1))begin
@@ -145,12 +144,12 @@ always @ (posedge PCLK) begin
 	else begin
 		if(HREF) begin			
 			if(start == 0) begin 
-				pixel_data_RGB332[7:2] = {D0,D1,D2,D5,D6,D7};
+				pixel_data_RGB332[7:2] = {D7,D6,D5,D2,D1,D0};
 				start = 1;
 				W_EN = 0;
 			end
 			else begin
-				pixel_data_RGB332[1:0] = {D3,D4};
+				pixel_data_RGB332[1:0] = {D4,D3};
 				start = 0;
 				X_ADDR = X_ADDR + 1;
 				W_EN = 1;
@@ -170,27 +169,5 @@ always @ (negedge HREF or posedge VSYNC) begin
 		Y_ADDR = Y_ADDR + 1;
 	end
 end
-
-//always @ (posedge PCLK) begin
-//	if (X_ADDR > `SCREEN_WIDTH) begin
-//		X_ADDR = 0;
-//		Y_ADDR = Y_ADDR + 1;
-//	end
-//	else begin
-//		if (Y_ADDR > `SCREEN_HEIGHT) begin
-//			X_ADDR = 0;
-//			Y_ADDR = 0;
-//		end
-//		else begin
-//			if (!start) begin
-//				pixel_data_RGB332[7:2] = 6'b000111;
-//				start = 1;
-//			end
-//				pixel_data_RGB332[1:0] = 2'b11;
-//				X_ADDR = X_ADDR + 1;
-//				start = 0;
-//		end
-//	end
-//end
 	
 endmodule 
