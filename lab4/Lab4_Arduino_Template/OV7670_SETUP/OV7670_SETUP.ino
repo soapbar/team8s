@@ -25,25 +25,16 @@ void setup() {
   delay(100);
   set_color_matrix();
 
-  // regular camera stuff
-  /*OV7670_write_register(COM3, 0x08); // Scaling enable
-  //OV7670_write_register(CLKRC, 0x80); // use external clock as internal - enable double clock //0xCO 
-  OV7670_write_register(CLKRC, 0xC0); // use external clock as internal bit 3 + enable double clock
 
-  OV7670_write_register(COM15, 0xD0); // RGB 565 output F0 + largest outut range // F0 / D0
-  OV7670_write_register(COM7, 0x0C); // RGB output, no color bar enabled, QCIF selection
-  //OV7670_write_register(COM7, 0x0E); // RGB output, yes color bar enabled, QCIF selection
-  //OV7670_write_register(COM17, 0x08); // dsp color bar enabled 
+  OV7670_write_register(COM3, 0x08); // Scaling enable
+  OV7670_write_register(CLKRC, 0xC0); // use external clock as internal bit 3 + enable double clock / 80?
+  OV7670_write_register(COM15, 0xF0); // RGB 565 output F0 + largest outut range // F0 / D0
+  //OV7670_write_register(COM7, 0x0C); // RGB output, no color bar enabled, QCIF selection
+  OV7670_write_register(COM7, 0x0E); // COLOR - RGB output, yes color bar enabled, QCIF selection
+  OV7670_write_register(COM17, 0x08); // COLOR - dsp color bar enabled 
   OV7670_write_register(MVFP, 0x30); // mirror and flipped
-  OV7670_write_register(COM9, 0xB); // gain 2x + freeze AGC/AEC */
+  OV7670_write_register(COM9, 0xB); // gain 2x + freeze AGC/AEC 
 
-  // only the color bar test
-  //OV7670_write_register(COM7, 0x02); // color bar enable
-  OV7670_write_register(COM17, 0x08); // dsp color bar enabled 
-  OV7670_write_register(COM7, 0x0E); // RGB output, yes color bar enabled, QCIF selection
-  OV7670_write_register(COM15, 0xF0); // RGB 565 output F0 + largest outut range D0
-
-  //OV7670_write_register(CLKRC, 0xC0); // use external clock as internal bit 3 + enable double clock
 
 
   // TODO: READ KEY REGISTERS
