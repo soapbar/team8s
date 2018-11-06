@@ -61,9 +61,6 @@ steps = 0;
 curr_x = 4;
 curr_y = 5;
 
-next_x = curr_x;
-next_y = curr_y;
-
 %Direction facing: N, S, E, W
 curr_dir = 'N';
 
@@ -97,33 +94,7 @@ while (true)
 %
 %    Must break if the maze is fully explored.
 %======================
-%     if(wall_bin(1) == 0)
-%         next_y = curr_y - 1;
-%         next_x = curr_x;
-%         if(next_y == 0)
-%             break
-%         end
-%     elseif(wall_bin(4) == 0)
-%         next_x = curr_x - 1;
-%         next_y = curr_y;
-%         if(next_x == 0)
-%             break
-%         end
-%     elseif(wall_bin(2) == 0)
-%         next_y = curr_y + 1;
-%         next_x = curr_x;
-%         if(next_y == 6)
-%             break
-%         end
-%     elseif(wall_bin(3) == 0)
-%         next_x = curr_x + 1;
-%         next_y = curr_y;
-%         if(next_x >= x_dim+1)
-%             break
-%         end
-%     end
-
-       
+    if(wall_bin(1)
     
    
 
@@ -141,7 +112,7 @@ while (true)
         curr_dir= 'W';
     elseif (curr_y < prev_y)
         curr_dir= 'N';
-    else (curr_y > prev_y)
+    else %(curr_y > prev_y)
         curr_dir= 'S';
     end
     
