@@ -53,12 +53,12 @@ function [next_x,next_y,settled,frontier] = djikstra(curr_x,curr_y,wall_bin,sett
     else
         dists = abs(frontier(:,1)-curr_x)+abs(frontier(:,2)-curr_y);
         [~,ind] = min(dists);
-        dest = [frontier(ind,1),frontier(ind,2)];
+        dest = [frontier(ind,1),frontier(ind,2)]; % Choose next frontier to visit
         start = [curr_x,curr_y];
-        path = [];
+        path = [start,0];
         path = findPath(dest,start,walls,path);
-        next_x = path(1,1);
-        next_y = path(1,2);
+        next_x = path(2,1);
+        next_y = path(2,2);
         if(next_x == dest(1) && next_y == dest(2))
             if ind == 1
                 frontier = frontier(2:end,:);
