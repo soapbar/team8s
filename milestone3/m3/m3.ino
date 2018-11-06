@@ -101,7 +101,7 @@ void setup() {
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   dir = 1;
-  location = 0;
+  location = -dim;
 }
 
 void loop() {
