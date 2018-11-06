@@ -68,6 +68,8 @@ next_y = curr_y;
 curr_dir = 'N';
 
 segments = [];
+settled = [];
+frontier = [];
 
 while (true)
     
