@@ -95,7 +95,7 @@ void setup() {
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1,pipes[1]);
   
-  waitForSignal();
+  //waitForSignal();
 
   // Servo Setup
   LeftServo.attach(OUTLEFT);
@@ -160,7 +160,7 @@ void followLine() {
     msg = updateCoord(msg);
     LeftServo.write(90);
     RightServo.write(90);
-    msg = checkIR(msg);
+    //msg = checkIR(msg);
     delay(100);
     //figure8();
     msg = checkWall(msg);
