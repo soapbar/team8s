@@ -51,7 +51,7 @@ function [next_x,next_y,settled,frontier] = djikstra(curr_x,curr_y,wall_bin,sett
         next_x = curr_x;
         next_y = curr_y;
     else
-        dists = abs(frontier(:,1)-curr_x)+abs(frontier(:,2)-curr_y);
+        dists = abs(frontier(:,1)-curr_x)+abs(frontier(:,2)-curr_y)*4;
         [~,ind] = min(dists);
         dest = [frontier(ind,1),frontier(ind,2)]; % Choose next frontier to visit
         start = [curr_x,curr_y];
