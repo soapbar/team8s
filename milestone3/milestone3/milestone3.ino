@@ -39,7 +39,8 @@ int MUXSENSORS = A0;
 int start = 0;
 int c = 0;
 
-
+void waitForSignal();
+void sendMSG(int msg);
 /* The direction that the robot is currently facing:
     - 0-North
     - 1-East
@@ -53,9 +54,9 @@ int dir;
 int dim = 3; // dimentions of the maze
 int location;
 
-int settled [dim*dim];
-int frontier [dim*dim];
-int walls [dim*dim];
+int settled [9];
+int frontier [9];
+int walls [9];
 int last_s = 0;
 int last_f = -1;
 
@@ -101,7 +102,7 @@ void setup() {
   RightServo.attach(OUTRIGHT);
   dir = 1;
   location = 0;
-  for(i=0;i<dim*dim;i++){
+  for(int i=0;i<dim*dim;i++){
       settled[i] = -1;
       frontier[i] = -1;
       walls[i] = -1;
@@ -255,7 +256,7 @@ int checkWall(int msg){
   }
 
   //Update wall info for djikstra
-  walls[location] = wall_info | (north << 0) | (east << 2) | (south << 1) | (west << 3);
+  walls[location] = (north << 0) | (east << 2) | (south << 1) | (west << 3);
      
   return msg | (north << 7) | (east << 6) | (south << 5) | (west << 4);
 }
@@ -299,37 +300,35 @@ int updateCoord(int msg) {
             break;
     default: break;   
   }
-  newCoord = djikstra();
+  int newCoord = djikstra();
   return (location << 8) | msg;
 }
 
 int djikstra(){
 
+    int wall_data = walls[start];
     settled[last_s] = location;
     last_s++;
     
-    if(wall_bin(1) == 0)
-        [nr_f,~] = size(frontier);
+    if(wall_data % 2 == 1) {
+        //[nr_f,~] = size(frontier);
         frontier(nr_f+1,1) = curr_x;
         frontier(nr_f+1,2) = curr_y - 1;
-    end
-    if(wall_bin(2) == 0)
-        [nr_f,~] = size(frontier);
+    }
+    if((wall_data >> 1) %2 == 1) {
         frontier(nr_f+1,1) = curr_x;
         frontier(nr_f+1,2) = curr_y+1;
-    end
-    if(wall_bin(3) == 0)
-        [nr_f,~] = size(frontier);
+    }
+    if((wall_data >> 2) %2 == 1) {
         frontier(nr_f+1,1) = curr_x+1;
         frontier(nr_f+1,2) = curr_y;
-    end
-    if(wall_bin(4) == 0)
-        [nr_f,~] = size(frontier);
+    }
+    if((wall_data >> 3) %2 == 1) {
         frontier(nr_f+1,1) = curr_x-1;
         frontier(nr_f+1,2) = curr_y;
-    end
+    }
 
-    for( i = 0, i<=last_s; i++ ){
+    for(int i = 0; i<=last_s; i++ ){
         point = settled(i);
         c = 1;
         while c <= last_f
@@ -347,8 +346,9 @@ int djikstra(){
                     last_f--;
                 }
             }
-            else
-                c++;    
+            else {
+                c++; 
+            }   
     }
 
     if (last_f == -1)
@@ -357,7 +357,7 @@ int djikstra(){
         int min_dist = dim*dim+1;
         int dest = -1;
         dest_ind = -1;
-        for(i=0;i<=last_f;i++){
+        for(int i=0;i<=last_f;i++){
           dist = frontier[i]-location;
           if(dist < min_dist){
             min_dist = dist;
@@ -388,15 +388,15 @@ int djikstra(){
     }      
 }
 
-int findPath(dest,start,path){
+int findPath(int dest,int start,int path){
     
-    wall_data = walls(start);
+    int wall_data = walls(start);
     if(wall_data == -1)
         return path = [0,100];
     else 
         last_fp = -1;
         int frontier_path[dim*dim];
-        for(i=0;i<dim*dim;i++){
+        for(int i=0;i<dim*dim;i++){
           frontier_path[i] = -1;
         }
         if(wall_data % 2 == 1){
@@ -410,59 +410,60 @@ int findPath(dest,start,path){
         if((wall_data >> 2) %2 == 1){
             last_fp++;
             frontier_path[nr_f+1] = start+1;
-        {
-        if((wall_data >> 3) %2 == 1)
+        }
+        if((wall_data >> 3) %2 == 1){
             last_fp++;
             frontier_path[nr_f+1] = start-1;
-        end
+        }
 
         last_p = 0;
         while(path[last_p][0]>-1)
           last_p++;
         
-        for( i = 0; i<=last_p; i++){
+        for(int i = 0; i<=last_p; i++){
             point = path[i][0];
             
             c = 1;
-            while c <= last_fp
+            while (c <= last_fp) {
                 if isequal(point,frontier(c,1:2))
-                    if c == 1 
+                    if (c == 1) {
                         frontier = frontier(2:end,:);
-                    elseif c == nr_f
+                    }
+                    else if (c == nr_f) {
                         frontier = frontier(1:end-1,:);
-                    else
+                    }
+                    else{
                         frontier = [frontier(1:c-1,:);frontier(c+1:end,:)];
-                    end
-                else
+                    }
+                else{
                     c = c+1;
-                end
-                [nr_f,~] = size(frontier);
-            end
+                }
+            }
         }
 
-        [nr_f,~] = size(frontier);
         found = 0;
-        for c = 1:nr_f
-            if isequal(dest,frontier(c,1:2))
+        for c = 1:nr_f {
+            if isequal(dest,frontier(c,1:2)) {
                 path = [path;dest,1];
                 found = 1;
-            end
-        end
+            }
+        }
 
         if found == 0
             for c = 1:nr_f
-                if c == 1
+                if (c == 1) {
                     new_start = frontier(c,1:2);
                     curr_path = [path;new_start,1];
                     poss_path_best = findPath(dest,new_start,walls,curr_path);
-                else
+                }
+                else {
                     new_start = frontier(c,1:2);
                     curr_path = [path;new_start,1];
                     poss_path = findPath(dest,new_start,walls,curr_path);
-                    if(sum(poss_path_best(:,3)) > sum(poss_path(:,3)))
+                    if(sum(poss_path_best(:,3)) > sum(poss_path(:,3))){
                         poss_path_best = poss_path;
-                    end
-                end
+                    }   
+                }
             end
             if nr_f == 0
                 path = [0,0,100];
@@ -577,4 +578,3 @@ void waitForSignal(){
   DIDR0 = prevDIDR0;
 
 }
-
