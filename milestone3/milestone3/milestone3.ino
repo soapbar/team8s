@@ -53,9 +53,10 @@ int dir;
 int dim = 3; // dimentions of the maze
 int location;
 
-int settled [dim*dim];
-int frontier [dim*dim];
-int walls [dim*dim];
+int settled [9];
+int frontier [9];
+int walls [9]; //TEMP FIX FIX THIS FIX THIS
+
 int last_s = 0;
 int last_f = -1;
 
@@ -368,9 +369,9 @@ int djikstra(){
         int path[dim*dim][2];
         for(int i=0;i<dim*dim;i++)
           path[i][0]=-1;
-        path[0] = location;
-        path = findPath(dest,location,walls,path);
-        next_loc = path[1];
+        path[0][0] = location;
+        findPath(dest,location,walls,path);
+        next_loc = path[1][0];
         if(next_x == dest){
             if( dest_ind == 0){
                 frontier[0] = frontier[last_f];
@@ -388,11 +389,12 @@ int djikstra(){
     }      
 }
 
-int findPath(dest,start,path){
+void findPath(dest,start,path){
     
     wall_data = walls(start);
     if(wall_data == -1)
-        return path = [0,100];
+        path = [0,100];
+        break;
     else 
         last_fp = -1;
         int frontier_path[dim*dim];
@@ -423,60 +425,59 @@ int findPath(dest,start,path){
         for( i = 0; i<=last_p; i++){
             point = path[i][0];
             
-            c = 1;
-            while c <= last_fp
-                if isequal(point,frontier(c,1:2))
-                    if c == 1 
-                        frontier = frontier(2:end,:);
-                    elseif c == nr_f
-                        frontier = frontier(1:end-1,:);
-                    else
-                        frontier = [frontier(1:c-1,:);frontier(c+1:end,:)];
-                    end
+            c = 0;
+            while (c <= last_fp){
+                if (point == frontier[c]){
+                    if (c == 0){ 
+                        frontier[0] = frontier[last_fp];
+                        last_fp--;
+                    }
+                    else if(c == last_fp){
+                        frontier[last_fp] = -1;
+                        lastfp--;
+                    }
+                    else{
+                        frontier[c] = frontier[last_fp];
+                        last_fp--;
+                    }
+                }
                 else
-                    c = c+1;
-                end
-                [nr_f,~] = size(frontier);
-            end
+                    c++;
+            }
         }
 
-        [nr_f,~] = size(frontier);
-        found = 0;
-        for c = 1:nr_f
-            if isequal(dest,frontier(c,1:2))
-                path = [path;dest,1];
-                found = 1;
-            end
-        end
+        i = 0;
+        while(i <= last_fp){
+            if( dest == frontier[last_fp]){
+                path[last_p][0] = dest;
+                path[last_p][1] = 1;
+                break;
+            }
+        }
 
-        if found == 0
-            for c = 1:nr_f
-                if c == 1
-                    new_start = frontier(c,1:2);
-                    curr_path = [path;new_start,1];
-                    poss_path_best = findPath(dest,new_start,walls,curr_path);
-                else
-                    new_start = frontier(c,1:2);
-                    curr_path = [path;new_start,1];
-                    poss_path = findPath(dest,new_start,walls,curr_path);
-                    if(sum(poss_path_best(:,3)) > sum(poss_path(:,3)))
+        int poss_path_best [9];
+        int best_dist,poss_dist;
+        for(i=0;i<=last_fp;i++){
+                
+                new_start = frontier[c];
+                path[last_p][0] = new_start;
+                path[last_p][1] = 1;
+                int [] new_path = path;
+                findPath(dest,new_start,new_path);
+                if(i == 0)
+                    poss_path_best = new_path;
+                else{
+                    for(k=0;k<dim*dim;k++){
+                      best_dist += poss_path_best[k][1];
+                      poss_dist += new_path[k][1];
+                    }
+                    if(poss_dist < best_dist)
                         poss_path_best = poss_path;
-                    end
-                end
-            end
-            if nr_f == 0
-                path = [0,0,100];
-            else
-                path = poss_path_best;
-            end
-        end
-    end
-
+                }
+        }
+        path = poss_path_best
 }
 
-int [] removeRepeats(int[]a,int[]b){
-  
-}
 
 void sendMSG(int msg) {
   // First, stop listening so we can talk.
