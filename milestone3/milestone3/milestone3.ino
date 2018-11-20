@@ -56,7 +56,8 @@ int location;
 
 int settled [9];
 int frontier [9];
-int walls [9];
+int walls [9]; //TEMP FIX FIX THIS FIX THIS
+
 int last_s = 0;
 int last_f = -1;
 
@@ -94,7 +95,7 @@ void setup() {
   radio.printDetails();
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1,pipes[1]);
-  
+  Serial.println("WAIT FOR START TONE");
   waitForSignal();
 
   // Servo Setup
@@ -121,8 +122,8 @@ void followLine() {
   bool leftIsWhite = analogRead(SENSELEFT) < 860;
   bool reachedIntersection = rightIsWhite && leftIsWhite;
   if (reachedIntersection) { // intersection
+    Serial.println("I'M AT AN INTERSECTION");
     int msg = 0;
-    msg = updateCoord(msg);
     LeftServo.write(90);
     RightServo.write(90);
     msg = checkIR(msg);
@@ -130,6 +131,7 @@ void followLine() {
     msg = checkWall(msg);
     LeftServo.write(90);
     RightServo.write(90);
+    msg = updateCoord(msg);
     sendMSG(msg);   
   }
   else if (rightIsWhite) {
@@ -289,6 +291,7 @@ void fullStop() {
 }
 
 int updateCoord(int msg) {
+  Serial.println("UPDATE COORD");
   switch(dir) {
     case 0: location = location - 1;
             break;
@@ -301,7 +304,71 @@ int updateCoord(int msg) {
     default: break;   
   }
   int newCoord = djikstra();
+  int goTo = newCoord-location;
+  if(goTo == 1){
+    faceEast();
+  }
+  else if(goTo == -1){
+    faceWest();
+  }
+  else if(goTo == dim){
+    faceNorth();
+  }
+  else if(goTo == -dim){
+    faceSouth();
+  }
+  goStraight();
+    
+  location = newCoord;
   return (location << 8) | msg;
+}
+
+void faceNorth(){
+  switch(dir) {
+    case 1: sharpLeft();
+            break;
+    case 2: oneEighty();
+            break;
+    case 3: sharpRight();
+            break;
+    default: break;   
+  }
+}
+
+void faceEast(){
+    switch(dir) {
+      case 0: sharpRight();
+            break;
+      case 2: sharpLeft();
+            break;
+      case 3: oneEighty();
+            break;
+      default: break;   
+  }
+}
+
+void faceSouth(){
+    switch(dir) {
+      case 0: oneEighty();
+            break;
+      case 1: sharpRight();
+            break;
+      case 3: sharpLeft();
+            break;
+      default: break;   
+  }
+}
+
+void faceWest(){
+  switch(dir) {
+      case 0: sharpLeft();
+            break;
+      case 1: oneEighty();
+            break;
+      case 2: sharpRight();
+            break;
+      default: break;   
+  }
 }
 
 int djikstra(){
@@ -311,27 +378,26 @@ int djikstra(){
     last_s++;
     
     if(wall_data % 2 == 1) {
-        //[nr_f,~] = size(frontier);
-        frontier(nr_f+1,1) = curr_x;
-        frontier(nr_f+1,2) = curr_y - 1;
+        frontier[last_f] = location-dim;
+        last_f++;
     }
     if((wall_data >> 1) %2 == 1) {
-        frontier(nr_f+1,1) = curr_x;
-        frontier(nr_f+1,2) = curr_y+1;
+        frontier[last_f] = location+dim;
+        last_f++;
     }
     if((wall_data >> 2) %2 == 1) {
-        frontier(nr_f+1,1) = curr_x+1;
-        frontier(nr_f+1,2) = curr_y;
+        frontier[last_f] = location+1;
+        last_f++;
     }
     if((wall_data >> 3) %2 == 1) {
-        frontier(nr_f+1,1) = curr_x-1;
-        frontier(nr_f+1,2) = curr_y;
+        frontier[last_f] = location-1;
+        last_f++;
     }
 
     for(int i = 0; i<=last_s; i++ ){
-        point = settled(i);
+        int point = settled[i];
         c = 1;
-        while c <= last_f
+        while (c <= last_f)
             if (point == frontier[c]){
                 if (c == 0){
                     frontier[0] = frontier[last_f];
@@ -356,22 +422,22 @@ int djikstra(){
     else{
         int min_dist = dim*dim+1;
         int dest = -1;
-        dest_ind = -1;
+        int dest_ind = -1;
         for(int i=0;i<=last_f;i++){
-          dist = frontier[i]-location;
+          int dist = frontier[i]-location;
           if(dist < min_dist){
             min_dist = dist;
             dest = frontier[i];
             dest_ind = -1;
           }
         }
-        int path[dim*dim][2];
+        int path[9][2];
         for(int i=0;i<dim*dim;i++)
           path[i][0]=-1;
-        path[0] = location;
-        path = findPath(dest,location,walls,path);
-        next_loc = path[1];
-        if(next_x == dest){
+        path[0][0] = location;
+        findPath(dest,location,walls,path);
+        int next_loc = path[1][0];
+        if(next_loc == dest){
             if( dest_ind == 0){
                 frontier[0] = frontier[last_f];
                 last_f--;
@@ -388,96 +454,106 @@ int djikstra(){
     }      
 }
 
-int findPath(int dest,int start,int path){
+int findPath(int dest,int start,int walls[],int path[][2]){
     
-    int wall_data = walls(start);
-    if(wall_data == -1)
-        return path = [0,100];
-    else 
-        last_fp = -1;
+    int wall_data = walls[start];
+    if(wall_data == -1){
+        path[0][1] = 100;
+    }
+    else{
+        int last_fp = -1;
         int frontier_path[dim*dim];
         for(int i=0;i<dim*dim;i++){
           frontier_path[i] = -1;
         }
         if(wall_data % 2 == 1){
             last_fp++;
-            frontier_path[nr_f+1] = start+dim;
+            frontier_path[last_fp+1] = start+dim;
         }
         if((wall_data >> 1) %2 == 1){
             last_fp++;
-            frontier_path[nr_f+1] = start-dim;
+            frontier_path[last_fp+1] = start-dim;
         }
         if((wall_data >> 2) %2 == 1){
             last_fp++;
-            frontier_path[nr_f+1] = start+1;
+            frontier_path[last_fp+1] = start+1;
         }
         if((wall_data >> 3) %2 == 1){
             last_fp++;
-            frontier_path[nr_f+1] = start-1;
+            frontier_path[last_fp+1] = start-1;
         }
 
-        last_p = 0;
+        int last_p = 0;
         while(path[last_p][0]>-1)
           last_p++;
         
         for(int i = 0; i<=last_p; i++){
-            point = path[i][0];
-            
-            c = 1;
-            while (c <= last_fp) {
-                if isequal(point,frontier(c,1:2))
-                    if (c == 1) {
-                        frontier = frontier(2:end,:);
+            int point = path[i][0];
+            c = 0;
+            while (c <= last_fp){
+                if (point == frontier[c]){
+                    if (c == 0){ 
+                        frontier[0] = frontier[last_fp];
+                        last_fp--;
                     }
-                    else if (c == nr_f) {
-                        frontier = frontier(1:end-1,:);
+                    else if(c == last_fp){
+                        frontier[last_fp] = -1;
+                        last_fp--;
                     }
                     else{
-                        frontier = [frontier(1:c-1,:);frontier(c+1:end,:)];
+                        frontier[c] = frontier[last_fp];
+                        last_fp--;
                     }
+                }
+                else
+                    c++;
+            }
+        }
+
+        int i = 0;
+        while(i <= last_fp){
+            if( dest == frontier[last_fp]){
+                path[last_p][0] = dest;
+                path[last_p][1] = 1;
+                break;
+            }
+        }
+
+        int poss_path_best[9][2];
+        int best_dist,poss_dist;
+        for(i=0;i<=last_fp;i++){
+                
+                int new_start = frontier[c];
+                path[last_p][0] = new_start;
+                path[last_p][1] = 1;
+                int new_path[9][2] = {path};
+                findPath(dest,new_start,walls,new_path);
+                if(i == 0){
+                      for( int i = 0 ; i < 9 ; ++i ){
+                        for(int j = 0 ; j < 2 ; ++j)
+                          poss_path_best[i][j] = new_path[i][j];
+                      }
+                }
                 else{
-                    c = c+1;
+                    for(int k=0;k<9;k++){
+                      best_dist += poss_path_best[k][1];
+                      poss_dist += new_path[k][1];
+                    }
+                    if(poss_dist < best_dist)
+                      for( int i = 0 ; i < 9 ; ++i ){
+                        for(int j = 0 ; j < 2 ; ++j)
+                          poss_path_best[i][j] = new_path[i][j];
+                      }
                 }
-            }
         }
-
-        found = 0;
-        for c = 1:nr_f {
-            if isequal(dest,frontier(c,1:2)) {
-                path = [path;dest,1];
-                found = 1;
-            }
+        for( int i = 0 ; i < 9 ; ++i ){
+           for(int j = 0 ; j < 2 ; ++j)
+               path[i][j] = poss_path_best[i][j];
         }
-
-        if found == 0
-            for c = 1:nr_f
-                if (c == 1) {
-                    new_start = frontier(c,1:2);
-                    curr_path = [path;new_start,1];
-                    poss_path_best = findPath(dest,new_start,walls,curr_path);
-                }
-                else {
-                    new_start = frontier(c,1:2);
-                    curr_path = [path;new_start,1];
-                    poss_path = findPath(dest,new_start,walls,curr_path);
-                    if(sum(poss_path_best(:,3)) > sum(poss_path(:,3))){
-                        poss_path_best = poss_path;
-                    }   
-                }
-            end
-            if nr_f == 0
-                path = [0,0,100];
-            else
-                path = poss_path_best;
-            end
-        end
-    end
+    }
 
 }
 
-int [] removeRepeats(int[]a,int[]b){
-  
-}
 
 void sendMSG(int msg) {
   // First, stop listening so we can talk.
@@ -570,7 +646,7 @@ void waitForSignal(){
     sei();
     if (fft_log_out[5] > 160) 
       start = 1;
-  
+    Serial.println(fft_log_out[5]);
   }
   TIMSK0 = prevTIMSK0;
   ADCSRA = prevADCSRA;
