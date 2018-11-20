@@ -29,8 +29,8 @@ reg [14:0] RED_PIXELS;
 reg [14:0] BLUE_PIXELS;
 reg [14:0] pixel_count;
 
-reg RED_FRAMES;
-reg BLUE_FRAMES;
+reg [9:0] RED_FRAMES;
+reg [9:0] BLUE_FRAMES;
 
 
 always @ (posedge CLK) begin
@@ -46,11 +46,11 @@ always @ (posedge CLK) begin
 	end
 	
 	// prevent frame overflow
-	if (RED_FRAMES == 15'b111111111111111) begin
+	if (RED_FRAMES == 10'b1111111111) begin
 		RED_FRAMES = RED_FRAMES - BLUE_FRAMES;
 		BLUE_FRAMES = 0;
 	end
-	if (BLUE_FRAMES == 15'b111111111111111) begin
+	if (BLUE_FRAMES == 10'b1111111111) begin
 		BLUE_FRAMES = BLUE_FRAMES - RED_FRAMES;
 		RED_FRAMES = 0;
 	end
