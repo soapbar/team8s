@@ -1,7 +1,7 @@
 #include <Servo.h>
 
 #define LOG_OUT 1 // use the log output function
-#define FFT_N 256 // set to 256 point fft
+#define FFT_N 128 // set to 256 point fft
 #include <FFT.h> // include the library
 #include <SPI.h>
 #include "nRF24L01.h"
@@ -318,7 +318,7 @@ int updateCoord(int msg) {
     faceSouth();
   }
   goStraight();
-    
+
   location = newCoord;
   return (location << 8) | msg;
 }

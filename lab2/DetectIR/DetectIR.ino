@@ -41,8 +41,10 @@ void loop() {
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();
-    //Serial.println("start");
-    if (fft_log_out[42] > 160) {
+    Serial.println("start");
+    Serial.println(fft_log_out[42]); // this bin? - 9V for the IR hat
+
+    if (fft_log_out[42] > 160) { //42
       Serial.println("IR Detected");
     }
     else {
