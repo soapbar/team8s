@@ -58,15 +58,11 @@ assign VGA_RESET = ~KEY[0];
 ///// I/O for Img Proc /////
 wire [8:0] RESULT;
 
-assign GPIO_0_D[28] = RESULT[0]; // shape pins
-assign GPIO_0_D[26] = RESULT[1];
-assign GPIO_0_D[30] = RESULT[2]; // 0 if red, 1 if blue
-assign GPIO_0_D[33] = RESULT[3]; // debugging
-assign GPIO_0_D[31] = RESULT[4];
-assign GPIO_0_D[29] = RESULT[5]; 
-assign GPIO_0_D[27] = RESULT[6]; 
-assign GPIO_0_D[25] = RESULT[7];
-assign GPIO_0_D[24] = RESULT[8]; 
+assign GPIO_0_D[30] = RESULT[0]; // 0 if red, 1 if blue 
+assign GPIO_0_D[28] = RESULT[1]; // 1 if none
+assign GPIO_0_D[33] = RESULT[2]; // red
+assign GPIO_0_D[31] = RESULT[3]; // none
+assign GPIO_0_D[29] = RESULT[4]; // blue (green)
 
 reg start = 0;
 
