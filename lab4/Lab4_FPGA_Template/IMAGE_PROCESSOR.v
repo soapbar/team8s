@@ -59,7 +59,6 @@ reg [9:0] square_frames;
 reg [9:0] diamond_frames;
 reg [9:0] triangle_frames;
 reg [9:0] none_frames;
-reg [9:0] min_shape_frames;
 reg [9:0] max_shape_frames;
 
 always @ (posedge CLK) begin
@@ -78,7 +77,7 @@ always @ (posedge CLK) begin
 		bottom_y = 0;
 	end
 	
-	// prevent frame overflow
+	// prevent color frame overflow
 	if (RED_FRAMES == 10'b1111111111) begin
 		RED_FRAMES = RED_FRAMES - BLUE_FRAMES;
 		BLUE_FRAMES = 0;
@@ -89,69 +88,20 @@ always @ (posedge CLK) begin
 		RED_FRAMES = 0;
 	end
 	
-	// find min_shape_frames
-	if (none_frames < square_frames && none_frames < triangle_frames && none_frames < diamond_frames) begin
-		min_shape_frames = none_frames;
-	end
-	else begin 
-		if (square_frames < none_frames && square_frames < triangle_frames && square_frames < diamond_frames) begin
-			min_shape_frames = square_frames;
-		end
-		else begin
-			if (triangle_frames < none_frames && triangle_frames < square_frames && triangle_frames < diamond_frames) begin
-				min_shape_frames = triangle_frames;
-			end
-			else begin
-				if (diamond_frames < none_frames && diamond_frames < square_frames && diamond_frames < triangle_frames) begin
-					min_shape_frames = diamond_frames;
-				end
-			end
-		end
-	end
-	
-	
-	if (square_frames == 10'b1111111111) begin
-		if (triangle_frames == 0 && diamond_frames == 0 && none_frames == 0) begin
+	// prevent shape frame overflow
+	if (square_frames == 10'b1111111111 || triangle_frames == 10'b1111111111 ||
+	    diamond_frames == 10'b1111111111 || none_frames == 10'b1111111111) begin
+		if (square_frames > 0) begin
 			square_frames = square_frames - 1;
 		end
-		else begin
-			square_frames = square_frames - min_shape_frames;
-			triangle_frames = triangle_frames - min_shape_frames;
-			diamond_frames = diamond_frames - min_shape_frames;
-			none_frames = none_frames - min_shape_frames;
+		if (triangle_frames > 0) begin
+			triangle_frames = square_frames - 1;
 		end
-	end
-	if (triangle_frames == 10'b1111111111) begin
-		if (square_frames == 0 && diamond_frames == 0 && none_frames == 0) begin
-			triangle_frames = triangle_frames - 1;
+		if (diamond_frames > 0) begin
+			diamond_frames = square_frames - 1;
 		end
-		else begin
-			square_frames = square_frames - min_shape_frames;
-			triangle_frames = triangle_frames - min_shape_frames;
-			diamond_frames = diamond_frames - min_shape_frames;
-			none_frames = none_frames - min_shape_frames;
-		end
-	end
-	if (diamond_frames == 10'b1111111111) begin
-		if (triangle_frames == 0 && square_frames == 0 && none_frames == 0) begin
-			diamond_frames = diamond_frames - 1;
-		end
-		else begin
-			square_frames = square_frames - min_shape_frames;
-			triangle_frames = triangle_frames - min_shape_frames;
-			diamond_frames = diamond_frames - min_shape_frames;
-			none_frames = none_frames - min_shape_frames;
-		end
-	end
-	if (none_frames == 10'b1111111111) begin
-		if (triangle_frames == 0 && diamond_frames == 0 && square_frames == 0) begin
-			none_frames = none_frames - 1;
-		end
-		else begin
-			square_frames = square_frames - min_shape_frames;
-			triangle_frames = triangle_frames - min_shape_frames;
-			diamond_frames = diamond_frames - min_shape_frames;
-			none_frames = none_frames - min_shape_frames;
+		if (none_frames > 0) begin
+			none_frames = none - 1;
 		end
 	end
 	
@@ -201,7 +151,7 @@ always @ (posedge CLK) begin
 		end
 	end
 
-// find max_shape_frames
+	// find max_shape_frames
 	if (none_frames > square_frames && none_frames > triangle_frames && none_frames > diamond_frames) begin
 		max_shape_frames = none_frames;
 	end
@@ -214,9 +164,7 @@ always @ (posedge CLK) begin
 				max_shape_frames = triangle_frames;
 			end
 			else begin
-				if (diamond_frames > none_frames && diamond_frames > square_frames && diamond_frames > triangle_frames) begin
-					max_shape_frames = diamond_frames;
-				end
+				max_shape_frames = diamond_frames;
 			end
 		end
 	end	
