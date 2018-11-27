@@ -13,7 +13,15 @@
 
 //#define PSHFT 0x1B
 
-
+int diff0 = 1;
+int diff1 = 2;
+int diff2 = 3;
+int diff3 = 4;
+int diff4 = 5;
+int diff5 = 6;
+int colorPin = 7;
+int sp0 = 8;
+int sp1 = 9;
 ///////// Main Program //////////////
 void setup() {
   Wire.begin();
@@ -40,15 +48,40 @@ void setup() {
   // TODO: READ KEY REGISTERS
   read_key_registers();
 
-  pinMode(7, INPUT);
-  pinMode(6, INPUT);
-  pinMode(5, INPUT);
+  pinMode(diff0, INPUT);
+  pinMode(diff1, INPUT);
+  pinMode(diff2, INPUT);
+  pinMode(diff3, INPUT);
+  pinMode(diff4, INPUT);
+  pinMode(diff5, INPUT);
+  pinMode(colorPin, INPUT);
+  pinMode(sp0, INPUT);
+  pinMode(sp1, INPUT);
 }
 
 void loop(){
   String treasure = "";
-  int sb0 = digitalRead(5);
-  int sb1 = digitalRead(6);
+  int diff = 0;
+  if (digitalRead(diff0) == HIGH) {
+    diff = diff + 1;
+  }
+  if (digitalRead(diff1) == HIGH) {
+    diff = diff + 2;
+  }
+  if (digitalRead(diff2) == HIGH) {
+    diff = diff + 4;
+  }
+  if (digitalRead(diff3) == HIGH) {
+    diff = diff + 8;
+  }
+  if (digitalRead(diff4) == HIGH) {
+    diff = diff + 16;
+  }
+  if (digitalRead(diff5) == HIGH) {
+    diff = diff + 32;
+  }
+  int sb0 = digitalRead(sp0);
+  int sb1 = digitalRead(sp1);
   if (sb0 == LOW && sb1 == LOW) {
     treasure = "None";
   }
@@ -70,7 +103,8 @@ void loop(){
     }
   }
   Serial.println(treasure);
-  delay(500);
+  Serial.println(diff);
+  delay(1000);
 }
 
 

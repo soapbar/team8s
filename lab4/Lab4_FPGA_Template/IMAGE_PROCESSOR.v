@@ -175,7 +175,7 @@ end
 assign RESULT[0] = (max_shape_frames == none_frames || max_shape_frames == triangle_frames) ? 0 : 1;
 assign RESULT[1] = (max_shape_frames == none_frames || max_shape_frames == square_frames) ? 0 : 1;
 assign RESULT[2] = (RED_FRAMES > BLUE_FRAMES) ? 0 : 1;
-assign RESULT[8:3] = 6'b000000;
+assign RESULT[8:3] = flx[5:0];
  
 
 endmodule
