@@ -1,7 +1,7 @@
       #include <Servo.h>
 
 #define LOG_OUT 1 // use the log output function
-#define FFT_N 256 // set to 256 point fft
+#define FFT_N 128 // set to 256 point fft
 #include <FFT.h> // include the library
 
 // wheels
@@ -33,6 +33,7 @@ int direction;
 
 void setup() {
   Serial.begin(9600); // use the serial port
+   Serial.println("Beginning");
 
   //Set up mux select
   pinMode(2, OUTPUT);
@@ -75,7 +76,7 @@ void waitForStart(){
   DIDR0 = 0x01; // turn off the digital input for adc0
   
   while(start == 0){
-    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+    for (int i = 0 ; i < 256 ; i += 2) { // save 256 samples
       while (!(ADCSRA & 0x10)); // wait for adc to be ready
       ADCSRA = 0xf5; // restart adc
       byte m = ADCL; // fetch adc data
@@ -91,9 +92,10 @@ void waitForStart(){
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();
-    Serial.println(fft_log_out[5]);
-    if (fft_log_out[5] > 160) 
-      start = 1;
+    Serial.println("start");
+    for(int i =0; i<64;i++){
+      Serial.println(fft_log_out[i]);
+    }
   }
   TIMSK0 = prevTIMSK0;
   ADCSRA = prevADCSRA;

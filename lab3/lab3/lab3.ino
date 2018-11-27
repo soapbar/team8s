@@ -124,7 +124,7 @@ void waitForSignal(){
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
   while(start == 0){
-    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+    for (int i = 0 ; i < 256 ; i += 2) { // save 256 samples
       while (!(ADCSRA & 0x10)); // wait for adc to be ready
       ADCSRA = 0xf5; // restart adc
       byte m = ADCL; // fetch adc data
@@ -140,9 +140,10 @@ void waitForSignal(){
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();
-    if (fft_log_out[5] > 160) 
+    if (fft_log_out[3] > 160) 
       start = 1;
-  
+      Serial.println(fft_log_out[3]);
+
   }
   TIMSK0 = prevTIMSK0;
   ADCSRA = prevADCSRA;
@@ -200,7 +201,7 @@ int checkIR(int msg) {
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
   
-  for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+  for (int i = 0 ; i < 256 ; i += 2) { // save 256 samples -> change 512/2
     while (!(ADCSRA & 0x10)); // wait for adc to be ready
     ADCSRA = 0xf5; // restart adc
     byte m = ADCL; // fetch adc data
@@ -217,6 +218,7 @@ int checkIR(int msg) {
   fft_mag_log(); // take the output of the fft
   sei();
   if (fft_log_out[42] > 160) {
+    Serial.println("detecting!");
     fullStop();
     robot = 1;
   }

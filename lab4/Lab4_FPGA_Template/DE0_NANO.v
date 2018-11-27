@@ -1,4 +1,4 @@
-`define SCREEN_WIDTH 176
+ `define SCREEN_WIDTH 176
 `define SCREEN_HEIGHT 144
 
 ///////* DON'T CHANGE THIS PART *///////
@@ -58,6 +58,10 @@ assign VGA_RESET = ~KEY[0];
 ///// I/O for Img Proc /////
 wire [8:0] RESULT;
 
+assign GPIO_0_D[28] = RESULT[0]; // shape pins
+assign GPIO_0_D[26] = RESULT[1];
+assign GPIO_0_D[30] = RESULT[2]; // 0 if red, 1 if blue
+
 reg start = 0;
 
 /* WRITE ENABLE */
@@ -67,20 +71,22 @@ reg W_EN = 1;
 wire c0_sig;
 wire c1_sig;
 wire c2_sig;
-assign GPIO_0_D[32] = c0_sig;
+
 
 wire D7,D6,D5,D4,D3,D2,D1,D0, PCLK,VSYNC, HREF;
-assign PCLK = GPIO_1_D[28];
-assign VSYNC = GPIO_1_D[26];
-assign HREF = GPIO_1_D[24];
-assign D7 = GPIO_1_D[22];
-assign D6 = GPIO_1_D[20];
-assign D5 = GPIO_1_D[18];
-assign D4 = GPIO_1_D[16];
-assign D3 = GPIO_1_D[14];
-assign D2 = GPIO_1_D[12];
-assign D1 = GPIO_1_D[10];
-assign D0 = GPIO_1_D[8];
+
+assign VSYNC = GPIO_1_D[21]; // done
+assign HREF = GPIO_1_D[20]; // done
+assign PCLK = GPIO_1_D[19]; // done
+assign GPIO_0_D[32] = c0_sig; //XCLK
+assign D7 = GPIO_1_D[17]; // done
+assign D6 = GPIO_1_D[16]; // done
+assign D5 = GPIO_1_D[15]; // done
+assign D4 = GPIO_1_D[14]; // done
+assign D3 = GPIO_1_D[13]; // done
+assign D2 = GPIO_1_D[12]; // done
+assign D1 = GPIO_1_D[11]; // done
+assign D0 = GPIO_1_D[10]; // done
 
 
 ///////* INSTANTIATE YOUR PLL HERE *///////
@@ -145,11 +151,13 @@ always @ (posedge PCLK) begin
 		if(HREF) begin			
 			if(start == 0) begin 
 				pixel_data_RGB332[7:2] = {D7,D6,D5,D2,D1,D0};
+				//pixel_data_RGB332[7:2] = 6'b000000;
 				start = 1;
 				W_EN = 0;
 			end
 			else begin
 				pixel_data_RGB332[1:0] = {D4,D3};
+				//pixel_data_RGB332[1:0] = 2'b11;
 				start = 0;
 				X_ADDR = X_ADDR + 1;
 				W_EN = 1;
