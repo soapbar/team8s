@@ -29,9 +29,9 @@ void setup() {
   OV7670_write_register(COM3, 0x08); // Scaling enable
   OV7670_write_register(CLKRC, 0xC0); // use external clock as internal bit 3 + enable double clock / 80?
   OV7670_write_register(COM15, 0xD0); // RGB 565 output F0 + largest outut range // F0 / D0
-  //OV7670_write_register(COM7, 0x0C); // RGB output, no color bar enabled, QCIF selection
-  OV7670_write_register(COM7, 0x0E); // COLOR - RGB output, yes color bar enabled, QCIF selection
-  OV7670_write_register(COM17, 0x08); // COLOR - dsp color bar enabled 
+  OV7670_write_register(COM7, 0x0C); // RGB output, no color bar enabled, QCIF selection
+  //OV7670_write_register(COM7, 0x0E); // COLOR - RGB output, yes color bar enabled, QCIF selection
+  //OV7670_write_register(COM17, 0x08); // COLOR - dsp color bar enabled 
   OV7670_write_register(MVFP, 0x30); // mirror and flipped
   OV7670_write_register(COM9, 0xB); // gain 2x + freeze AGC/AEC 
 
@@ -39,10 +39,39 @@ void setup() {
 
   // TODO: READ KEY REGISTERS
   read_key_registers();
+
+  pinMode(7, INPUT);
+  pinMode(6, INPUT);
+  pinMode(5, INPUT);
 }
 
 void loop(){
- }
+  String treasure = "";
+  int sb0 = digitalRead(5);
+  int sb1 = digitalRead(6);
+  if (sb0 == LOW && sb1 == LOW) {
+    treasure = "None";
+  }
+  else {
+    if (digitalRead(7) == HIGH) {
+      treasure = "Blue"; 
+    }
+    else {
+      treasure = "Red";
+    }
+    if (sb0 == LOW && sb1 == HIGH) {
+      treasure = treasure + " square";
+    }
+    if (sb0 == HIGH && sb1 == LOW) {
+      treasure = treasure + " triangle";
+    }
+    if (sb0 == HIGH && sb1 == HIGH) {
+      treasure = treasure + " diamond";
+    }
+  }
+  Serial.println(treasure);
+  delay(500);
+}
 
 
 ///////// Function Definition //////////////
