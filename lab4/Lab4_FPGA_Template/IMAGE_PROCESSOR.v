@@ -25,9 +25,16 @@ input			VGA_VSYNC_NEG;
 
 output [8:0] RESULT;
 
+wire [2:0] RED;
+wire [2:0] GREEN;
+wire [1:0] BLUE;
+
+assign RED = PIXEL_IN[7:5];
+assign GREEN = PIXEL_IN[4:2];
+assign BLUE = PIXEL_IN[1:0];
+
 reg [14:0] RED_PIXELS;
 reg [14:0] BLUE_PIXELS;
-reg [14:0] NONE_PIXELS;
 reg [14:0] pixel_count;
 
 reg [9:0] RED_FRAMES;
@@ -42,17 +49,15 @@ assign y_coord = pixel_count / `SCREEN_HEIGHT;
 always @ (posedge CLK) begin
 	// reset if end of frame
 	if (pixel_count > 25344) begin
-		if (NONE_PIXELS > 6336)
+//		if (RED_PIXELS > BLUE_PIXELS + 3000)
+//			RED_FRAMES = RED_FRAMES + 1;
+//		else
+		if (BLUE_PIXELS > 1000)
+			BLUE_FRAMES = BLUE_FRAMES + 1;
+		else 
 			NONE_FRAMES = NONE_FRAMES + 1;
-		else
-			if (RED_PIXELS > BLUE_PIXELS) 
-				RED_FRAMES = RED_FRAMES + 1;
-			else
-				if (BLUE_PIXELS > RED_PIXELS)
-					BLUE_FRAMES = BLUE_FRAMES + 1;
 		RED_PIXELS = 0;
 		BLUE_PIXELS = 0;
-		NONE_PIXELS = 0;
 		pixel_count = 0;
 	end
 	
@@ -68,27 +73,19 @@ always @ (posedge CLK) begin
 			NONE_FRAMES = NONE_FRAMES - 1;
 	end
 	
-	// compare current pixel
-	if (x_coord < 106 && x_coord > 70 &&
-	    y_coord < 86 && y_coord > 58) begin
-		if (PIXEL_IN[7:6] > PIXEL_IN[1:0])
-			RED_PIXELS = RED_PIXELS + 1;
-		else begin
-			if (PIXEL_IN[7:6] < PIXEL_IN[1:0])
-				BLUE_PIXELS = BLUE_PIXELS + 1;
-			else 
-				NONE_PIXELS = NONE_PIXELS + 1;
-		end
-	end
+	// check current pixel
+	if (RED >= 3'b101 && GREEN <= 3'b011 && BLUE <= 2'b10)
+		RED_PIXELS = RED_PIXELS + 1;
+	else
+		if (RED <= 3'b011 && GREEN <= 3'b011 && BLUE >= 2'b10)
+			BLUE_PIXELS = BLUE_PIXELS + 1;
 
+			
 	pixel_count = pixel_count + 1;
 end
 
 assign RESULT[0] = RED_FRAMES > BLUE_FRAMES ? 0 : 1;
 assign RESULT[1] = (NONE_FRAMES > RED_FRAMES && NONE_FRAMES > BLUE_FRAMES) ? 1 : 0;
-assign RESULT[2] = (RED_PIXELS > 6336) ? 1 : 0;
-assign RESULT[3] = (NONE_PIXELS > 6336) ? 1 : 0;
-assign RESULT[4] = (BLUE_PIXELS > 6336) ? 1 : 0;
 
 
 endmodule
