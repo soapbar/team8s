@@ -13,15 +13,15 @@
 
 //#define PSHFT 0x1B
 
-int diff0 = 1;
-int diff1 = 2;
-int diff2 = 3;
-int diff3 = 4;
-int diff4 = 5;
-int diff5 = 6;
-int colorPin = 7;
-int sp0 = 8;
-int sp1 = 9;
+int diff0 = 2;
+int diff1 = 3;
+int diff2 = 4;
+int diff3 = 5;
+int diff4 = 6;
+int diff5 = 7;
+int colorPin = 8;
+int nonePin = 9;
+int sp1 = 10;
 ///////// Main Program //////////////
 void setup() {
   Wire.begin();
@@ -55,55 +55,22 @@ void setup() {
   pinMode(diff4, INPUT);
   pinMode(diff5, INPUT);
   pinMode(colorPin, INPUT);
-  pinMode(sp0, INPUT);
+  pinMode(nonePin, INPUT);
   pinMode(sp1, INPUT);
 }
 
 void loop(){
-  String treasure = "";
-  int diff = 0;
-  if (digitalRead(diff0) == HIGH) {
-    diff = diff + 1;
-  }
-  if (digitalRead(diff1) == HIGH) {
-    diff = diff + 2;
-  }
-  if (digitalRead(diff2) == HIGH) {
-    diff = diff + 4;
-  }
-  if (digitalRead(diff3) == HIGH) {
-    diff = diff + 8;
-  }
-  if (digitalRead(diff4) == HIGH) {
-    diff = diff + 16;
-  }
-  if (digitalRead(diff5) == HIGH) {
-    diff = diff + 32;
-  }
-  int sb0 = digitalRead(sp0);
-  int sb1 = digitalRead(sp1);
-  if (sb0 == LOW && sb1 == LOW) {
-    treasure = "None";
+  if (digitalRead(nonePin) == HIGH) {
+    Serial.println("None");
   }
   else {
-    if (digitalRead(7) == HIGH) {
-      treasure = "Blue"; 
+    if (digitalRead(colorPin) == LOW) {
+      Serial.println("Red");
     }
     else {
-      treasure = "Red";
-    }
-    if (sb0 == LOW && sb1 == HIGH) {
-      treasure = treasure + " square";
-    }
-    if (sb0 == HIGH && sb1 == LOW) {
-      treasure = treasure + " triangle";
-    }
-    if (sb0 == HIGH && sb1 == HIGH) {
-      treasure = treasure + " diamond";
+      Serial.println("Blue");
     }
   }
-  Serial.println(treasure);
-  Serial.println(diff);
   delay(1000);
 }
 
