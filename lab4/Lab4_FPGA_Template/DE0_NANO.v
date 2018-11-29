@@ -58,9 +58,11 @@ assign VGA_RESET = ~KEY[0];
 ///// I/O for Img Proc /////
 wire [8:0] RESULT;
 
-assign GPIO_0_D[28] = RESULT[0]; // shape pins
-assign GPIO_0_D[26] = RESULT[1];
-assign GPIO_0_D[30] = RESULT[2]; // 0 if red, 1 if blue
+assign GPIO_0_D[30] = RESULT[0]; // 0 if red, 1 if blue 
+assign GPIO_0_D[28] = RESULT[1]; // 1 if none
+assign GPIO_0_D[33] = RESULT[2]; // red
+assign GPIO_0_D[31] = RESULT[3]; // none
+assign GPIO_0_D[29] = RESULT[4]; // blue (green)
 
 reg start = 0;
 
@@ -150,14 +152,28 @@ always @ (posedge PCLK) begin
 	else begin
 		if(HREF) begin			
 			if(start == 0) begin 
-				pixel_data_RGB332[7:2] = {D7,D6,D5,D2,D1,D0};
-				//pixel_data_RGB332[7:2] = 6'b000000;
+				//pixel_data_RGB332[7:2] = {D7,D6,D5,D2,D1,D0};
+				//pixel_data_RGB332 = ({D7, D6, D5} >= 3'b101 && {D2, D1, D0} <= 3'b011) ? 8'b11100000 : 8'b00000000; // DETECTS RED!!
+				//pixel_data_RGB332 = ({D7, D6, D5} <= 3'b011 && {D2, D1, D0} <= 3'b011) ? 8'b00000011 : 8'b00000000; // DETECTS BLUE!!
+				if ({D2, D1, D0} <= 3'b010) begin
+					if ({D7, D6, D5} >= 3'b101)
+						pixel_data_RGB332 = 8'b11100011;
+					else
+						pixel_data_RGB332 = 8'b00000011;
+				end
+				else
+					pixel_data_RGB332 = 8'b00000000;
 				start = 1;
 				W_EN = 0;
 			end
 			else begin
-				pixel_data_RGB332[1:0] = {D4,D3};
-				//pixel_data_RGB332[1:0] = 2'b11;
+				//pixel_data_RGB332[1:0] = {D4,D3};
+				//pixel_data_RGB332 = ({D4, D3} <= 2'b10) ? pixel_data_RGB332 : 8'b00000000; // DETECTS RED!!
+				//pixel_data_RGB332 = ({D4, D3} >= 2'b10) ? pixel_data_RGB332 : 8'b00000000; // DETECTS BLUE!!
+				if (pixel_data_RGB332 > 0) begin
+					if ({D4, D3, D2} <= 3'b010) 
+						pixel_data_RGB332[1:0] = 2'b00;
+				end
 				start = 0;
 				X_ADDR = X_ADDR + 1;
 				W_EN = 1;
