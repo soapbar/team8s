@@ -72,48 +72,11 @@
         <h1 style="text-align: center">Milestone 4 (in progress)</h1>
         <h2 class="subtitle">Tasks:</h2>
         <p>
-          - Robot capable of maze exploration using DFS, BFS, Dijkstra, or A* (show that your robot can do different maze configurations, we expect at least one of them to be a minimum size of 4x5) <br>
-          - ..if the robot is also able to update the GUI
+          - Robot which can detect when there are/are not treasures <br/>
+          - Robot which can successfully distinguish between red and blue treasures <br/>
+          - Robot which can successfully distinguish a square, triangle, and diamond shape
         </p>
-        <h2 class="subtitle">Changes to our Lab 3 Robot Code</h2>
-        <p>
-          In order to complete milestone 3, we had to add a few parameters to our code which get updated as we traverse the maze. These were the direction the robot is facing, its current coordinates, and the size of the maze.
-        </p>
-        <p>
-          The value of direction is in the range 0-3, encoding north, east, south, west. When the robot turns left, right, or turns around, we update the direction by either adding or subtracting one (or two for a 180), and modding by four.
-        </p>
-        <p>
-          In order to encode our location with a fewer number of bits than an x and y coordinate, we store our location as a single variable. From this single number, we can derive the coordinates by dividing by the size of the maze (we assume the maze is a square). The x-coordinate is the remainder and the y-coordinate is the quotient. To update the location variable, at each intersection we must add or subtract either one, or the size of the maze, all depending on the direction the robot is facing.
-        </p>
-
-        <h2 class="subtitle">Maze Traversal</h2>
-        <p>
-          To test our Maze Traversal algorithm we utilized the Matlab GUI found here:
-        </p>
-        <div style="text-align: center">
-         <iframe width="534" height="300" src="https://www.youtube.com/embed/oOr5ywU2Kc8 " frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <p>
-          From this we first implemented Dijkstra with the cost being the Manhattan distance from one node to another. With this, the robot traverses the maze by going to the nearest frontier node (unvisited spot) using this metric. Once, the robot sees that there are no more univisited spaces it stops. To find the path to the nearest frontier node, the robot finds the shortest path (measured by number of spaces to be traversed).
-        </p>
-        <p>
-          Improvements to be made:
-        </p>
-        <p>
-          - Take into account the direction that the robot is facing when determining the cost to get a spot (Turns are more expensive than going straight) <br>
-          - Take into account the cost of the path needed to get to a frontier when determining where to go next
-          <br><em> more examples here </em>
-        </p>
-
-        <h2 class="subtitle">Updating the GUI</h2>
-        <p>
-          With these parameters now being recorded and updated, we had to find a way to generate a message to be sent over the radio. We only need to send a message at an intersection, so when we reach an intersection, we allocate an int and initialize it to zero. We then updated each of the other functions that we call at an intersection to take an int as a parameter and return an int, as opposed to having no parameters and no return type. Based on the data collected by each function, it returns the parameter bitwise or’ed with some data collected in the function.
-        </p>
-        <p>
-          The function for updating coordinates, is first, and stores the single number in bits 14-8. Reserving this many bits allows us to have up to 128 locations, or up to an 11x11 maze. Next we check for other robots. If we find any, we set bit 15 to be 1, and also stop.
-        </p>
-
-
+        
       </div>
     </section>
 
