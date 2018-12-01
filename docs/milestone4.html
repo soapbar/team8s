@@ -76,12 +76,33 @@
           - Robot which can successfully distinguish between red and blue treasures <br/>
           - Robot which can successfully distinguish a square, triangle, and diamond shape
         </p>
+
+        <h2 class="subtitle">Color Detection:</h2>
+        <p>
+          In order to tell if a shape our camera was looking at was red or blue, we continually checked the current pixel’s value on each posedge of the clock. If this was predominantly red, we would iterate RED_PIXELS; if it was predominatly blue, we would add to BLUE_PIXELS. 
+        </p>
+
+        <h2 class="subtitle">Shape Detection:</h2>
+        <p>
+          We attempted but were not able to implement shape detection. Our approach was to check for three important values: the first red/blue pixel on top, on the left, and at the bottom.
+        </p>
+        <p>
+          However, we realized after a lot of revamping of this code that we were unable to make our methods of shape detection work. This was partially because of faulty color detection as a result of imprecise camera output. The colors displayed by our camera were often not “pure” -- even the white walls, for example, had numerous red pixels that were throwing off our algorithm.
+        </p>
+        <p>
+          Because we realized that this was not working, and due to time constraints, we decided upon focusing on figuring out more precise color detection.
+        </p>
+
+
         <h2 class="subtitle">Camera and FPGA</h2>
 
-  
+
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/milestone4/camera-part-1.JPG" alt="Camera and FPGA">
         <img style="height:300px;" src="https://soapbar.github.io/team8s/images/milestone4/camera-part-2.JPG" alt="Camera and FPGA">
 
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/H21b-natXaY" frameborder="0" allowfullscreen=""></iframe>
+        </div>
 
 
       </div>

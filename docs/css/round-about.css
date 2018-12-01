@@ -23,3 +23,8 @@ body {
 .rounded-circle {
   margin-bottom: 20px;
 }
+
+.rotate {
+  transform: rotate(90deg);
+  padding: 50px;
+}
