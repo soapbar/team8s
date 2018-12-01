@@ -24,15 +24,14 @@ void setup() {
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   Serial.begin(9600);
-
 }
 
 void loop() {  
-  //if L/R sensors sense white, correct until see black
-
+  // if L/R sensors sense white, correct until see black
   if (analogRead(SENSERIGHT) < 860 && analogRead(SENSELEFT) < 860) { // intersection
     figure8();
   } 
+  // line following
   else if (analogRead(SENSERIGHT) < 860) {
     driftRight();
   }       
@@ -45,6 +44,8 @@ void loop() {
 }
 
 void figure8(){
+  Serial.println("start figure 8");
+
   if (c%8<4) {
     sharpRight();
   } else {
@@ -74,10 +75,10 @@ void fullStop(){
 }
 
 void sharpLeft(){
-  LeftServo.write(85);
+  LeftServo.write(85); 
   RightServo.write(20);
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(300);
+  delay(800); //300
   digitalWrite(LED_BUILTIN, LOW);
 
 }

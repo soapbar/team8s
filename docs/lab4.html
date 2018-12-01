@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>team8s</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/half-slider.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">team8s</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="labs.html">Labs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="milestones.html">Milestones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contract.html">Team Contract</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/soapbar/team8s">GitHub</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner" role="listbox">
+          <!-- Slide One - Set the background image for this slide in the line below -->
+          <div class="carousel-item active" style="background-image: url('https://soapbar.github.io/team8s/images/box.JPG')">
+            <div class="carousel-caption d-none d-md-block">
+              <h1 class="title">team8s</h1>
+              <p class="names">brandon, eric, henri, sophie</p>
+            </div>
+          </div>
+
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <section class="py-5">
+      <div class="container">
+        <h1 style="text-align: center">Lab 4: System Integration and Radio Communication</h1>
+        <p>
+          FPGA team: Eric and Brandon <br/>
+          Arduino team: Henri and Sophie
+        </p>
+        <h2 class="subtitle">Arduino Team</h2>
+        <p>
+          We set up the Arduino SDA and SDL pins to the camera as shown below:
+        </p>
+          <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab4/arduino_pins.png" alt="Arduino Pins">
+        <p>
+          We had to make sure to disable the internal pull-up resistors that are part of the Arduino’s I2C interface by commenting out these lines in the twi.c file:
+        </p>
+        <p>
+          //activate internal pullups for twi <br/>
+          digitalWrite(SDA,1); <br/>
+          digitalWrite(SCL,1);
+        </p>
+        <p>
+          We used the OV7670 camera datasheet http://web.mit.edu/6.111/www/f2016/tools/OV7670_2006.pdf to write registers to:
+        </p>
+        <p>
+          - Reset all registers: COM7 <br/>
+          - Use the external clock as internal clock: CLKRC <br/>
+          - Set the camera to output the resolution and pixel format RGB 565, QCIF: COM7, COM15 <br/>
+          - Enable a color bar test: COM7, COM17 <br/>
+          - Vertical and mirror flip the output image: MVFP <br/>
+          - Fix the gain and other parameters (freeze AGC/AEC): COM9 <br/>
+          - Enable scaling: COM3
+        </p>
+        <p>
+          The I2C address uses the least significant bit to distinguish between read and write and is 0x21.
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; team8s Fall 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>

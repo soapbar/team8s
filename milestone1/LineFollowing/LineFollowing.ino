@@ -24,10 +24,12 @@ void setup() {
 }
 
 void loop() {
+  LeftServo.write(90);
+  RightServo.write(180);
   //if L/R sensors sense white, correct until see black
-  if (analogRead(SENSERIGHT) < 860) driftRight(); 
+  /*if (analogRead(SENSERIGHT) < 860) driftRight(); 
   else if (analogRead(SENSELEFT) < 860) driftLeft(); 
-  else goStraight();  
+  else goStraight();  */
 }
 
 void goStraight(){
@@ -36,11 +38,14 @@ void goStraight(){
 }
 
 void driftLeft() {
+  Serial.println("in drift right");
+
   LeftServo.write(90);
   RightServo.write(50);
 }
 
 void driftRight() {
+  Serial.println("in drift right");
   LeftServo.write(130);
   RightServo.write(90);
 }

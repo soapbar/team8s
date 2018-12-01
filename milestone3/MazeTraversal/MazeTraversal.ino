@@ -8,6 +8,14 @@
 #include "RF24.h"
 #include "printf.h"
 
+//-----------------------------------------------------------
+// Adjustable parameters
+
+int start = 0;
+int dir   = 1; //0-North, 1-East, 2-South, 3-West
+
+//-----------------------------------------------------------
+
 RF24 radio(9,10);
 const uint64_t pipes[2] = { 0x0000000016LL, 0x00000000017LL };
 unsigned long got_time;
@@ -36,11 +44,9 @@ int WALLFRONT = A4;
 int WALLLEFT = A5;
 int MUXSENSORS = A0;
 
-int start = 0;
 int c = 0;
 
 void waitForSignal();
-void sendMSG(int msg);
 /* The direction that the robot is currently facing:
     - 0-North
     - 1-East
@@ -50,13 +56,13 @@ void sendMSG(int msg);
     - x=location%dim
     - y=location/dim
 */
-int dir;
-int dim = 3; // dimentions of the maze
+
+int dim = 9; // dimentions of the maze
 int location;
 
-int settled [9];
-int frontier [9];
-int walls [9]; //TEMP FIX FIX THIS FIX THIS
+int settled [81];
+int frontier [81];
+int walls [81]; //TEMP FIX FIX THIS FIX THIS
 
 int last_s = 0;
 int last_f = -1;
@@ -64,45 +70,18 @@ int last_f = -1;
 void setup() {
   // IR Setup
   Serial.begin(9600); // use the serial port
-  pinMode(MS0, OUTPUT);
+  pinMode(MS0, OUTPUT); //MUX
   pinMode(MS1, OUTPUT);
   pinMode(MS2, OUTPUT);
-
-  //
-  // Setup and configure rf radio
-  //
-
-  radio.begin();
-
-  // optionally, increase the delay between retries & # of retries
-  radio.setRetries(15,15);
-  radio.setAutoAck(true);
-  // set the channel
-  radio.setChannel(0x50);
-  // set the power
-  // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_MIN);
-  //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
-  radio.setDataRate(RF24_250KBPS);
-
-  // optionally, reduce the payload size, seems to improve reliability
-  radio.setPayloadSize(2);
   
-  // Start listening
-  radio.startListening();
+  pinMode(0, INPUT); // Backup Start Button
 
-  // Dump the configuration of the rf unit for debugging
-  radio.printDetails();
-  radio.openWritingPipe(pipes[0]);
-  radio.openReadingPipe(1,pipes[1]);
-  Serial.println("WAIT FOR START TONE");
   waitForSignal();
 
   // Servo Setup
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
-  dir = 1;
-  location = 0;
+  location = start;
   for(int i=0;i<dim*dim;i++){
       settled[i] = -1;
       frontier[i] = -1;
@@ -122,7 +101,6 @@ void followLine() {
   bool leftIsWhite = analogRead(SENSELEFT) < 860;
   bool reachedIntersection = rightIsWhite && leftIsWhite;
   if (reachedIntersection) { // intersection
-    Serial.println("I'M AT AN INTERSECTION");
     int msg = 0;
     LeftServo.write(90);
     RightServo.write(90);
@@ -131,8 +109,7 @@ void followLine() {
     msg = checkWall(msg);
     LeftServo.write(90);
     RightServo.write(90);
-    msg = updateCoord(msg);
-    sendMSG(msg);   
+    msg = updateCoord(msg);  
   }
   else if (rightIsWhite) {
     turnRight();
@@ -182,8 +159,7 @@ int checkIR(int msg) {
   fft_run(); // process the data in the fft
   fft_mag_log(); // take the output of the fft
   sei();
-  if (fft_log_out[21] > 160) {
-    fullStop();
+  while (fft_log_out[21] > 160) {
     robot = 1;
   }
 
@@ -220,6 +196,7 @@ int checkWall(int msg){
   boolean right = (analogRead(WALLRIGHT)+analogRead(WALLRIGHT)/2) > 200;
   boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 200;
   boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 200;
+
   if (right) {
     switch(dir) {
       case 0: east = 1;
@@ -259,29 +236,36 @@ int checkWall(int msg){
 
   //Update wall info for djikstra
   walls[location] = (north << 0) | (east << 2) | (south << 1) | (west << 3);
-     
+
   return msg | (north << 7) | (east << 6) | (south << 5) | (west << 4);
 }
 
 void sharpLeft() {
   LeftServo.write(85);
   RightServo.write(20);
-  dir = (dir-1)%4; // update direction
-  delay(300);
+  
+  // update direction
+  dir = dir-1;
+  if(dir < 0){
+    dir = dir+4;   
+  }
+  dir = dir%4;
+  
+  delay(400);
 
 }
 void sharpRight() {
   LeftServo.write(160);
   RightServo.write(95);
   dir = (dir+1)%4; // update direction
-  delay(300);
+  delay(400);
 }
 
 void oneEighty() {
-  LeftServo.write(100);
-  RightServo.write(100);
+  LeftServo.write(160);
+  RightServo.write(95);
   dir = (dir+2)%4; //update direction
-  delay(660);
+  delay(1000);
 }
 
 void fullStop() {
@@ -290,19 +274,8 @@ void fullStop() {
   while (1);
 }
 
+//Finds and Goes to new coordinate
 int updateCoord(int msg) {
-  Serial.println("UPDATE COORD");
-  switch(dir) {
-    case 0: location = location - 1;
-            break;
-    case 1: location = location + dim;
-            break;
-    case 2: location = location + 1;
-            break;
-    case 3: location = location - dim;
-            break;
-    default: break;   
-  }
   int newCoord = djikstra();
   int goTo = newCoord-location;
   if(goTo == 1){
@@ -317,8 +290,11 @@ int updateCoord(int msg) {
   else if(goTo == -dim){
     faceSouth();
   }
+  else{
+    fullStop();
+  }
   goStraight();
-
+  delay(300);  
   location = newCoord;
   return (location << 8) | msg;
 }
@@ -373,32 +349,34 @@ void faceWest(){
 
 int djikstra(){
 
-    int wall_data = walls[start];
+    int wall_data = walls[location];
     settled[last_s] = location;
     last_s++;
     
-    if(wall_data % 2 == 1) {
-        frontier[last_f] = location-dim;
+    if(wall_data % 2 != 1) {
         last_f++;
-    }
-    if((wall_data >> 1) %2 == 1) {
         frontier[last_f] = location+dim;
-        last_f++;
     }
-    if((wall_data >> 2) %2 == 1) {
+    if((wall_data >> 1) %2 != 1) {
+        last_f++;
+        frontier[last_f] = location-dim;        
+    }
+    if((wall_data >> 2) %2 != 1) {
+        last_f++;
         frontier[last_f] = location+1;
-        last_f++;
+        
     }
-    if((wall_data >> 3) %2 == 1) {
+    if((wall_data >> 3) %2 != 1) {
+        last_f++;
         frontier[last_f] = location-1;
-        last_f++;
+        
     }
-
     for(int i = 0; i<=last_s; i++ ){
         int point = settled[i];
-        c = 1;
-        while (c <= last_f)
-            if (point == frontier[c]){
+        int c = 0;
+        while (c <= last_f){
+            
+            if (point == frontier[c] || frontier[c] < 0 || frontier[c] >= dim*dim){
                 if (c == 0){
                     frontier[0] = frontier[last_f];
                     last_f--;
@@ -412,28 +390,34 @@ int djikstra(){
                     last_f--;
                 }
             }
-            else {
-                c++; 
-            }   
+            else
+                c++;
+                        
+        }   
     }
-
-    if (last_f == -1)
+    
+    if (last_f == -1){
         return location;
+    }
     else{
         int min_dist = dim*dim+1;
         int dest = -1;
         int dest_ind = -1;
         for(int i=0;i<=last_f;i++){
-          int dist = frontier[i]-location;
+          int xdist = abs(frontier[i]-location)%dim;
+          int ydist = abs(frontier[i]-location)/dim;
+          int dist = xdist+ydist;
           if(dist < min_dist){
             min_dist = dist;
             dest = frontier[i];
-            dest_ind = -1;
+            dest_ind = i;
           }
         }
         int path[9][2];
-        for(int i=0;i<dim*dim;i++)
-          path[i][0]=-1;
+        for( int i = 0 ; i < 81 ; i++ ){
+             for(int j = 0 ; j < 2 ; j++)
+                 path[i][j] = -1;
+          }
         path[0][0] = location;
         findPath(dest,location,walls,path);
         int next_loc = path[1][0];
@@ -451,10 +435,11 @@ int djikstra(){
                 last_f--;
             }
         }
+        return next_loc;
     }      
 }
 
-int findPath(int dest,int start,int walls[],int path[][2]){
+void findPath(int dest,int start,int walls[],int path[][2]){
     
     int wall_data = walls[start];
     if(wall_data == -1){
@@ -463,45 +448,48 @@ int findPath(int dest,int start,int walls[],int path[][2]){
     else{
         int last_fp = -1;
         int frontier_path[dim*dim];
+        
         for(int i=0;i<dim*dim;i++){
           frontier_path[i] = -1;
         }
-        if(wall_data % 2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start+dim;
-        }
-        if((wall_data >> 1) %2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start-dim;
-        }
-        if((wall_data >> 2) %2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start+1;
-        }
-        if((wall_data >> 3) %2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start-1;
-        }
-
-        int last_p = 0;
-        while(path[last_p][0]>-1)
-          last_p++;
         
-        for(int i = 0; i<=last_p; i++){
+        if(wall_data % 2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start+dim;
+        }
+        if((wall_data >> 1) %2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start-dim;
+        }
+        if((wall_data >> 2) %2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start+1;
+        }
+        if((wall_data >> 3) %2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start-1;
+        }
+        
+        int last_p = 0;
+        while(path[last_p][0]>-1){
+          last_p++;
+        }
+        
+        for(int i = 0; i<last_p; i++){
             int point = path[i][0];
             c = 0;
             while (c <= last_fp){
-                if (point == frontier[c]){
+                if (point == frontier_path[c] || frontier_path[c] < 0 || frontier_path[c] >= dim*dim){
                     if (c == 0){ 
-                        frontier[0] = frontier[last_fp];
+                        frontier_path[0] = frontier_path[last_fp];
                         last_fp--;
                     }
                     else if(c == last_fp){
-                        frontier[last_fp] = -1;
+                        frontier_path[last_fp] = -1;
                         last_fp--;
                     }
                     else{
-                        frontier[c] = frontier[last_fp];
+                        frontier_path[c] = frontier_path[last_fp];
                         last_fp--;
                     }
                 }
@@ -509,110 +497,68 @@ int findPath(int dest,int start,int walls[],int path[][2]){
                     c++;
             }
         }
-
         int i = 0;
-        while(i <= last_fp){
-            if( dest == frontier[last_fp]){
+        int found = 0;
+        while(i <= last_fp && found == 0){
+            if( dest == frontier_path[i]){
+                found = 1;
                 path[last_p][0] = dest;
                 path[last_p][1] = 1;
-                break;
             }
+            else
+              i++;
         }
-
-        int poss_path_best[9][2];
-        int best_dist,poss_dist;
-        for(i=0;i<=last_fp;i++){
-                
-                int new_start = frontier[c];
-                path[last_p][0] = new_start;
-                path[last_p][1] = 1;
-                int new_path[9][2] = {path};
-                findPath(dest,new_start,walls,new_path);
-                if(i == 0){
-                      for( int i = 0 ; i < 9 ; ++i ){
-                        for(int j = 0 ; j < 2 ; ++j)
-                          poss_path_best[i][j] = new_path[i][j];
+        
+        if(found == 0){
+          int poss_path_best[9][2];
+          for(int i=0;i<dim*dim;i++){
+            for(int j=0;j<2;j++)
+              poss_path_best[i][j]=-1;
+          }
+          
+          int best_dist,poss_dist;
+          
+          for(i=0;i<=last_fp;i++){
+                  
+                  int new_start = frontier_path[i];
+                  path[last_p][0] = new_start;
+                  path[last_p][1] = 1;
+                  int new_path[9][2];
+                  for( int i = 0 ; i < dim*dim ; i++ ){
+                    for(int j = 0 ; j < 2 ; j++)
+                        new_path[i][j] = path[i][j];
+                  }
+                  
+                  findPath(dest,new_start,walls,new_path);
+                  if(i == 0){
+                        for( int i = 0 ; i < dim*dim ; ++i ){
+                          for(int j = 0 ; j < 2 ; ++j)
+                            poss_path_best[i][j] = new_path[i][j];
+                        }
+                  }
+                  else{
+                      for(int k=0;k<9;k++){
+                        best_dist += poss_path_best[k][1];
+                        poss_dist += new_path[k][1];  
                       }
-                }
-                else{
-                    for(int k=0;k<9;k++){
-                      best_dist += poss_path_best[k][1];
-                      poss_dist += new_path[k][1];
-                    }
-                    if(poss_dist < best_dist)
-                      for( int i = 0 ; i < 9 ; ++i ){
-                        for(int j = 0 ; j < 2 ; ++j)
-                          poss_path_best[i][j] = new_path[i][j];
-                      }
-                }
-        }
-        for( int i = 0 ; i < 9 ; ++i ){
-           for(int j = 0 ; j < 2 ; ++j)
-               path[i][j] = poss_path_best[i][j];
+                      if(poss_dist < best_dist)
+                        for( int i = 0 ; i < dim*dim ; i++ ){
+                          for(int j = 0 ; j < 2 ; j++)
+                            poss_path_best[i][j] = new_path[i][j];
+                        }
+                  }
+          }
+          
+          for( int i = 0 ; i < dim*dim ; i++ ){
+             for(int j = 0 ; j < 2 ; j++){
+                 path[i][j] = poss_path_best[i][j];
+             }
+          }
         }
     }
-
 }
 
 
-void sendMSG(int msg) {
-  // First, stop listening so we can talk.
-  radio.stopListening();
-  
-  // Take the time, and send it.  This will block until complete
-  unsigned long time = millis();
-  printf("Now sending %lu...",msg);
-  bool ok = radio.write( &msg, sizeof(int) );
-
-  if (ok)
-    printf("ok...");
-  else
-    printf("failed.\n\r");
-
-  // Now, continue listening
-  radio.startListening();
-
-  // Wait here until we get a response, or timeout (250ms)
-  unsigned long started_waiting_at = millis();
-  bool timeout = false;
-  while ( ! radio.available() && ! timeout )
-    if (millis() - started_waiting_at > 200 )
-      timeout = true;
-
-  // Describe the results
-  if ( timeout )
-  {
-    while (timeout) {
-      radio.stopListening();
-      printf("Now sending %lu...",msg);
-      bool ok = radio.write( &msg, sizeof(int) );
-  
-      if (ok)
-        printf("ok...");
-      else
-        printf("failed.\n\r");
-  
-      // Now, continue listening
-      radio.startListening();
-  
-      // Wait here until we get a response, or timeout (250ms)
-      started_waiting_at = millis();
-      timeout = false;
-      while ( ! radio.available() && ! timeout )
-        if (millis() - started_waiting_at > 200 )
-          timeout = true;
-    }
-  }
-  else
-  {
-    // Grab the response, compare, and send to debugging spew
-    unsigned long got_time;
-    radio.read( &got_time, sizeof(unsigned long) );
-
-    // Spew it
-    printf("Got response %lu, round-trip delay: %lu\n\r",got_time,millis()-got_time);
-  }
-}
 
 void waitForSignal(){
   byte prevTIMSK0 = TIMSK0;
@@ -623,12 +569,13 @@ void waitForSignal(){
   digitalWrite(MS0, LOW);
   digitalWrite(MS1, LOW);
   digitalWrite(MS2, LOW);
+  int startButton = 1;
   TIMSK0 = 0; // turn off timer0 for lower jitter
   ADCSRA = 0xe5; // set the adc to free running mode
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
   while(start == 0){
-    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+    for (int i = 0 ; i < 256 ; i += 2) { // save 256 samples
       while (!(ADCSRA & 0x10)); // wait for adc to be ready
       ADCSRA = 0xf5; // restart adc
       byte m = ADCL; // fetch adc data
@@ -644,9 +591,9 @@ void waitForSignal(){
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();
-    if (fft_log_out[5] > 160) 
+    startButton = digitalRead(0);
+    if ((fft_log_out[3] > 150) || startButton == 0) 
       start = 1;
-    Serial.println(fft_log_out[5]);
   }
   TIMSK0 = prevTIMSK0;
   ADCSRA = prevADCSRA;
