@@ -115,7 +115,7 @@
         <p>
           In order to tell if a shape our camera was looking at was red or blue, we continually checked the current pixel’s value on each posedge of the clock. If this was predominantly red, we would iterate RED_PIXELS; if it was predominantly blue, we would add to BLUE_PIXELS.
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab4/red-blue-pixel-code.png" alt="Red Blue Pixel Code">
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/lab4/red-blue-pixel-code.png" alt="Red Blue Pixel Code">
         <p>
           We also iterated a value “pixel_count” to determine if we were at the end of reading an entire frame.
         </p>
@@ -128,7 +128,7 @@
         <p>
           We then chose output our result as follows:
         </p>
-        <img style="height:300px;" src="https://soapbar.github.io/team8s/images/lab4/output-code.png" alt="Output Code">
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/lab4/output-code.png" alt="Output Code">
         <p>
           That is, in bit 0 we would return a 0 if there were more blue frames and a 1 if there were more red frames; in bit 1, we would return a 1 if there were more “none” frames than either blue or red, and a 0 otherwise.
         </p>
