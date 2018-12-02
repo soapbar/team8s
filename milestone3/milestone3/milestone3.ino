@@ -1,12 +1,22 @@
 #include <Servo.h>
 
 #define LOG_OUT 1 // use the log output function
-#define FFT_N 128 // set to 256 point fft
+#define FFT_N 128 // set to 128 point fft
 #include <FFT.h> // include the library
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "printf.h"
+
+//-----------------------------------------------------------
+// Adjustable parameters
+
+int startLocation = 0;
+int dir   = 1; //0-North, 1-East, 2-South, 3-West
+const int turnDelay = 300;
+const int turnAroundDelay = 750;
+
+//-----------------------------------------------------------
 
 RF24 radio(9,10);
 const uint64_t pipes[2] = { 0x0000000016LL, 0x00000000017LL };
@@ -19,9 +29,9 @@ Servo RightServo;
 // MUX
 // 000: microphone 
 // 001: IR sensor
-int MS0 = 2;
-int MS1 = 3;
-int MS2 = 4;
+byte MS0 = 2;
+byte MS1 = 3;
+byte MS2 = 4;
 
 // wheels - output pins
 int OUTLEFT = 5;
@@ -36,30 +46,28 @@ int WALLFRONT = A4;
 int WALLLEFT = A5;
 int MUXSENSORS = A0;
 
-int start = 0;
 int c = 0;
 
 void waitForSignal();
 void sendMSG(int msg);
-/* The direction that the robot is currently facing:
-    - 0-North
-    - 1-East
-    - 2-South
-    - 3-West
+
+/*
    The coordinates of the robot are encoded as a single number
     - x=location%dim
     - y=location/dim
 */
-int dir;
-int dim = 3; // dimentions of the maze
-int location;
 
-int settled [9];
-int frontier [9];
-int walls [9]; //TEMP FIX FIX THIS FIX THIS
+byte dim = 3; // dimensions of the maze
+const byte mazeSize = 9;
+byte location;
+byte newLocation;
 
-int last_s = 0;
-int last_f = -1;
+byte settled [mazeSize];
+byte frontier [mazeSize];
+byte walls [mazeSize]; 
+
+byte last_s = 0;
+byte last_f = -1;
 
 void setup() {
   // IR Setup
@@ -81,7 +89,7 @@ void setup() {
   radio.setChannel(0x50);
   // set the power
   // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_MIN);
+  radio.setPALevel(RF24_PA_HIGH);
   //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setDataRate(RF24_250KBPS);
 
@@ -102,7 +110,7 @@ void setup() {
   LeftServo.attach(OUTLEFT);
   RightServo.attach(OUTRIGHT);
   dir = 1;
-  location = 0;
+  location = startLocation;
   for(int i=0;i<dim*dim;i++){
       settled[i] = -1;
       frontier[i] = -1;
@@ -113,6 +121,7 @@ void setup() {
 
 void loop() {
   while (1) { // reduces jitter
+    Serial.println("Following Line");
     followLine();
   }
 }
@@ -131,8 +140,12 @@ void followLine() {
     msg = checkWall(msg);
     LeftServo.write(90);
     RightServo.write(90);
+    Serial.println("Location");
+    Serial.println(location);
     msg = updateCoord(msg);
-    sendMSG(msg);   
+    location = newLocation;
+    sendMSG(msg);
+    Serial.println("Message Sent!");   
   }
   else if (rightIsWhite) {
     turnRight();
@@ -182,8 +195,7 @@ int checkIR(int msg) {
   fft_run(); // process the data in the fft
   fft_mag_log(); // take the output of the fft
   sei();
-  if (fft_log_out[21] > 160) {
-    fullStop();
+  while (fft_log_out[21] > 160) {
     robot = 1;
   }
 
@@ -221,6 +233,7 @@ int checkWall(int msg){
   boolean front = (analogRead(WALLFRONT)+analogRead(WALLFRONT)/2) > 200;
   boolean left = (analogRead(WALLLEFT)+analogRead(WALLLEFT)/2) > 200;
   if (right) {
+    Serial.println("Wall Right");
     switch(dir) {
       case 0: east = 1;
               break;
@@ -233,6 +246,7 @@ int checkWall(int msg){
     }
   }
   if (front) {
+    Serial.println("Wall Front");
     switch(dir) {
       case 0: north = 1;
               break;
@@ -245,6 +259,7 @@ int checkWall(int msg){
     }
   }
   if (left) {
+    Serial.println("Wall Left");
     switch(dir) {
       case 0: west = 1;
               break;
@@ -266,22 +281,29 @@ int checkWall(int msg){
 void sharpLeft() {
   LeftServo.write(85);
   RightServo.write(20);
-  dir = (dir-1)%4; // update direction
-  delay(300);
+  
+  // update direction
+  dir = dir-1;
+  if(dir < 0){
+    dir = dir+4;   
+  }
+  dir = dir%4;
+  
+  delay(turnDelay);
 
 }
 void sharpRight() {
   LeftServo.write(160);
   RightServo.write(95);
   dir = (dir+1)%4; // update direction
-  delay(300);
+  delay(turnDelay);
 }
 
 void oneEighty() {
-  LeftServo.write(100);
-  RightServo.write(100);
+  LeftServo.write(160);
+  RightServo.write(95);
   dir = (dir+2)%4; //update direction
-  delay(660);
+  delay(turnAroundDelay);
 }
 
 void fullStop() {
@@ -290,38 +312,41 @@ void fullStop() {
   while (1);
 }
 
+//Finds and Goes to new coordinate
 int updateCoord(int msg) {
-  Serial.println("UPDATE COORD");
-  switch(dir) {
-    case 0: location = location - 1;
-            break;
-    case 1: location = location + dim;
-            break;
-    case 2: location = location + 1;
-            break;
-    case 3: location = location - dim;
-            break;
-    default: break;   
-  }
-  int newCoord = djikstra();
-  int goTo = newCoord-location;
+  newLocation = djikstra();
+  Serial.println("Currently at");
+  Serial.println(location);
+  Serial.println("Go to new location");
+  Serial.println(newLocation);
+  int goTo = newLocation-location;
   if(goTo == 1){
     faceEast();
+    Serial.println("go east");
   }
   else if(goTo == -1){
     faceWest();
+    Serial.println("go west");
   }
   else if(goTo == dim){
-    faceNorth();
+    faceSouth();
+    Serial.println("go south");
   }
   else if(goTo == -dim){
-    faceSouth();
+    faceNorth();
+    Serial.println("go north");
+  }
+  else{
+    Serial.println("Done searching maze");
+    msg = (location << 8) | msg;
+    sendMSG(msg);   
+    fullStop();
   }
   goStraight();
-
-  location = newCoord;
+  delay(300);  
   return (location << 8) | msg;
 }
+
 
 void faceNorth(){
   switch(dir) {
@@ -373,32 +398,34 @@ void faceWest(){
 
 int djikstra(){
 
-    int wall_data = walls[start];
+    byte wall_data = walls[location];
     settled[last_s] = location;
     last_s++;
     
-    if(wall_data % 2 == 1) {
+    if(wall_data % 2 != 1) {
+        last_f++;
         frontier[last_f] = location-dim;
-        last_f++;
     }
-    if((wall_data >> 1) %2 == 1) {
-        frontier[last_f] = location+dim;
+    if((wall_data >> 1) %2 != 1) {
         last_f++;
+        frontier[last_f] = location+dim;        
     }
-    if((wall_data >> 2) %2 == 1) {
+    if((wall_data >> 2) %2 != 1) {
+        last_f++;
         frontier[last_f] = location+1;
-        last_f++;
+        
     }
-    if((wall_data >> 3) %2 == 1) {
+    if((wall_data >> 3) %2 != 1) {
+        last_f++;
         frontier[last_f] = location-1;
-        last_f++;
+        
     }
-
     for(int i = 0; i<=last_s; i++ ){
-        int point = settled[i];
-        c = 1;
-        while (c <= last_f)
-            if (point == frontier[c]){
+        byte point = settled[i];
+        byte c = 0;
+        while (c <= last_f){
+            
+            if (point == frontier[c] || frontier[c] < 0 || frontier[c] >= dim*dim){
                 if (c == 0){
                     frontier[0] = frontier[last_f];
                     last_f--;
@@ -412,31 +439,43 @@ int djikstra(){
                     last_f--;
                 }
             }
-            else {
-                c++; 
-            }   
+            else
+                c++;
+                        
+        }   
     }
-
-    if (last_f == -1)
+    
+    if (last_f == -1){
         return location;
+    }
     else{
-        int min_dist = dim*dim+1;
-        int dest = -1;
+        byte min_dist = dim*dim+1;
+        byte dest = -1;
         int dest_ind = -1;
+        Serial.println("Frontier:");
         for(int i=0;i<=last_f;i++){
-          int dist = frontier[i]-location;
+          Serial.println(frontier[i]);
+          byte xdist = abs(frontier[i]%dim-location%dim);
+          byte y1 = frontier[i]/dim;
+          byte y2 = location/dim;
+          byte ydist = abs(y1-y2);
+          byte dist = xdist+ydist;
           if(dist < min_dist){
             min_dist = dist;
             dest = frontier[i];
-            dest_ind = -1;
+            dest_ind = i;
           }
         }
-        int path[9][2];
-        for(int i=0;i<dim*dim;i++)
-          path[i][0]=-1;
+        Serial.println("dijkstra dest:");
+        Serial.println(dest);
+        byte path[mazeSize][2];
+        for( int i = 0 ; i < mazeSize ; i++ ){
+             for(int j = 0 ; j < 2 ; j++)
+                 path[i][j] = -1;
+          }
         path[0][0] = location;
         findPath(dest,location,walls,path);
-        int next_loc = path[1][0];
+        byte next_loc = path[1][0];
         if(next_loc == dest){
             if( dest_ind == 0){
                 frontier[0] = frontier[last_f];
@@ -451,57 +490,61 @@ int djikstra(){
                 last_f--;
             }
         }
+        return next_loc;
     }      
 }
 
-int findPath(int dest,int start,int walls[],int path[][2]){
+void findPath(byte dest,byte start,byte walls[],byte path[][2]){
     
-    int wall_data = walls[start];
+    byte wall_data = walls[start];
     if(wall_data == -1){
         path[0][1] = 100;
     }
     else{
         int last_fp = -1;
-        int frontier_path[dim*dim];
+        byte frontier_path[mazeSize];
+        
         for(int i=0;i<dim*dim;i++){
           frontier_path[i] = -1;
         }
-        if(wall_data % 2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start+dim;
-        }
-        if((wall_data >> 1) %2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start-dim;
-        }
-        if((wall_data >> 2) %2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start+1;
-        }
-        if((wall_data >> 3) %2 == 1){
-            last_fp++;
-            frontier_path[last_fp+1] = start-1;
-        }
-
-        int last_p = 0;
-        while(path[last_p][0]>-1)
-          last_p++;
         
-        for(int i = 0; i<=last_p; i++){
-            int point = path[i][0];
+        if(wall_data % 2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start-dim;
+        }
+        if((wall_data >> 1) %2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start+dim;
+        }
+        if((wall_data >> 2) %2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start+1;
+        }
+        if((wall_data >> 3) %2 != 1){
+            last_fp++;
+            frontier_path[last_fp] = start-1;
+        }
+        
+        int last_p = 0;
+        while(path[last_p][0]>-1){
+          last_p++;
+        }
+        
+        for(int i = 0; i<last_p; i++){
+            byte point = path[i][0];
             c = 0;
             while (c <= last_fp){
-                if (point == frontier[c]){
+                if (point == frontier_path[c] || frontier_path[c] < 0 || frontier_path[c] >= dim*dim){
                     if (c == 0){ 
-                        frontier[0] = frontier[last_fp];
+                        frontier_path[0] = frontier_path[last_fp];
                         last_fp--;
                     }
                     else if(c == last_fp){
-                        frontier[last_fp] = -1;
+                        frontier_path[last_fp] = -1;
                         last_fp--;
                     }
                     else{
-                        frontier[c] = frontier[last_fp];
+                        frontier_path[c] = frontier_path[last_fp];
                         last_fp--;
                     }
                 }
@@ -509,53 +552,76 @@ int findPath(int dest,int start,int walls[],int path[][2]){
                     c++;
             }
         }
-
         int i = 0;
-        while(i <= last_fp){
-            if( dest == frontier[last_fp]){
+        int found = 0;
+        while(i <= last_fp && found == 0){
+            if( dest == frontier_path[i]){
+                found = 1;
                 path[last_p][0] = dest;
                 path[last_p][1] = 1;
-                break;
             }
+            else
+              i++;
         }
-
-        int poss_path_best[9][2];
-        int best_dist,poss_dist;
-        for(i=0;i<=last_fp;i++){
-                
-                int new_start = frontier[c];
-                path[last_p][0] = new_start;
-                path[last_p][1] = 1;
-                int new_path[9][2] = {path};
-                findPath(dest,new_start,walls,new_path);
-                if(i == 0){
-                      for( int i = 0 ; i < 9 ; ++i ){
-                        for(int j = 0 ; j < 2 ; ++j)
-                          poss_path_best[i][j] = new_path[i][j];
+        
+        if(found == 0){
+          byte poss_path_best[mazeSize][2];
+          for(int i=0;i<dim*dim;i++){
+            for(int j=0;j<2;j++)
+              poss_path_best[i][j]=-1;
+          }
+          
+          byte best_dist,poss_dist;
+          
+          for(i=0;i<=last_fp;i++){
+                  
+                  byte new_start = frontier_path[i];
+                  Serial.println("New Start");
+                  Serial.println(new_start);
+                  path[last_p][0] = new_start;
+                  path[last_p][1] = 1;
+                  byte new_path[mazeSize][2];
+                  for( int i = 0 ; i < mazeSize ; i++ ){
+                    for(int j = 0 ; j < 2 ; j++)
+                        new_path[i][j] = path[i][j];
+                  }
+                  
+                  findPath(dest,new_start,walls,new_path);
+                  if(i == 0){
+                        for( int i = 0 ; i < mazeSize ; ++i ){
+                          for(int j = 0 ; j < 2 ; ++j)
+                            poss_path_best[i][j] = new_path[i][j];
+                        }
+                  }
+                  else{
+                      for(int k=0;k<mazeSize;k++){
+                        best_dist += poss_path_best[k][1];
+                        poss_dist += new_path[k][1];  
                       }
-                }
-                else{
-                    for(int k=0;k<9;k++){
-                      best_dist += poss_path_best[k][1];
-                      poss_dist += new_path[k][1];
-                    }
-                    if(poss_dist < best_dist)
-                      for( int i = 0 ; i < 9 ; ++i ){
-                        for(int j = 0 ; j < 2 ; ++j)
-                          poss_path_best[i][j] = new_path[i][j];
-                      }
-                }
-        }
-        for( int i = 0 ; i < 9 ; ++i ){
-           for(int j = 0 ; j < 2 ; ++j)
-               path[i][j] = poss_path_best[i][j];
+                      Serial.println("Distances:");
+                      Serial.println(best_dist);
+                      Serial.println(poss_dist);
+                      if(poss_dist < best_dist)
+                        for( int i = 0 ; i < mazeSize ; i++ ){
+                          for(int j = 0 ; j < 2 ; j++)
+                            poss_path_best[i][j] = new_path[i][j];
+                        }
+                  }
+          }
+          
+          for( int i = 0 ; i < mazeSize ; i++ ){
+             for(int j = 0 ; j < 2 ; j++){
+                 path[i][j] = poss_path_best[i][j];
+             }
+          }
         }
     }
-
 }
 
 
 void sendMSG(int msg) {
+  Serial.println("Pause to send MSG");
+  
   // First, stop listening so we can talk.
   radio.stopListening();
   
@@ -602,6 +668,7 @@ void sendMSG(int msg) {
         if (millis() - started_waiting_at > 200 )
           timeout = true;
     }
+    
   }
   else
   {
@@ -623,12 +690,14 @@ void waitForSignal(){
   digitalWrite(MS0, LOW);
   digitalWrite(MS1, LOW);
   digitalWrite(MS2, LOW);
+  int startButton = 1;
   TIMSK0 = 0; // turn off timer0 for lower jitter
   ADCSRA = 0xe5; // set the adc to free running mode
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
+  int start = 0;
   while(start == 0){
-    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+    for (int i = 0 ; i < 256 ; i += 2) { // save 256 samples
       while (!(ADCSRA & 0x10)); // wait for adc to be ready
       ADCSRA = 0xf5; // restart adc
       byte m = ADCL; // fetch adc data
@@ -644,9 +713,9 @@ void waitForSignal(){
     fft_run(); // process the data in the fft
     fft_mag_log(); // take the output of the fft
     sei();
-    if (fft_log_out[5] > 160) 
+    startButton = digitalRead(0);
+    if ((fft_log_out[3] > 150) || startButton == 0) 
       start = 1;
-    Serial.println(fft_log_out[5]);
   }
   TIMSK0 = prevTIMSK0;
   ADCSRA = prevADCSRA;
