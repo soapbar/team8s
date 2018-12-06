@@ -29,12 +29,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+            <li class="nav-item active">
               <a class="nav-link" href="index.html">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="labs.html">Labs</a>
             </li>
             <li class="nav-item">
@@ -117,14 +117,14 @@
             9V battery
           </li>
         </ul>
-        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/front.png" alt="Front labeled view of robot">
-        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/left.png" alt="Left labeled view of robot">
-        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/right.png" alt="Right labeled view of robot">
-        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/top.png" alt="Top labeled view of robot">
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/final/front.png" alt="Front labeled view of robot">
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/final/left.png" alt="Left labeled view of robot">
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/final/right.png" alt="Right labeled view of robot">
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/final/top.png" alt="Top labeled view of robot">
         <p>
           Although we didn’t make use of protoboards, a 3D printer or the PCB milling machine as hoped (and primarily just used lab components), we did make a custom camera mount to avoid poor-fitting, wires and keep our FPGA neater.
         </p>
-        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/camera.png" alt="Camera part">
+        <img style="width:30%;" src="https://soapbar.github.io/team8s/images/final/camera.png" alt="Camera part">
 
         <h2 class="subtitle">Starting the Maze</h2>
         <h4>Microphone</h4>
@@ -190,6 +190,20 @@
           <iframe width="534" height="300" src="https://www.youtube.com/embed/PfuCMDiDtUc" frameborder="0" allowfullscreen=""></iframe>
         </div>
 
+        <h2 class="subtitle">Wall Detection</h2>
+        <p>
+          We have three wall sensors located on the front, left and right sides of the robot. Each of these wall sensors are connected to an analog input pin on the Arduino. By remembering the starting orientation of the robot and what turns have been performed since then, we are able to determine from these 3 sensors whether there are walls on the north,east, south or west side of the location that the robot is at.
+        </p>
+        <p>
+          In order to ensure proper detection, a short test script was written to continuously read each of the wall sensor values and print the respective value to the serial monitor. Then, by checking the serial monitor and placing a wall in front of each sensor, we are able to check what an appropriate threshold value for each wall sensor should be.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/y2djtI52_LY" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          When there is no wall to the right, the robot turns to the right. And when there is both a right and front wall, the robot turns around. On right turns, the green LED is high, and when the robot is going straight, the red LED is high.
+        </p>
+
         <h2 class="subtitle">IR Detection</h2>
         <img style="width:60%;" src="https://soapbar.github.io/team8s/images/final/ir.png" alt="IR detection graph">
         <p>
@@ -200,8 +214,6 @@
         </p>
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/_qAMFe8ByrA" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/FYZ3wUXAPtw" frameborder="0" allowfullscreen=""></iframe>
         </div>
         <p>
@@ -210,7 +222,10 @@
 
         <h2 class="subtitle">Traversal Algorithm</h2>
         <p>
-          We implemented dijkstras algorithm.
+          Our robot traverses the maze by finding the nearest unexplored location in the maze using Djikstra’s algorithm. The distance to the nearest location is calculated using the Manhattan distance with an additional cost for if the robot must turn to reach this location. This gives our robot priority to unexplored locations that allow it to continue moving in a straight line. Once a destination is selected using this algorithm, it looks at the locations immediately surrounding it and checks to see if any of them match the destination. Otherwise, it goes back to the previous location to see if any of those surrounding squares match the destination and so on until it reaches the destination. While this is not the most efficient algorithm to find a path to the unexplored node, it can be implemented by simply using a stack to keep track of the current path. This is a far smaller amount of memory than is required to perform a breadth first search (BFS) to find the shortest path to the unexplored node. (When using BFS, the recursive calls used to calculate the path from each node filled up the call stack and the Arduino memory after traversing around 20 squares.)
+        </p>
+        <p>
+          This algorithm allows our robot to theoretically reach every node in the maze.
         </p>
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/oOr5ywU2Kc8" frameborder="0" allowfullscreen=""></iframe>
@@ -220,19 +235,58 @@
         <p>
           Our robot is capable of detecting variations in color indicating either red or blue treasures through an FPGA-controlled camera.
         </p>
+
+        <h4>Color Detection</h4>
+        <p>
+          In order to tell if a shape our camera was looking at was red or blue, we continually checked the current pixel’s value on each posedge of the clock. If this was predominantly red, we would iterate RED_PIXELS; if it was predominantly blue, we would add to BLUE_PIXELS.
+        </p>
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/lab4/red-blue-pixel-code.png" alt="Red Blue Pixel Code">
+        <p>
+          We also iterated a value “pixel_count” to determine if we were at the end of reading an entire frame.
+        </p>
+        <p>
+          Once we had finished reading an entire frame, we then checked if we had found significantly more red pixels than blue pixels; if so, then we iterated the variable RED_FRAMES; if there was significantly more blue than red, we iterated BLUE_FRAMES; and if the difference between red and blue pixels was relatively negligible, we iterated NONE_FRAMES. We then reset RED_PIXELS, BLUE_PIXELS, and pixel_count.
+        </p>
+        <p>
+          In order to prevent frame overflow, we ensured that if any of RED_FRAMES, BLUE_FRAMES, or NONE_FRAMES hit capacity (== 10’b1111111111), we decremented all the frames’ values by 1 (provided they were greater than zero).
+        </p>
+        <p>
+          We then chose output our result as follows:
+        </p>
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/lab4/output-code.png" alt="Output Code">
+        <p>
+          That is, in bit 0 we would return a 0 if there were more blue frames and a 1 if there were more red frames; in bit 1, we would return a 1 if there were more “none” frames than either blue or red, and a 0 otherwise.
+        </p>
+        <p>
+          Due to the lack of reliability and the penalty for miss identifying treasures, we did not integrate the camera into the final design of the robot even though the FPGA and camera were mounted.
+        </p>
+
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/H21b-natXaY" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/T7PBfYNh_wA" frameborder="0" allowfullscreen=""></iframe>
         </div>
 
         <h2 class="subtitle">Radio Communications & GUI</h2>
+        <p>
+          To start, we used the “Getting Started” example code from <a href="https://github.com/CEI-lab/ece3400-2018/blob/master/docs/Solutions/lab4/GettingStarted/GettingStarted.ino"> here </a>to transmit and receive messages between the two radios.
+        </p>
+        <p>
+          We downloaded the GUI provided by the TAs from <a href="https://github.com/backhous/ece3400-maze-gui/blob/master/README.md">here</a>.
+        </p>
+        <p>
+          In the 2 byte message packet sent from the transmitter to the receiver the data was formatted as such:
+          <br/>
+          MSG[14] = {0,robot detected,0,0,0,0,0,0,0,0,0,0,0,0} <br/>
+          MSG[13:8] = {location} <br/>
+          MSG[7:4] = {north wall,east wall,south wall,west wall}
+        </p>
+
+
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/SVG0_TKnRvg" frameborder="0" allowfullscreen=""></iframe>
         </div>
         <p>
-          Updating the GUI on the day before competition:
+          Robot traversing a 4x10 maze while updating the GUI on the day before competition:
         </p>
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/x7Vn8Fl1Iis" frameborder="0" allowfullscreen=""></iframe>
@@ -253,19 +307,18 @@
         </div>
         <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/QW377-LpAJk" frameborder="0" allowfullscreen=""></iframe>
-        </div>
-        <div style="text-align: center">
           <iframe width="534" height="300" src="https://www.youtube.com/embed/J7UNu0j1uvk" frameborder="0" allowfullscreen=""></iframe>
         </div>
-        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/team.png" alt="Camera part">
+        <img style="width:30%;" src="https://soapbar.github.io/team8s/images/final/team.png" alt="Camera part"> <br/>
 
         <h2 class="subtitle">Future Improvements</h2>
         <p>
-          In order to improve this robot in the future, the first thing that should be fixed is the interrupted setup problem. It is possible that this is a memory issue but since the program only uses 43% of program storage space and 69% of dynamic memory it is unlikely that this is the issue.
+          In order to improve this robot in the future, the first thing that should be fixed is the interrupted setup problem. It is possible that this is a memory issue but since the program only uses 43% of program storage space and 69% of dynamic memory it is unlikely that this is the issue. To improve for the future, this bug could be explored further by switching the arduino on the robot with another arduino or with a genuine arduino. Based on these results, the origin of this bug could be traced back to see if this is a problem with our arduino, the fact that it is not a genuine arduino or if there is problem within the program.
         </p>
           In addition, the location must be encoded using 7 bits instead of 6 bits so it was unable to correctly transmit all 81 locations in the maze. Due to this, the actual location of the robot was truncated when it reached the opposite corner of the maze. This explains the problem with our GUI from our second run in the maze. We were unable to discover this bug earlier due to the fact that we never tested on a maze of this size. Thus we were oblivious to the fact that our location variable actually only encodes 64 unique locations and not 81.
+        </p>
         <p>
-          Our robot could be further improved by checking for other robots more frequently. Even though, we check for other robots at intersections, it is still possible to run into other robots while not at an intersection. Thus it is important to be continuously checking for other robots.
+          Our robot could be further improved by checking for other robots more frequently. Even though, we check for other robots at intersections, it is still possible to run into other robots while not at an intersection. Thus it is important to be continuously checking for other robots. In addition, when other robots are detected, our robot could avoid it by turning around. However, due to the fact that continuously performing the FFT function interferes with the servos, it is likely that another microcontroller would be needed. In addition, this would second microcontroller would give us the freedom to utilize more input and output pins on top of the added computational power. The drawback of this is from the fact that another battery would likely be needed to power a second Arduino.
         </p>
 
         <h2 class="subtitle">Conclusion</h2>
