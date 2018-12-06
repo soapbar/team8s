@@ -260,6 +260,7 @@
         <p>
           Our robot traverses the maze by finding the nearest unexplored location in the maze using Djikstra’s algorithm. The distance to the nearest location is calculated using the Manhattan distance with an additional cost for if the robot must turn to reach this location. This gives our robot priority to unexplored locations that allow it to continue moving in a straight line. 
         </p>
+         <img style="width:60%;" src="https://soapbar.github.io/team8s/images/traversalCode.png" alt="Traversal code">
         <p>
           Once a destination is selected using this algorithm, it looks at the locations immediately surrounding it and checks to see if any of them match the destination. Otherwise, it goes back to the previous location to see if any of those surrounding squares match the destination and so on until it reaches the destination. 
           </p>
@@ -278,7 +279,7 @@
           We then converted our MATLAB code to Arduino code and integrated it onto the robot, and it was able to successfully traverse a maze. This image is from the night before the competition:
         </p>
         <div style="text-align: center">
-          <img style="width:500px;" src="https://soapbar.github.io/team8s/images/workingTraversal.png" alt="Red Blue Pixel Code">
+          <img style="width:500px;" src="https://soapbar.github.io/team8s/images/workingTraversal.png" alt="Working traversal, the night before the competition">
         </div>
         <p>
           (Note: The one false wall is from a person walking through and getting in the way of our robot. We couldn’t get a cleaner reading because there were so. many. people. in and walking through the maze that night.)
