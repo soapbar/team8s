@@ -136,12 +136,23 @@
         <p>
           Using the FFT library (<a href="https://soapbar.github.io/team8s/lab2.html">read more about this in our Lab 2 documentation!</a>), we determined that a 660Hz tone would appear in the 5th bin; thus, when that bin surpassed a certain level, we knew that the correct tone had played and the robot could start.
         </p>
+        <p>
+          We realized during the competition that our chosen threshold was a little off, since our robot kept starting at some voices -- particularly Brandon’s, although he may have just been claiming a favorite parent. For future accuracy, we would raise the threshold and test in a space with a lot more noise.
+        </p>
         <h4>Failsafe:</h4>
         <p>
           Just in case this didn’t work, however, we decided to have a backup mechanism to start our robot. Instead of having a pushbutton, we had two open wires; one was connected to a pin on the Arduino, and one was attached to ground. If they touched -- ie. if the pin went LOW -- the robot would start. Thus, in order to bypass the microphone circuit and jump straight into movement, we simply had to touch the two wires.
         </p>
         <p>
           This is something that came in very handy while testing our robot without repeatedly playing the 600 Hz tone annoyingly, and a starting mechanism we ended up using in the final competition when our robot went off course and we had to reset it!
+        </p>
+        <p>
+          At the end, the conditions leading to our robot starting -- considering both the microphone and the failsafe -- were as follows:
+          <pre><code><font color="red" width="500px">
+
+            if ((fft_log_out[3] > 150) || startButton == 0) 
+              start = 1;
+          </font></code></pre>
         </p>
         <h2 class="subtitle">Basic Navigation and Sensors</h2>
         <p>
@@ -201,7 +212,7 @@
           <iframe width="534" height="300" src="https://www.youtube.com/embed/y2djtI52_LY" frameborder="0" allowfullscreen=""></iframe>
         </div>
         <p>
-          When there is no wall to the right, the robot turns to the right. And when there is both a right and front wall, the robot turns around. On right turns, the green LED is high, and when the robot is going straight, the red LED is high.
+          In this example, when there is no wall to the right, the robot turns to the right. And when there is both a right and front wall, the robot turns around. On right turns, the green LED is high, and when the robot is going straight, the red LED is high. We were later able to build upon wall-following in order to implement a better traversal algorithm.
         </p>
 
         <h2 class="subtitle">IR Detection</h2>
@@ -247,8 +258,15 @@
 
         <h2 class="subtitle">Traversal Algorithm</h2>
         <p>
-          Our robot traverses the maze by finding the nearest unexplored location in the maze using Djikstra’s algorithm. The distance to the nearest location is calculated using the Manhattan distance with an additional cost for if the robot must turn to reach this location. This gives our robot priority to unexplored locations that allow it to continue moving in a straight line. Once a destination is selected using this algorithm, it looks at the locations immediately surrounding it and checks to see if any of them match the destination. Otherwise, it goes back to the previous location to see if any of those surrounding squares match the destination and so on until it reaches the destination. While this is not the most efficient algorithm to find a path to the unexplored node, it can be implemented by simply using a stack to keep track of the current path. This is a far smaller amount of memory than is required to perform a breadth first search (BFS) to find the shortest path to the unexplored node. (When using BFS, the recursive calls used to calculate the path from each node filled up the call stack and the Arduino memory after traversing around 20 squares.)
+          Our robot traverses the maze by finding the nearest unexplored location in the maze using Djikstra’s algorithm. The distance to the nearest location is calculated using the Manhattan distance with an additional cost for if the robot must turn to reach this location. This gives our robot priority to unexplored locations that allow it to continue moving in a straight line. 
         </p>
+        <p>
+          Once a destination is selected using this algorithm, it looks at the locations immediately surrounding it and checks to see if any of them match the destination. Otherwise, it goes back to the previous location to see if any of those surrounding squares match the destination and so on until it reaches the destination. 
+          </p>
+        <p>
+          While this is not the most efficient algorithm to find a path to the unexplored node, it can be implemented by simply using a stack to keep track of the current path. This is a far smaller amount of memory than is required to perform a breadth first search (BFS) to find the shortest path to the unexplored node. (When using BFS, the recursive calls used to calculate the path from each node filled up the call stack and the Arduino memory after traversing around 20 squares.) 
+        </p>
+
         <p>
           This algorithm allows our robot to theoretically reach every node in the maze.
         </p>
@@ -256,6 +274,15 @@
           <iframe width="534" height="300" src="https://www.youtube.com/embed/oOr5ywU2Kc8" frameborder="0" allowfullscreen=""></iframe>
         </div>
 
+        <p>
+          We then converted our MATLAB code to Arduino code and integrated it onto the robot, and it was able to successfully traverse a maze. This image is from the night before the competition:
+        </p>
+
+        <img style="width:500px;" src="https://soapbar.github.io/team8s/images/workingTraversal.png" alt="Red Blue Pixel Code">
+
+        <p>
+          (Note: The one false wall is from a person walking through and getting in the way of our robot. We couldn’t get a cleaner reading because there were so. many. people. in and walking through the maze that night.)
+        </p>
         <h2 class="subtitle">Camera and Treasures</h2>
         <p>
           Our robot is capable of detecting variations in color indicating either red or blue treasures through an FPGA-controlled camera.
@@ -283,7 +310,7 @@
           That is, in bit 0 we would return a 0 if there were more blue frames and a 1 if there were more red frames; in bit 1, we would return a 1 if there were more “none” frames than either blue or red, and a 0 otherwise.
         </p>
         <p>
-          Due to the lack of reliability and the penalty for miss identifying treasures, we did not integrate the camera into the final design of the robot even though the FPGA and camera were mounted.
+          Due to the lack of time, we did not integrate the camera into the final design of the robot even though the FPGA and camera were mounted and individually functional -- other parts of the robot, like properly traversing the maze, took more precedent funtionality- and point-wise. Given more time, we would have spent more time effort making shape detection work and developing GUI integration; in addition, we would have had to figure out how to spin the robot in order to check for treasures on all sides of the walls, or developed an algorithm to check all of the walls after a successful completed maze traversal by re-exploring all walls and keeping them to the robot’s right (where the camera was mounted)
         </p>
 
         <div style="text-align: center">
