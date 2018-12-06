@@ -71,11 +71,213 @@
       <div class="container">
         <h1 style="text-align: center">Final Design</h1>
 
+        <!--picture of our final progress -->
+        <div style="text-align: center">
+          <h2 class="subtitle">Our Final Robot</h2>
+          <img style="width:50%;" src="https://soapbar.github.io/team8s/images/current-robo.JPG" alt="Our Current Robot">
+        </div> <br/>
+
         <h2 class="subtitle">Introduction</h2>
         <p>
-          Hi. 
+          Our robot son -- a young, misunderstood collection of spark and drive -- has gone through a lot of growth since the beginning of the semester. Over the last several weeks, team8s has spent many hours in lab integrating all of the individual subsystems with the limited time that we had --  creating a base station, a navigation algorithm, and treasure detection system. Although many things worked individually, we had to debug a lot upon combining them. Not everything turned out perfect, partially because of how pressed we were for time, but our (kind of) intelligent physical system has come a long way from just flashing an LED on an Arduino.
+        </p>
+        <h2 class="subtitle">Mechanical Overview</h2>
+        <ul>
+          <li>
+            Arduino
+          </li>
+          <li>
+            FPGA
+          </li>
+          <li>
+            IR hat/detector
+          </li>
+          <li>
+            Camera
+          </li>
+          <li>
+            Microphone
+          </li>
+          <li>
+            Servos
+          </li>
+          <li>
+            Wall sensors
+          </li>
+          <li>
+            Line sensors
+          </li>
+          <li>
+            Wheels
+          </li>
+          <li>
+            Radio
+          </li>
+          <li>
+            9V battery
+          </li>
+        </ul>
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/front.png" alt="Front labeled view of robot">
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/left.png" alt="Left labeled view of robot">
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/right.png" alt="Right labeled view of robot">
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/top.png" alt="Top labeled view of robot">
+        <p>
+          Although we didn’t make use of protoboards, a 3D printer or the PCB milling machine as hoped (and primarily just used lab components), we did make a custom camera mount to avoid poor-fitting, wires and keep our FPGA neater.
+        </p>
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/camera.png" alt="Camera part">
+
+        <h2 class="subtitle">Starting the Maze</h2>
+        <h4>Microphone</h4>
+        <p>
+          Our robot needed to start the maze at a 600 Hz tone. In order to do this, we assembled a microphone circuit that would detect the tone and check if it it was (around) 600 Hz or not. The circuit consisted of a microphone whose output went into a filter and amplifier:
+        </p>
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/mic.png" alt="Mic circuit">
+
+        <p>
+          Using the FFT library (read more about this in our Lab 2 documentation!), we determined that a 660Hz tone would appear in the 5th bin; thus, when that bin surpassed a certain level, we knew that the correct tone had played and the robot could start.
+        </p>
+        <h4>Failsafe:</h4>
+        <p>
+          Just in case this didn’t work, however, we decided to have a backup mechanism to start our robot. Instead of having a pushbutton, we had two open wires; one was connected to a pin on the Arduino, and one was attached to ground. If they touched -- ie. if the pin went LOW -- the robot would start. Thus, in order to bypass the microphone circuit and jump straight into movement, we simply had to touch the two wires.
+        </p>
+        <p>
+          This is something that came in very handy while testing our robot without repeatedly playing the 600 Hz tone annoyingly, and a starting mechanism we ended up using in the final competition when our robot went off course and we had to reset it!
+        </p>
+        <h2 class="subtitle">Basic Navigation and Sensors</h2>
+        <p>
+          Our robot is capable of line-following, sensing walls, and turning!
+        </p>
+        <h4>Movement and Line-following</h4>
+        <p>
+          It’s been a long time since our son’s first steps -- rolls? -- but the movement we established since lab 1 has held steady throughout the weeks.
+        </p>
+        <p>
+          In order to move, we could set the analog output of the servo pins to either 0, 90, or 180 to move forward, stop, or move backwards. (Due to lack of symmetry, however, setting one servo’s 0 would be forward, while the other’s 0 would be backwards.) To turn, we turned one servo forwards and the other backwards and delayed.
+        </p>
+        <img style="width:30%;" src="https://soapbar.github.io/team8s/images/final/line-following.png" alt="Line following code">
+        <img style="width:30%;" src="https://soapbar.github.io/team8s/images/final/line-following-1.png" alt="Line following code 2">
+        <p>
+          We used IR sensors in order to follow a line: one on each side of the line, which turned out to be an efficient configuration: if the robot drifted a little to the left, the right sensor would sense the white line, the robot turns a little bit to the right to offset the drift by briefly speeding up its left servo, and vice versa. Using the serial monitor, we determined that something “white” corresponded to a value of 850, while black was 650.
+        </p>
+        <p>
+          General code:
+        </p>
+        <pre><code><font color="red" width="500px">
+          void followLine() {
+            bool rightIsWhite = analogRead(SENSERIGHT) < 860;
+            bool leftIsWhite = analogRead(SENSELEFT) < 860;
+            bool reachedIntersection = rightIsWhite && leftIsWhite;
+            if (reachedIntersection) {
+              LeftServo.write(90);
+              RightServo.write(90);
+            }
+            else if (rightIsWhite) {
+              turnRight();
+            }
+            else if (leftIsWhite) {
+              turnLeft();
+            }
+            else {
+              goStraight();
+            }
+          }
+
+        </font></code></pre>
+        <p>
+          This video depicts our robot line-following:
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/PfuCMDiDtUc" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+
+        <h2 class="subtitle">IR Detection</h2>
+        <img style="width:60%;" src="https://soapbar.github.io/team8s/images/final/ir.png" alt="IR detection graph">
+        <p>
+          There are several peaks, which are harmonics of the actual signal. The highest peak occurs in bin number 43, where the magnitude is about 200 when the transistor and hat are very close to each other. Now to check if we are near an IR hat, we just run the code from the example sketch, and instead of printing all of the values recorded at the end we just check the value in bin 43 (index 42).
+        </p>
+        <p>
+          If the magnitude is above a certain threshold, we printed “IR Detected” to the serial monitor; if it is below that threshold, we print “IR Not Detected”.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/_qAMFe8ByrA" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/FYZ3wUXAPtw" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          When we actually implemented the code in our robot, we changed the code to stopping at the intersection until the other robot is no longer detected.
         </p>
 
+        <h2 class="subtitle">Traversal Algorithm</h2>
+        <p>
+          We implemented dijkstras algorithm.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/oOr5ywU2Kc8" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+
+        <h2 class="subtitle">Camera and Treasures</h2>
+        <p>
+          Our robot is capable of detecting variations in color indicating either red or blue treasures through an FPGA-controlled camera.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/H21b-natXaY" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/T7PBfYNh_wA" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+
+        <h2 class="subtitle">Radio Communications & GUI</h2>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/SVG0_TKnRvg" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <p>
+          Updating the GUI on the day before competition:
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/x7Vn8Fl1Iis" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+
+        <h2 class="subtitle">Final Performance</h2>
+        <p>
+          In the final competition, our robot performed far poorer than expected due to some unforeseen errors.
+        </p>
+        <p>
+          In the first round, our robot didn’t start at all. This was due to an issue that we’d had a few times the night before the competition, wherein the Arduino would crash during the setup function. This bug was previously fixed by uploading another Arduino program and then re-uploading the robot program. We were unable to complete this before the start of the first run so the robot never moved.
+        </p>
+        <p>
+          In the second round, our robot was able to go from one corner of the maze to the other. However, when our robot reached the opposite corner of the maze, it updated the GUI incorrectly and was incorrect about its location in the maze. This led to the robot believing it was cornered in a fully-explored, two-square box, and it stopped moving.
+        </p>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/C8eBEIBz4OE" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/QW377-LpAJk" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <div style="text-align: center">
+          <iframe width="534" height="300" src="https://www.youtube.com/embed/J7UNu0j1uvk" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <img style="width:50%;" src="https://soapbar.github.io/team8s/images/final/team.png" alt="Camera part">
+
+        <h2 class="subtitle">Future Improvements</h2>
+        <p>
+          In order to improve this robot in the future, the first thing that should be fixed is the interrupted setup problem. It is possible that this is a memory issue but since the program only uses 43% of program storage space and 69% of dynamic memory it is unlikely that this is the issue.
+        </p>
+          In addition, the location must be encoded using 7 bits instead of 6 bits so it was unable to correctly transmit all 81 locations in the maze. Due to this, the actual location of the robot was truncated when it reached the opposite corner of the maze. This explains the problem with our GUI from our second run in the maze. We were unable to discover this bug earlier due to the fact that we never tested on a maze of this size. Thus we were oblivious to the fact that our location variable actually only encodes 64 unique locations and not 81.
+        <p>
+          Our robot could be further improved by checking for other robots more frequently. Even though, we check for other robots at intersections, it is still possible to run into other robots while not at an intersection. Thus it is important to be continuously checking for other robots.
+        </p>
+
+        <h2 class="subtitle">Conclusion</h2>
+        <p>
+          Although the individual components of our robot functioned fine normally (with the exception of shape detection), upon integrating we ran into far more issues than we expected. As a result, some of the projected functionalities for our robot in navigating the maze failed on competition day, while some other imagined functionalities -- treasure detection in particular -- did not have enough time to truly bloom. It is valuable to note that this was not a result of not attempting -- there simply was not enough time to figure out all the bugs that arose from having all these features running at once and we ended up having to prioritize.
+        </p>
+        <p>
+          We didn’t end up very high in the class standing, but we still were and are proud of the work that we have poured into our small son and the many accomplishments we have achieved, and all the things our son can do -- even if he can’t do them all at the same time. However, as a 15-week old in his first ever course, we’re proud that he’s managed to achieve so much.
+        </p>
+        <p>
+          Thank you to all the other students for working hard and frantically soldering together, to all the TAs for answering our many questions (and holding open lab at ungodly times), and to Kirstin for leading the class!
+        </p>
 
       </div>
     </section>
