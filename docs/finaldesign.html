@@ -150,7 +150,7 @@
           At the end, the conditions leading to our robot starting -- considering both the microphone and the failsafe -- were as follows:
           <pre><code><font color="red" width="500px">
 
-            if ((fft_log_out[3] > 150) || startButton == 0) 
+            if ((fft_log_out[3] > 150) || startButton == 0)
               start = 1;
           </font></code></pre>
         </p>
@@ -258,14 +258,14 @@
 
         <h2 class="subtitle">Traversal Algorithm</h2>
         <p>
-          Our robot traverses the maze by finding the nearest unexplored location in the maze using Djikstra’s algorithm. The distance to the nearest location is calculated using the Manhattan distance with an additional cost for if the robot must turn to reach this location. This gives our robot priority to unexplored locations that allow it to continue moving in a straight line. 
+          Our robot traverses the maze by finding the nearest unexplored location in the maze using Djikstra’s algorithm. The distance to the nearest location is calculated using the Manhattan distance with an additional cost for if the robot must turn to reach this location. This gives our robot priority to unexplored locations that allow it to continue moving in a straight line. This arbitration for determining the next location can be seen in the snippet below:
         </p>
-         <img style="width:60%;" src="https://soapbar.github.io/team8s/images/traversalCode.png" alt="Traversal code">
+         <img style="width:30%;" src="https://soapbar.github.io/team8s/images/traversalCode.png" alt="Traversal code">
         <p>
-          Once a destination is selected using this algorithm, it looks at the locations immediately surrounding it and checks to see if any of them match the destination. Otherwise, it goes back to the previous location to see if any of those surrounding squares match the destination and so on until it reaches the destination. 
+          Once a destination is selected using this algorithm, it looks at the locations immediately surrounding it and checks to see if any of them match the destination. Otherwise, it goes back to the previous location to see if any of those surrounding squares match the destination and so on until it reaches the destination.
           </p>
         <p>
-          While this is not the most efficient algorithm to find a path to the unexplored node, it can be implemented by simply using a stack to keep track of the current path. This is a far smaller amount of memory than is required to perform a breadth first search (BFS) to find the shortest path to the unexplored node. (When using BFS, the recursive calls used to calculate the path from each node filled up the call stack and the Arduino memory after traversing around 20 squares.) 
+          While this is not the most efficient algorithm to find a path to the unexplored node, it can be implemented by simply using a stack to keep track of the current path. This is a far smaller amount of memory than is required to perform a breadth first search (BFS) to find the shortest path to the unexplored node. (When using BFS, the recursive calls used to calculate the path from each node filled up the call stack and the Arduino memory after traversing around 20 squares.)
         </p>
 
         <p>
