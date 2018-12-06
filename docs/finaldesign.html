@@ -205,6 +205,31 @@
         </p>
 
         <h2 class="subtitle">IR Detection</h2>
+        <p>
+          We built a bandpass filter to be able to detect other robots emitting a frequency of 6.08kHz. The purpose of the filter is to cut out other frequencies, like the IR decoys. To get the resistor and capacitor values for our circuit we used an online calculator.
+        </p>
+        <img style="height:230px;" src="https://soapbar.github.io/team8s/images/lab2/bandpass_filter.png" alt="Passive Bandpass Filter Diagram">
+        <p>
+          Component values <br>
+          C1 = 100nF <br>
+          R1 = 330 Ohms (to ground) <br>
+          C2 = 1nF <br>
+          R2 = 24 kOhms (to output)
+        </p>
+        <p>
+          We also built an amplifier because the reading we got from the output of the transistor was very small in magnitude, especially from far away. We chose to use an non-inverting op amp circuit because it is simple and easy to build. We based our design on the image below. The gain of the non-inverting amp is equal to 1 + Rf/R2, so with the resistor values we chose, we have a theoretical gain of about 1000. The pinout for the op amp that we used is also below.
+        </p>
+        <img style="height:230px;" src="https://soapbar.github.io/team8s/images/lab2/noninverting_opamp.png" alt="Non-inverting Op-amp Diagram">
+        <p>
+          Resistor values <br>
+          Rf = 100 kOhms <br>
+          R2 = 100 Ohms
+        </p>
+        <p>
+          Texas Instruments LM358P
+        </p>
+        <img style="height:160px;" src="https://soapbar.github.io/team8s/images/lab2/pinout.png" alt="Op-amp Pinout">
+        <br/>
         <img style="width:60%;" src="https://soapbar.github.io/team8s/images/final/ir.png" alt="IR detection graph">
         <p>
           There are several peaks, which are harmonics of the actual signal. The highest peak occurs in bin number 43, where the magnitude is about 200 when the transistor and hat are very close to each other. Now to check if we are near an IR hat, we just run the code from the example sketch, and instead of printing all of the values recorded at the end we just check the value in bin 43 (index 42).
@@ -274,6 +299,14 @@
           We downloaded the GUI provided by the TAs from <a href="https://github.com/backhous/ece3400-maze-gui/blob/master/README.md">here</a>.
         </p>
         <p>
+          We were able to decide on an encoding for maze information and also decode those messages. We use 16 bits, the least four significant bits encode the color and shape of any treasure that is present. The next four bits each represent a wall in one of the four cardinal directions. The next seven bits encode the coordinates. To encode the coordinates, we use a single number. When that number is divided by n in (we assume the maze is size n-by-n), the remainder is the x-coordinate and the quotient is the y-coordinate. The final bit indicates whether or not another robot is detected.
+        </p>
+        <img style="width:100%;" src="https://soapbar.github.io/team8s/images/final/gui-decode.png" alt="GUI decode">
+
+        <p>
+          We created byte encodings of a maze in an array and loop through it to simulate traversing it using right hand wall following. We use bit masks and switch statements to decode each message, and then write the corresponding message to the GUI.
+        </p>
+        <p>
           In the 2 byte message packet sent from the transmitter to the receiver the data was formatted as such:
           <br/>
           MSG[14] = {0,robot detected,0,0,0,0,0,0,0,0,0,0,0,0} <br/>
@@ -334,6 +367,8 @@
         <p>
           Thank you to all the other students for working hard and frantically soldering together, to all the TAs for answering our many questions (and holding open lab at ungodly times), and to Kirstin for leading the class!
         </p>
+        <img style="width:60%;" src="https://soapbar.github.io/team8s/images/final/group-pic.JPG" alt="Group photo">
+    
 
       </div>
     </section>
