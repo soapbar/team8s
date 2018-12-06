@@ -276,7 +276,7 @@
         </div>
 
         <p>
-          We then converted our MATLAB code to Arduino code and integrated it onto the robot, and it was able to successfully traverse a maze. This image is from the night before the competition:
+          When our MATLAB code was converted to Arduino code and integrated it onto the robot, we realized that the data structures used and the recursive function calls were too much for the robot to handle. This is what led to the change in design from a BFS path planning algortihm to a retrace your steps algorithm. This image is from the night before the competition:
         </p>
         <div style="text-align: center">
           <img style="width:500px;" src="https://soapbar.github.io/team8s/images/workingTraversal.png" alt="Working traversal, the night before the competition">
@@ -387,7 +387,7 @@
         <p>
           In order to improve this robot in the future, the first thing that should be fixed is the interrupted setup problem. It is possible that this is a memory issue but since the program only uses 43% of program storage space and 69% of dynamic memory it is unlikely that this is the issue. To improve for the future, this bug could be explored further by switching the arduino on the robot with another arduino or with a genuine arduino. Based on these results, the origin of this bug could be traced back to see if this is a problem with our arduino, the fact that it is not a genuine arduino or if there is problem within the program.
         </p>
-          In addition, the location must be encoded using 7 bits instead of 6 bits so it was unable to correctly transmit all 81 locations in the maze. Due to this, the actual location of the robot was truncated when it reached the opposite corner of the maze. This explains the problem with our GUI from our second run in the maze. We were unable to discover this bug earlier due to the fact that we never tested on a maze of this size. Thus we were oblivious to the fact that our location variable actually only encodes 64 unique locations and not 81.
+          In addition, in reality, the location was being encoded using 6 bits instead of 7 bits so it was unable to correctly transmit all 81 locations in the maze. Due to this, the actual location of the robot was truncated when it reached the opposite corner of the maze. This explains the problem with our GUI from our second run in the maze. We were unable to discover this bug earlier due to the fact that we never tested on a maze of this size. Thus we were oblivious to the fact that our location variable actually only encodes 64 unique locations and not 81. 
         </p>
         <p>
           Our robot could be further improved by checking for other robots more frequently. Even though, we check for other robots at intersections, it is still possible to run into other robots while not at an intersection. Thus it is important to be continuously checking for other robots. In addition, when other robots are detected, our robot could avoid it by turning around. However, due to the fact that continuously performing the FFT function interferes with the servos, it is likely that another microcontroller would be needed. In addition, this would second microcontroller would give us the freedom to utilize more input and output pins on top of the added computational power. The drawback of this is from the fact that another battery would likely be needed to power a second Arduino.
